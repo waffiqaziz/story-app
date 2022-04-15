@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">StoryApp</string>
+
+  <string name="input_password">Введите свой пароль</string>
+  <string name="input_email">Введите адрес электронной почты</string>
+
+  <string name="picture_logo">Этот логотип StoryApp</string>
+  <string name="welcome">"Добро пожаловать !"</string>
+
+  <string name="invalid_username">Недопустимое имя пользователя</string>
+  <string name="invalid_email">Недействительный адрес электронной почты</string>
+  <string name="invalid_password">Пароль должен быть &gt;5 символов</string>
+  <string name="login_failed">"Авторизация не удалась"</string>
+
+  <string name="sign">Электронная почта недействительна</string>
+  <string name="sign_in">Войти</string>
+  <string name="register">регистр</string>
+  <string name="list_story">Список историй</string>
+  <string name="add_story">Добавить историю</string>
+  <string name="logout">Выйти</string>
+
+  <string name="sign_in_with_your_account">Войти под своей учетной записью</string>
+  <string name="register_your_account">Зарегистрируйте свою учетную запись</string>
+  <string name="did_t_have_account"><u> У вас не было аккаунта?</u>  </string>
+  <string name="have_account"><u> Есть аккаунт?</u>  </string>
+
+  <string name="input_name">Введите свое имя</string>
+  <string name="fill_all">Заполните все поле правильно</string>
+
+  <string name="greeting">Гало %1$s,</string>
+  <string name="created_add">Создано в %1$s,</string>
+  <string name="by_waffiq">Ваффик 2022</string>
+  <string name="home_description">Публикуйте и делитесь своей историей, делитесь своей деятельностью и знакомьтесь с историями других людей.</string>
+  <string name="login_account">Войдите в свою учетную запись</string>
+  <string name="continue_">Продолжать</string>
+  <string name="sign_in_success">Войти успешно</string>
+  <string name="register_success">Зарегистрируйтесь успешно, вы можете войти в свою учетную запись</string>
+  <string name="register_failed">Регистрация не удалась</string>
+  <string name="upload_failed">Загрузка не удалась</string>
+  <string name="upload_success">Загрузить успешно</string>
+  <string name="sign_in_failed">Ошибка входа</string>
+  <string name="log_out_success">Выйти успешно</string>
+  <string name="information">Информация</string>
+
+  <string name="camera">Камера</string>
+  <string name="description">Описание</string>
+  <string name="gallery">Галерея</string>
+  <string name="upload">Загрузить</string>
+  <string name="change_language">изменение языка</string>
+  <string name="new_story">Новая история</string>
+  <string name="image_preview">Предварительный просмотр изображения</string>
+
+  <string name="image_story">История изображения</string>
+  <string name="name">Имя</string>
+  <string name="no_story">Нет истории</string>
+  <string name="post_story">Опубликовать историю</string>
+  <string name="invalid_permission">Не могу получить разрешение</string>
+  <string name="no_attach_file">Файл не прикреплен, пожалуйста, сначала прикрепите изображение</string>
+  <string name="rotate_image">Повернуть изображение</string>
+
+  <string name="detail_story">Подробная история</string>
+  <string name="switch_camera">Переключить камеру</string>
+  <string name="capture_image">Захват изображения</string>
+  <string name="must_filled">должен быть заполнен</string>
+
+</resources>

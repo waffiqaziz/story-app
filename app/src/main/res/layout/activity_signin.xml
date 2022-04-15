@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:id="@+id/parentRelative"
+  android:paddingStart="40dp"
+  android:paddingEnd="40dp"
+  tools:context=".ui.activity.SignInActivity">
+
+  <ImageView
+    android:id="@+id/iv_setting"
+    android:layout_width="40dp"
+    android:layout_height="40dp"
+    android:layout_alignParentEnd="true"
+    android:layout_marginTop="16dp"
+    android:contentDescription="@string/change_language"
+    android:src="@drawable/ic_setting" />
+
+  <ProgressBar
+    android:id="@+id/progress_bar"
+    style="?android:attr/progressBarStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:visibility="gone"
+    tools:visibility="visible" />
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:orientation="vertical"
+    tools:ignore="UselessParent">
+
+    <ImageView
+      android:id="@+id/imageView"
+      android:layout_width="120dp"
+      android:layout_height="120dp"
+      android:layout_gravity="center"
+      android:contentDescription="@string/picture_logo"
+      android:src="@drawable/ic_group_5" />
+
+    <TextView
+      style="@style/TextViewBold"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="50dp"
+      android:text="@string/sign_in_with_your_account"
+      android:textSize="30sp" />
+
+    <com.dicoding.storyapp.ui.customview.MyEditTextEmail
+      android:id="@+id/et_email"
+      style="@style/EditTextGeneral"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="20dp"
+      android:hint="@string/input_email"
+      android:inputType="textEmailAddress"
+      android:minHeight="48dp"
+      android:paddingStart="16sp"
+      android:paddingEnd="16sp" />
+
+    <com.dicoding.storyapp.ui.customview.MyEditTextPass
+      android:id="@+id/et_pass"
+      style="@style/EditTextGeneral"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="start"
+      android:layout_marginTop="16dp"
+      android:hint="@string/input_password"
+      android:inputType="textPassword"
+      android:minHeight="48dp"
+      android:paddingStart="16sp"
+      android:paddingEnd="16sp"
+      app:passwordToggleEnabled="true" />
+
+    <com.dicoding.storyapp.ui.customview.MyButtonSignIn
+      android:id="@+id/btn_signIn"
+      style="@style/BtnRegular"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="32dp"
+      android:contentDescription="@string/login_account" />
+
+    <TextView
+      android:id="@+id/et_signIn"
+      style="@style/TextViewBold"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_marginTop="10dp"
+      android:text="@string/did_t_have_account"
+      android:textColor="@color/blue_300"
+      android:textStyle="bold" />
+
+  </LinearLayout>
+
+
+
+</RelativeLayout>

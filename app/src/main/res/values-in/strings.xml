@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Aplikasi Cerita</string>
+
+  <string name="input_password">Masukkan kata sandi Anda</string>
+  <string name="input_email">Masukkan email Anda</string>
+
+  <string name="picture_logo">Logo aplikasi ini</string>
+  <string name="welcome">"Selamat datang !"</string>
+
+  <string name="invalid_username">Bukan nama pengguna yang valid</string>
+  <string name="invalid_email">Bukan email yang valid</string>
+  <string name="invalid_password">Kata sandi harus &gt;5 karakter</string>
+  <string name="login_failed">"Gagal masuk"</string>
+
+  <string name="sign">Email Tidak Valid</string>
+  <string name="sign_in">Masuk</string>
+  <string name="register">Daftar</string>
+  <string name="list_story">Daftar Cerita</string>
+  <string name="add_story">Tambahkan Cerita</string>
+  <string name="logout">Keluar</string>
+
+  <string name="sign_in_with_your_account">Masuk dengan akun Anda</string>
+  <string name="register_your_account">Daftarkan akun anda</string>
+  <string name="did_t_have_account"><u>Tidak punya akun?</u></string>
+  <string name="have_account"><u>Punya akun?</u></string>
+
+  <string name="input_name">Masukkan nama Anda</string>
+  <string name="fill_all">Isi Semua Kolom Dengan Benar</string>
+
+  <string name="greeting">Hai %1$s,</string>
+  <string name="created_add">Diungguah pada %1$s,</string>
+  <string name="by_waffiq">Oleh Waffiq 2022</string>
+  <string name="home_description">Posting dan bagikan cerita Anda, bagikan aktivitas Anda, dan lihat cerita orang lain</string>
+  <string name="login_account">Masuk ke akun Anda</string>
+  <string name="continue_">Lanjutkan</string>
+  <string name="sign_in_success">Berhasil masuk</string>
+  <string name="register_success">Daftar akun berhasil, Anda dapat masuk dengan akun Anda</string>
+  <string name="register_failed">Daftar akun gagal</string>
+  <string name="upload_failed">Gagal mengunggah</string>
+  <string name="upload_success">Berhasil mengunggah</string>
+  <string name="sign_in_failed">Gagal masuk</string>
+  <string name="log_out_success">Berhasil keluar</string>
+  <string name="information">Informasi</string>
+
+  <string name="camera">Kamera</string>
+  <string name="description">Keterangan</string>
+  <string name="gallery">Galeri</string>
+  <string name="upload">Mengunggah</string>
+  <string name="change_language">Ganti bahasa</string>
+  <string name="new_story">Cerita baru</string>
+  <string name="image_preview">Pratinjau gambar</string>
+
+  <string name="image_story">Cerita gambar</string>
+  <string name="name">Nama</string>
+  <string name="no_story">Tidak Ada Cerita</string>
+  <string name="post_story">Posting cerita</string>
+  <string name="invalid_permission">Tidak bisa mendapatkan izin</string>
+  <string name="no_attach_file">Tidak ada file terlampir, harap lampirkan gambar terlebih dahulu</string>
+  <string name="rotate_image">Putar gambar</string>
+
+  <string name="detail_story">Detail Cerita</string>
+  <string name="switch_camera">Ganti Kamera</string>
+  <string name="capture_image">Ambil gambar</string>
+  <string name="must_filled">Kolom harus diisi</string>
+
+</resources>

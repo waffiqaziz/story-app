@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:id="@+id/parentRelative"
+  android:paddingStart="40dp"
+  android:paddingEnd="40dp"
+  tools:context=".ui.activity.SignInActivity">
+
+
+  <ProgressBar
+    android:id="@+id/progress_bar"
+    style="?android:attr/progressBarStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="visible" />
+
+  <ImageView
+    android:id="@+id/imageView"
+    android:layout_width="250dp"
+    android:layout_height="300dp"
+    android:contentDescription="@string/picture_logo"
+    android:src="@drawable/ic_group_5"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@+id/guideline2"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0.5" />
+
+  <TextView
+    android:id="@+id/textView"
+    style="@style/TextViewBold"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="32dp"
+    android:layout_marginEnd="16dp"
+    android:gravity="center"
+    android:text="@string/sign_in_with_your_account"
+    android:textColor="@color/black"
+    android:textSize="30sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="@+id/guideline2"
+    app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+  <com.dicoding.storyapp.ui.customview.MyEditTextEmail
+    android:id="@+id/et_email"
+    style="@style/EditTextGeneral"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="32dp"
+    android:layout_marginTop="24dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="10dp"
+    android:hint="@string/input_email"
+    android:inputType="textEmailAddress"
+    android:minHeight="48dp"
+    android:paddingStart="16sp"
+    android:paddingEnd="16sp"
+    app:layout_constraintBottom_toTopOf="@+id/et_pass"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="@+id/guideline2"
+    app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+  <com.dicoding.storyapp.ui.customview.MyEditTextPass
+    android:id="@+id/et_pass"
+    style="@style/EditTextGeneral"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="start"
+    android:layout_marginStart="32dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="16dp"
+    android:hint="@string/input_password"
+    android:inputType="textPassword"
+    android:minHeight="48dp"
+    android:paddingStart="16sp"
+    android:paddingEnd="16sp"
+    app:layout_constraintBottom_toTopOf="@+id/btn_signIn"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="@+id/guideline2"
+    app:passwordToggleEnabled="true" />
+
+  <com.dicoding.storyapp.ui.customview.MyButtonSignIn
+    android:id="@+id/btn_signIn"
+    style="@style/BtnRegular"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="32dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="16dp"
+    android:contentDescription="@string/login_account"
+    app:layout_constraintBottom_toTopOf="@+id/et_signIn"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="@+id/guideline2" />
+
+  <TextView
+    android:id="@+id/et_signIn"
+    style="@style/TextViewBold"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="32dp"
+    android:layout_marginEnd="16dp"
+    android:text="@string/did_t_have_account"
+    android:textColor="@color/blue_300"
+    android:textStyle="bold"
+    app:layout_constraintBottom_toBottomOf="@+id/imageView"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="@+id/guideline2" />
+
+  <androidx.constraintlayout.widget.Guideline
+    android:id="@+id/guideline2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintGuide_begin="286dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

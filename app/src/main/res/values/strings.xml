@@ -1,0 +1,65 @@
+<resources>
+  <string name="app_name">StoryApp</string>
+
+  <string name="input_password">Input your password</string>
+  <string name="input_email">Input your email</string>
+
+  <string name="picture_logo">This StoryApp logo</string>
+  <string name="welcome">"Welcome !"</string>
+
+  <string name="invalid_username">Not a valid username</string>
+  <string name="invalid_email">Not a valid email</string>
+  <string name="invalid_password">Password must be >5 characters</string>
+  <string name="login_failed">"Login failed"</string>
+
+  <string name="sign">Email Not Valid</string>
+  <string name="sign_in">Sign In</string>
+  <string name="register">Register</string>
+  <string name="list_story">List Story</string>
+  <string name="add_story">Add Story</string>
+  <string name="logout">Log Out</string>
+
+  <string name="sign_in_with_your_account">Sign In with your account</string>
+  <string name="register_your_account">Register your account</string>
+  <string name="did_t_have_account"><u>Did\'t have account?</u></string>
+  <string name="have_account"><u>Have account?</u></string>
+
+  <string name="input_name">Input your name</string>
+  <string name="fill_all">Fill All The Field With Correctly</string>
+
+  <string name="greeting">Hi %1$s,</string>
+  <string name="created_add">Created at %1$s,</string>
+  <string name="by_waffiq">By Waffiq 2022</string>
+  <string name="home_description">Post and share your story, share your activities, and get to know other people\'s stories</string>
+  <string name="login_account">Login your account</string>
+  <string name="continue_">Continue</string>
+  <string name="sign_in_success">Sign In Success</string>
+  <string name="register_success">Register Success, You can Sign In with your account</string>
+  <string name="register_failed">Register Failed</string>
+  <string name="upload_failed">Upload Failed</string>
+  <string name="upload_success">Upload Success</string>
+  <string name="sign_in_failed">Sign In Failed</string>
+  <string name="log_out_success">Log Out Success</string>
+  <string name="information">Information</string>
+
+  <string name="camera">Camera</string>
+  <string name="description">Description</string>
+  <string name="gallery">Gallery</string>
+  <string name="upload">Upload</string>
+  <string name="change_language">Change language</string>
+  <string name="new_story">New Story</string>
+  <string name="image_preview">Image preview</string>
+
+  <string name="image_story">Image story</string>
+  <string name="name">Name</string>
+  <string name="no_story">No Story</string>
+  <string name="post_story">Post story</string>
+  <string name="invalid_permission">Can\'t get permission</string>
+  <string name="no_attach_file">No file attached, please attach image first</string>
+  <string name="rotate_image">Rotate image</string>
+
+  <string name="detail_story">Detail Story</string>
+  <string name="switch_camera">Switch Camera</string>
+  <string name="capture_image">Capture image</string>
+  <string name="must_filled">Must be filled</string>
+</resources>
