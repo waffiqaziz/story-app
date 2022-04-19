@@ -52,7 +52,7 @@
 
   <string name="image_story">Image story</string>
   <string name="name">Name</string>
-  <string name="no_story">No Story</string>
+  <string name="error_occurred">Some Error Occurred</string>
   <string name="post_story">Post story</string>
   <string name="invalid_permission">Can\'t get permission</string>
   <string name="no_attach_file">No file attached, please attach image first</string>
@@ -62,4 +62,7 @@
   <string name="switch_camera">Switch Camera</string>
   <string name="capture_image">Capture image</string>
   <string name="must_filled">Must be filled</string>
+
+  <string name="retry">Retry</string>
+  <string name="title_activity_maps">MapsActivity</string>
 </resources>

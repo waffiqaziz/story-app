@@ -37,7 +37,6 @@ class SignInViewModel(private val pref: UserPreference) : ViewModel() {
           if (responseBody != null && !responseBody.error) {
 
             callback.onResponse(response.body() != null, SUCCESS)
-
             val model = UserModel(
               responseBody.loginResult.name,
               email,
@@ -65,6 +64,8 @@ class SignInViewModel(private val pref: UserPreference) : ViewModel() {
       }
     })
   }
+
+
 
   fun saveUser(user: UserModel) {
     viewModelScope.launch {

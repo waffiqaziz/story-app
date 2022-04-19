@@ -39,7 +39,7 @@
       android:layout_height="120dp"
       android:layout_gravity="center"
       android:contentDescription="@string/picture_logo"
-      android:src="@drawable/ic_group_5" />
+      android:src="@drawable/ic_logo" />
 
     <TextView
       style="@style/TextViewBold"

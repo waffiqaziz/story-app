@@ -38,14 +38,23 @@
           android:contentDescription="@string/post_story"
           android:focusable="true"
           android:src="@drawable/ic_capture" />
+
+        <ImageView
+          android:id="@+id/iv_show_map"
+          android:layout_width="36dp"
+          android:layout_height="36dp"
+          android:layout_gravity="end"
+          android:layout_marginEnd="14dp"
+          android:clickable="true"
+          android:contentDescription="@string/post_story"
+          android:focusable="true"
+          android:src="@drawable/ic_show_map" />
       </androidx.appcompat.widget.Toolbar>
 
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/rv_story"
-      tools:visibility="visible"
-      android:visibility="gone"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       app:layout_constraintEnd_toEndOf="parent"
@@ -70,7 +79,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
-    android:text="@string/no_story"
+    android:text="@string/error_occurred"
     android:textSize="30sp" />
 
 </RelativeLayout>

@@ -9,11 +9,13 @@ import com.dicoding.storyapp.data.remote.response.ApiResponse
 import com.dicoding.storyapp.data.remote.retrofit.ApiConfig
 import com.dicoding.storyapp.helper.Helper
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import org.json.JSONObject
 import org.json.JSONTokener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class AddStoryViewModel : ViewModel() {
   private val _isLoading = MutableLiveData<Boolean>()
@@ -21,10 +23,12 @@ class AddStoryViewModel : ViewModel() {
 
   fun uploadImage(
     user: UserModel,
-    description: String,
+    description: RequestBody,
     imageMultipart: MultipartBody.Part,
     callback: Helper.ApiCallbackString
   ) {
+
+
     _isLoading.value = true
       val service = ApiConfig().getApiService().addStories("Bearer ${user.token}", description, imageMultipart)
       service.enqueue(object : Callback<ApiResponse> {

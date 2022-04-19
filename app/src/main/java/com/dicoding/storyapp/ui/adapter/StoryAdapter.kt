@@ -3,29 +3,19 @@ package com.dicoding.storyapp.ui.adapter
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dicoding.storyapp.R
 import com.dicoding.storyapp.data.remote.response.ListStoryItem
 import com.dicoding.storyapp.databinding.ItemListStoryBinding
-import com.dicoding.storyapp.helper.DiffCallback
 import com.dicoding.storyapp.helper.Helper
 import com.dicoding.storyapp.ui.activity.DetailStoryActivity
 import java.util.*
 
-class StoryAdapter: RecyclerView.Adapter<StoryAdapter.ViewHolder>() {
-
-  private val listStory = ArrayList<ListStoryItem>()
-
-  fun setListStory(itemStory: List<ListStoryItem>) {
-    val diffCallback = DiffCallback(this.listStory, itemStory)
-    val diffResult = DiffUtil.calculateDiff(diffCallback)
-
-    this.listStory.clear()
-    this.listStory.addAll(itemStory)
-    diffResult.dispatchUpdatesTo(this)
-  }
+class StoryAdapter :
+  PagingDataAdapter<ListStoryItem, StoryAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding = ItemListStoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -33,10 +23,11 @@ class StoryAdapter: RecyclerView.Adapter<StoryAdapter.ViewHolder>() {
   }
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-    holder.bind(listStory[position])
+    val data = getItem(position)
+    if (data != null) {
+      holder.bind(data)
+    }
   }
-
-  override fun getItemCount() = listStory.size
 
   inner class ViewHolder(private var binding: ItemListStoryBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -51,7 +42,10 @@ class StoryAdapter: RecyclerView.Adapter<StoryAdapter.ViewHolder>() {
         tvName.text = story.name
         tvDescription.text = story.description
         tvCreatedTime.text =
-          binding.root.resources.getString(R.string.created_add, Helper.formatDate(story.createdAt, TimeZone.getDefault().id))
+          binding.root.resources.getString(
+            R.string.created_add,
+            Helper.formatDate(story.createdAt, TimeZone.getDefault().id)
+          )
 
         // image OnClickListener
         imgItemImage.setOnClickListener {
@@ -63,4 +57,21 @@ class StoryAdapter: RecyclerView.Adapter<StoryAdapter.ViewHolder>() {
     }
   }
 
+  companion object {
+    private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListStoryItem>() {
+      override fun areItemsTheSame(
+        oldItem: ListStoryItem,
+        newItem: ListStoryItem
+      ): Boolean {
+        return oldItem == newItem
+      }
+
+      override fun areContentsTheSame(
+        oldItem: ListStoryItem,
+        newItem: ListStoryItem
+      ): Boolean {
+        return oldItem.id == newItem.id
+      }
+    }
+  }
 }

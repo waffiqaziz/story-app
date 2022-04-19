@@ -1,66 +1,32 @@
 package com.dicoding.storyapp.ui.viewmodel
 
-import android.util.Log
+import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dicoding.storyapp.data.remote.response.AllStoriesResponse
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.dicoding.storyapp.data.repository.StoryRepository
 import com.dicoding.storyapp.data.remote.response.ListStoryItem
-import com.dicoding.storyapp.data.remote.retrofit.ApiConfig
-import com.dicoding.storyapp.helper.Event
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.dicoding.storyapp.di.Injection
 
-class ListStoryViewModel : ViewModel() {
-  private val _itemStory = MutableLiveData<List<ListStoryItem>>()
-  val itemStory: LiveData<List<ListStoryItem>> = _itemStory
+class ListStoryViewModel(
+  private val storyRepository: StoryRepository,
+  ) : ViewModel() {
 
-  private val _isLoading = MutableLiveData<Boolean>()
-  val isLoading: LiveData<Boolean> = _isLoading
-
-  private val _isHaveData = MutableLiveData<Boolean>()
-  val isHaveData: LiveData<Boolean> = _isHaveData
-
-  private val _snackBarText = MutableLiveData<Event<String>>()
-  val snackBarText: LiveData<Event<String>> = _snackBarText
-
-  fun showListStory(token: String) {
-    _isLoading.value = true
-    _isHaveData.value = true
-    val client = ApiConfig
-      .getApiService()
-      .getAllStories("Bearer $token")
-
-    client.enqueue(object : Callback<AllStoriesResponse> {
-      override fun onResponse(
-        call: Call<AllStoriesResponse>,
-        response: Response<AllStoriesResponse>
-      ) {
-        _isLoading.value = false
-        if (response.isSuccessful) {
-          val responseBody = response.body()
-          if (responseBody != null) {
-            if (!responseBody.error) {
-              _itemStory.value = response.body()?.listStory
-              _isHaveData.value = responseBody.message == "Stories fetched successfully"
-            }
-          }
-        } else {
-          Log.e(TAG, "onFailure: ${response.message()}")
-          _snackBarText.value = Event(response.message())
-        }
-      }
-
-      override fun onFailure(call: Call<AllStoriesResponse>, t: Throwable) {
-        _isLoading.value = false
-        Log.e(TAG, "onFailure: ${t.message}")
-        _snackBarText.value = Event(t.message.toString())
-      }
-    })
+  fun getStory(token: String): LiveData<PagingData<ListStoryItem>> {
+    return storyRepository.getPagingStories(token).cachedIn(viewModelScope)
   }
+}
 
-  companion object {
-    private const val TAG = "ListStoryViewModel"
+class ListViewModelFactory(private val context: Context) :
+  ViewModelProvider.Factory {
+  override fun <T : ViewModel> create(modelClass: Class<T>): T {
+    if (modelClass.isAssignableFrom(ListStoryViewModel::class.java)) {
+      @Suppress("UNCHECKED_CAST")
+      return ListStoryViewModel(Injection.provideRepository(context)) as T
+    }
+    throw IllegalArgumentException("Unknown ViewModel class")
   }
 }

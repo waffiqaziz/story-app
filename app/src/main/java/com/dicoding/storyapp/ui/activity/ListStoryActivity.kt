@@ -5,13 +5,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dicoding.storyapp.R
+import com.dicoding.storyapp.MapsActivity
 import com.dicoding.storyapp.data.model.UserModel
 import com.dicoding.storyapp.databinding.ActivityListStoryBinding
+import com.dicoding.storyapp.ui.adapter.LoadingStateAdapter
 import com.dicoding.storyapp.ui.adapter.StoryAdapter
 import com.dicoding.storyapp.ui.viewmodel.ListStoryViewModel
-import com.google.android.material.snackbar.Snackbar
+import com.dicoding.storyapp.ui.viewmodel.ListViewModelFactory
 
 
 class ListStoryActivity : AppCompatActivity() {
@@ -22,7 +24,9 @@ class ListStoryActivity : AppCompatActivity() {
   private lateinit var user: UserModel
   private lateinit var adapter: StoryAdapter
 
-  private val viewModel by viewModels<ListStoryViewModel>()
+  private val viewModel: ListStoryViewModel by viewModels {
+    ListViewModelFactory(this)
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -30,22 +34,18 @@ class ListStoryActivity : AppCompatActivity() {
     setContentView(binding?.root)
 
     setupToolbar()
-    addStoryAction()
+    buttonListener()
 
     user = intent.getParcelableExtra(EXTRA_USER)!!
 
-    setListStory()
-    adapter = StoryAdapter()
-
-    showSnackBar()
-
     setupRecycleView()
 
-    showLoading()
-    showHaveDataOrNot()
+    showRecycleView()
+
+    getData()
   }
 
-  private fun setupToolbar(){
+  private fun setupToolbar() {
     setSupportActionBar(binding?.toolbar)
     supportActionBar?.setDisplayHomeAsUpEnabled(true)
     supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -56,50 +56,44 @@ class ListStoryActivity : AppCompatActivity() {
     return true
   }
 
-  private fun showSnackBar() {
-    viewModel.snackBarText.observe(this) {
-      it.getContentIfNotHandled()?.let { snackBarText ->
-        Snackbar.make(
-          findViewById(R.id.rv_story),
-          snackBarText,
-          Snackbar.LENGTH_SHORT
-        ).show()
-      }
+  private fun getData() {
+    binding?.rvStory?.adapter = adapter.withLoadStateHeaderAndFooter(
+      footer = LoadingStateAdapter(adapter::retry),
+      header = LoadingStateAdapter(adapter::retry)
+    )
+
+    viewModel.getStory(user.token).observe(this) {
+      adapter.submitData(lifecycle, it)
     }
   }
 
-  private fun setupRecycleView(){
+  private fun setupRecycleView() {
+    adapter = StoryAdapter()
     binding?.rvStory?.layoutManager = LinearLayoutManager(this)
     binding?.rvStory?.setHasFixedSize(true)
     binding?.rvStory?.adapter = adapter
   }
 
-  private fun showLoading() {
-    viewModel.isLoading.observe(this) {
+  private fun showRecycleView() {
+    adapter.addLoadStateListener {
       binding?.apply {
-        if (it) {
-          progressBar.visibility = View.VISIBLE
-          rvStory.visibility = View.INVISIBLE
+        if (it.source.refresh is LoadState.NotLoading && it.append.endOfPaginationReached && adapter.itemCount < 1) {
+          tvInfo.visibility = View.VISIBLE
+          rvStory.visibility = View.VISIBLE
+          progressBar.visibility = View.GONE
         } else {
           progressBar.visibility = View.GONE
           rvStory.visibility = View.VISIBLE
+          tvInfo.visibility = View.GONE
         }
       }
     }
   }
 
-  private fun showHaveDataOrNot(){
-    viewModel.isHaveData.observe(this){
-      binding?.apply {
-        if (it) {
-          rvStory.visibility = View.VISIBLE
-          tvInfo.visibility = View.GONE
-        } else {
-          rvStory.visibility = View.GONE
-          tvInfo.visibility = View.VISIBLE
-        }
-      }
-    }
+  override fun onResume() {
+    super.onResume()
+    adapter.refresh()
+    getData()
   }
 
   override fun onDestroy() {
@@ -107,23 +101,16 @@ class ListStoryActivity : AppCompatActivity() {
     _binding = null
   }
 
-  private fun setListStory() {
-    viewModel.showListStory(user.token)
-    viewModel.itemStory.observe(this) {
-      adapter.setListStory(it)
-    }
-  }
-
-  override fun onResume() {
-    super.onResume()
-    setListStory()
-  }
-
-  private fun addStoryAction(){
+  private fun buttonListener() {
     binding?.ivAddStory?.setOnClickListener {
       val moveToAddStoryActivity = Intent(this, AddStoryActivity::class.java)
       moveToAddStoryActivity.putExtra(AddStoryActivity.EXTRA_USER, user)
       startActivity(moveToAddStoryActivity)
+    }
+    binding?.ivShowMap?.setOnClickListener {
+      val moveToMapStory = Intent(this, MapsActivity::class.java)
+      moveToMapStory.putExtra(AddStoryActivity.EXTRA_USER, user)
+      startActivity(moveToMapStory)
     }
   }
 

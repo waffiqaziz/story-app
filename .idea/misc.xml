@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/pem/AndroidStudio/StoryAppSub2/app/src/main/res/drawable/bg_button.xml" value="0.175" />
+        <entry key="..\:/pem/AndroidStudio/StoryAppSub2/app/src/main/res/drawable/bg_button_disable.xml" value="0.175" />
+        <entry key="..\:/pem/AndroidStudio/StoryAppSub2/app/src/main/res/drawable/border_corner.xml" value="0.175" />
+        <entry key="..\:/pem/AndroidStudio/StoryAppSub2/app/src/main/res/drawable/border_corner_10.xml" value="0.175" />
+        <entry key="..\:/pem/AndroidStudio/StoryAppSub2/app/src/main/res/drawable/ic_broken_image.xml" value="0.175" />
+        <entry key="..\:/pem/AndroidStudio/StoryAppSub2/app/src/main/res/drawable/ic_capture.xml" value="0.175" />
+        <entry key="..\:/pem/AndroidStudio/StoryAppSub2/app/src/main/res/drawable/ic_close.xml" value="0.175" />
+        <entry key="..\:/pem/AndroidStudio/StoryAppSub2/app/src/main/res/drawable/ic_eye.xml" value="0.175" />
+        <entry key="..\:/pem/AndroidStudio/StoryAppSub2/app/src/main/res/drawable/ic_eye_off.xml" value="0.175" />
+        <entry key="..\:/pem/AndroidStudio/StoryAppSub2/app/src/main/res/drawable/ic_group_5.xml" value="0.175" />
+        <entry key="..\:/pem/AndroidStudio/StoryAppSub2/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.175" />
+        <entry key="..\:/pem/AndroidStudio/StoryAppSub2/app/src/main/res/drawable/ic_place_holder.xml" value="0.175" />
+        <entry key="..\:/pem/AndroidStudio/StoryAppSub2/app/src/main/res/drawable/ic_rotate_right.xml" value="0.175" />
+        <entry key="..\:/pem/AndroidStudio/StoryAppSub2/app/src/main/res/drawable/ic_setting.xml" value="0.175" />
+        <entry key="..\:/pem/AndroidStudio/StoryAppSub2/app/src/main/res/drawable/ic_switch_camera.xml" value="0.175" />
+        <entry key="..\:/pem/AndroidStudio/StoryAppSub2/app/src/main/res/layout/activity_detail_story.xml" value="0.26979166666666665" />
+        <entry key="..\:/pem/AndroidStudio/StoryAppSub2/app/src/main/res/layout/activity_list_story.xml" value="0.22" />
+        <entry key="..\:/pem/AndroidStudio/StoryAppSub2/app/src/main/res/layout/activity_maps.xml" value="0.16" />
+        <entry key="..\:/pem/AndroidStudio/StoryAppSub2/app/src/main/res/layout/item_list_story.xml" value="0.25" />
+        <entry key="..\:/pem/AndroidStudio/StoryAppSub2/app/src/main/res/layout/item_loading.xml" value="0.33" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

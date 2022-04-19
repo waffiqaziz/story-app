@@ -4,6 +4,7 @@ import com.dicoding.storyapp.data.remote.response.AllStoriesResponse
 import com.dicoding.storyapp.data.remote.response.ApiResponse
 import com.dicoding.storyapp.data.remote.response.LoginResponse
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -28,9 +29,16 @@ interface ApiService {
   @POST("stories")
   fun addStories(
     @Header("Authorization") token: String,
-    @Part ("description") des: String,
+    @Part("description") des: RequestBody,
     @Part file: MultipartBody.Part
   ): Call<ApiResponse>
+
+  @GET("stories")
+  suspend fun getAllStories(
+    @Header("Authorization") token: String,
+    @Query("page") page: Int,
+    @Query("size") size: Int,
+  ): AllStoriesResponse
 
   @GET("stories")
   fun getAllStories(

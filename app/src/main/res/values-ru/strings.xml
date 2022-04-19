@@ -53,7 +53,7 @@
 
   <string name="image_story">История изображения</string>
   <string name="name">Имя</string>
-  <string name="no_story">Нет истории</string>
+  <string name="error_occurred">Произошла какая-то ошибка</string>
   <string name="post_story">Опубликовать историю</string>
   <string name="invalid_permission">Не могу получить разрешение</string>
   <string name="no_attach_file">Файл не прикреплен, пожалуйста, сначала прикрепите изображение</string>
@@ -63,5 +63,6 @@
   <string name="switch_camera">Переключить камеру</string>
   <string name="capture_image">Захват изображения</string>
   <string name="must_filled">должен быть заполнен</string>
+  <string name="retry">повторить попытку</string>
 
 </resources>

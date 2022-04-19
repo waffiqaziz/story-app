@@ -20,9 +20,11 @@ import com.dicoding.storyapp.data.model.UserModel
 import com.dicoding.storyapp.databinding.ActivityAddStoryBinding
 import com.dicoding.storyapp.helper.*
 import com.dicoding.storyapp.ui.viewmodel.AddStoryViewModel
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
 
@@ -143,6 +145,7 @@ class AddStoryActivity : AppCompatActivity() {
       val file = Helper.reduceFileImage(getFile as File)
 
       val description = binding.etDescription.text.toString()
+        .toRequestBody("application/json;charset=utf-8".toMediaType())
       val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
       val imageMultipart = MultipartBody.Part.createFormData(
         "photo",
@@ -153,7 +156,7 @@ class AddStoryActivity : AppCompatActivity() {
       // upload image
       viewModel.uploadImage(user, description, imageMultipart, object : Helper.ApiCallbackString {
         override fun onResponse(success: Boolean, message: String) {
-          showAlertDialog(success, message)
+          showDialog(success, message)
         }
       })
 
@@ -162,18 +165,10 @@ class AddStoryActivity : AppCompatActivity() {
     }
   }
 
-  private fun showAlertDialog(param: Boolean, message: String) {
+  private fun showDialog(param: Boolean, message: String) {
     if (param) {
-      AlertDialog.Builder(this).apply {
-        setTitle(getString(R.string.information))
-        setMessage(getString(R.string.upload_success))
-        setPositiveButton(getString(R.string.continue_)) { _, _ ->
-          // Do nothing
-        }
-        finish()
-        create()
-        show()
-      }
+      Helper.showToast(this, getString(R.string.upload_success))
+      finish()
     } else {
       AlertDialog.Builder(this).apply {
         setTitle(getString(R.string.information))

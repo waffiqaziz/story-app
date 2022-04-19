@@ -53,7 +53,7 @@
 
   <string name="image_story">Cerita gambar</string>
   <string name="name">Nama</string>
-  <string name="no_story">Tidak Ada Cerita</string>
+  <string name="error_occurred">Beberapa Kesalahan Terjadi</string>
   <string name="post_story">Posting cerita</string>
   <string name="invalid_permission">Tidak bisa mendapatkan izin</string>
   <string name="no_attach_file">Tidak ada file terlampir, harap lampirkan gambar terlebih dahulu</string>
@@ -63,5 +63,6 @@
   <string name="switch_camera">Ganti Kamera</string>
   <string name="capture_image">Ambil gambar</string>
   <string name="must_filled">Kolom harus diisi</string>
+  <string name="retry">Coba Lagi</string>
 
 </resources>

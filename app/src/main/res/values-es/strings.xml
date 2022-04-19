@@ -53,7 +53,7 @@
 
   <string name="image_story">Historia de la imagen</string>
   <string name="name">Nombre</string>
-  <string name="no_story">sin historia</string>
+  <string name="error_occurred">Ocurrió algún error</string>
   <string name="post_story">Publicar historia</string>
   <string name="invalid_permission">no puedo obtener permiso</string>
   <string name="no_attach_file">No hay archivo adjunto, adjunte la imagen primero</string>
@@ -63,5 +63,6 @@
   <string name="switch_camera">Cambiar cámara</string>
   <string name="capture_image">Capturar imagen</string>
   <string name="must_filled">Debe ser llenado</string>
+  <string name="retry">Rever</string>
 
 </resources>
