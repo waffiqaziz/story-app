@@ -4,6 +4,8 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +18,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
@@ -26,7 +29,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
   private lateinit var binding: ActivityMapsBinding
   private lateinit var user: UserModel
 
-  private val viewModel by viewModels<MapsViewModel>()
+  private val viewModel: MapsViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -38,8 +41,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     val mapFragment = supportFragmentManager
       .findFragmentById(R.id.map) as SupportMapFragment
     mapFragment.getMapAsync(this)
-
-    showSnackBar()
   }
 
   override fun onMapReady(googleMap: GoogleMap) {
@@ -55,14 +56,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     mMap.uiSettings.isCompassEnabled = true
     mMap.uiSettings.isMapToolbarEnabled = true
 
-    // Add a marker in Sydney and move the camera
-    val monasIndonesia = LatLng(-6.17555357, 106.82721585)
-    mMap.addMarker(MarkerOptions().position(monasIndonesia).title("Marker in Sydney"))
+    showData()
 
-    val a = LatLng(-6.17545357, 106.82731585)
-    mMap.addMarker(MarkerOptions().position(a).title("Marker in Sydney"))
-    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(a, 15f))
+    viewModel.isLoading.observe(this) {
+      showLoading(it)
+    }
 
+    showSnackBar()
     getMyLocation()
   }
 
@@ -88,28 +88,43 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
   }
 
+  private fun showData() {
+    viewModel.showData(user.token)
+    val boundsBuilder = LatLngBounds.Builder()
+
+    viewModel.itemStory.observe(this) {
+      it.forEachIndexed { _, element ->
+        val lastLatLng = LatLng(element.lat, element.lon)
+
+        mMap.addMarker(MarkerOptions().position(lastLatLng).title(element.id))
+        boundsBuilder.include(lastLatLng)
+        val bounds: LatLngBounds = boundsBuilder.build()
+        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 64))
+        Log.e("CEK DATA: ", "${element.id}, lat : ${element.lat}, lon : ${element.lon}")
+      }
+    }
+  }
+
+  private fun showLoading(isLoading: Boolean) {
+    binding.apply {
+      if (isLoading) {
+        progressBar.visibility = View.VISIBLE
+      } else {
+        progressBar.visibility = View.GONE
+      }
+    }
+  }
 
   private fun showSnackBar() {
     viewModel.snackBarText.observe(this) {
       it.getContentIfNotHandled()?.let { snackBarText ->
         Snackbar.make(
-          findViewById(R.id.rv_story),
+          findViewById(R.id.map),
           snackBarText,
           Snackbar.LENGTH_SHORT
         ).show()
       }
     }
-//    viewModel.isHaveData.observe(this){
-//      binding.apply {
-//        if (it) {
-//          rvStory.visibility = View.VISIBLE
-//          tvInfo.visibility = View.GONE
-//        } else {
-//          rvStory.visibility = View.GONE
-//          tvInfo.visibility = View.VISIBLE
-//        }
-//      }
-//    }
   }
 
   companion object {

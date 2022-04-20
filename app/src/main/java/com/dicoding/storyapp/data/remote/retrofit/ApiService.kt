@@ -40,8 +40,8 @@ interface ApiService {
     @Query("size") size: Int,
   ): AllStoriesResponse
 
-  @GET("stories")
-  fun getAllStories(
+  @GET("stories?location=1.")
+  fun getAllStoriesLocation(
     @Header("Authorization") token: String
   ): Call<AllStoriesResponse>
 }

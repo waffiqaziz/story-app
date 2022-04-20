@@ -8,30 +8,26 @@ import com.dicoding.storyapp.data.remote.response.AllStoriesResponse
 import com.dicoding.storyapp.data.remote.response.ListStoryItem
 import com.dicoding.storyapp.data.remote.retrofit.ApiConfig
 import com.dicoding.storyapp.helper.Event
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MapsViewModel : ViewModel() {
+class MapsViewModel : ViewModel(),
+  OnMapReadyCallback {
   private val _itemStory = MutableLiveData<List<ListStoryItem>>()
   val itemStory: LiveData<List<ListStoryItem>> = _itemStory
 
   private val _isLoading = MutableLiveData<Boolean>()
   val isLoading: LiveData<Boolean> = _isLoading
 
-  private val _isHaveData = MutableLiveData<Boolean>()
-  val isHaveData: LiveData<Boolean> = _isHaveData
-
   private val _snackBarText = MutableLiveData<Event<String>>()
   val snackBarText: LiveData<Event<String>> = _snackBarText
 
-  fun showListStory(token: String) {
+  fun showData(token: String) {
     _isLoading.value = true
-    _isHaveData.value = true
-    val client = ApiConfig
-      .getApiService()
-      .getAllStories("Bearer $token")
-
+    val client = ApiConfig.getApiService().getAllStoriesLocation("Bearer $token")
     client.enqueue(object : Callback<AllStoriesResponse> {
       override fun onResponse(
         call: Call<AllStoriesResponse>,
@@ -43,24 +39,28 @@ class MapsViewModel : ViewModel() {
           if (responseBody != null) {
             if (!responseBody.error) {
               _itemStory.value = response.body()?.listStory
-              _isHaveData.value = responseBody.message == "Stories fetched successfully"
             }
           }
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
-          _snackBarText.value = Event(response.message())
+          _snackBarText.value = Event(FAILED)
         }
       }
 
       override fun onFailure(call: Call<AllStoriesResponse>, t: Throwable) {
         _isLoading.value = false
         Log.e(TAG, "onFailure: ${t.message}")
-        _snackBarText.value = Event(t.message.toString())
+        _snackBarText.value = Event(FAILED)
       }
     })
   }
 
+  override fun onMapReady(p0: GoogleMap) {
+    TODO("Not yet implemented")
+  }
+
   companion object {
     private const val TAG = "MapsViewModel"
+    private const val FAILED = "Connection Failed"
   }
 }

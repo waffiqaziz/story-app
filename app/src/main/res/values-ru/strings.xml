@@ -6,7 +6,6 @@
   <string name="input_email">Введите адрес электронной почты</string>
 
   <string name="picture_logo">Этот логотип StoryApp</string>
-  <string name="welcome">"Добро пожаловать !"</string>
 
   <string name="invalid_username">Недопустимое имя пользователя</string>
   <string name="invalid_email">Недействительный адрес электронной почты</string>
@@ -64,5 +63,9 @@
   <string name="capture_image">Захват изображения</string>
   <string name="must_filled">должен быть заполнен</string>
   <string name="retry">повторить попытку</string>
+  <string name="title_activity_maps">MapsActivity</string>
+  <string name="no_data">Нет данных</string>
+  <string name="invalid_capture">Не удалось сделать снимки</string>
+  <string name="failed_open_camera">Подано, чтобы открыть камеру</string>
 
 </resources>

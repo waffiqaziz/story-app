@@ -57,10 +57,6 @@ class ListStoryActivity : AppCompatActivity() {
   }
 
   private fun getData() {
-    binding?.rvStory?.adapter = adapter.withLoadStateHeaderAndFooter(
-      footer = LoadingStateAdapter(adapter::retry),
-      header = LoadingStateAdapter(adapter::retry)
-    )
 
     viewModel.getStory(user.token).observe(this) {
       adapter.submitData(lifecycle, it)
@@ -72,6 +68,11 @@ class ListStoryActivity : AppCompatActivity() {
     binding?.rvStory?.layoutManager = LinearLayoutManager(this)
     binding?.rvStory?.setHasFixedSize(true)
     binding?.rvStory?.adapter = adapter
+
+    binding?.rvStory?.adapter = adapter.withLoadStateHeaderAndFooter(
+      footer = LoadingStateAdapter(adapter::retry),
+      header = LoadingStateAdapter(adapter::retry)
+    )
   }
 
   private fun showRecycleView() {
@@ -92,8 +93,8 @@ class ListStoryActivity : AppCompatActivity() {
 
   override fun onResume() {
     super.onResume()
-    adapter.refresh()
     getData()
+//    adapter.refresh()
   }
 
   override fun onDestroy() {

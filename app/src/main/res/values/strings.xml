@@ -5,7 +5,6 @@
   <string name="input_email">Input your email</string>
 
   <string name="picture_logo">This StoryApp logo</string>
-  <string name="welcome">"Welcome !"</string>
 
   <string name="invalid_username">Not a valid username</string>
   <string name="invalid_email">Not a valid email</string>
@@ -44,6 +43,8 @@
 
   <string name="camera">Camera</string>
   <string name="description">Description</string>
+  <string name="invalid_capture">Failed to take pictures</string>
+  <string name="failed_open_camera">Failed to open camera</string>
   <string name="gallery">Gallery</string>
   <string name="upload">Upload</string>
   <string name="change_language">Change language</string>
@@ -65,4 +66,6 @@
 
   <string name="retry">Retry</string>
   <string name="title_activity_maps">MapsActivity</string>
+  <string name="no_data">No Data</string>
+
 </resources>

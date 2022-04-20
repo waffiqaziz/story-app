@@ -22,7 +22,6 @@ class SignInViewModel(private val pref: UserPreference) : ViewModel() {
   private val _isLoading = MutableLiveData<Boolean>()
   val isLoading: LiveData<Boolean> = _isLoading
 
-
   fun login(email: String, pass: String, callback: Helper.ApiCallbackString){
     _isLoading.value = true
 

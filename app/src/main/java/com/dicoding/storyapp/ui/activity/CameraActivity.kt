@@ -12,6 +12,7 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import com.dicoding.storyapp.R
 import com.dicoding.storyapp.databinding.ActivityCameraBinding
 import com.dicoding.storyapp.helper.Helper
 import com.dicoding.storyapp.ui.activity.AddStoryActivity.Companion.CAMERA_X_RESULT
@@ -52,7 +53,7 @@ class CameraActivity : AppCompatActivity() {
       ContextCompat.getMainExecutor(this),
       object : ImageCapture.OnImageSavedCallback {
         override fun onError(exc: ImageCaptureException) {
-          Helper.showToast(this@CameraActivity,"Gagal mengambil gambar.")
+          Helper.showToast(this@CameraActivity,getString(R.string.invalid_capture))
         }
 
         override fun onImageSaved(output: ImageCapture.OutputFileResults) {
@@ -90,7 +91,7 @@ class CameraActivity : AppCompatActivity() {
           imageCapture
         )
       } catch (exc: Exception) {
-        Helper.showToast(this,"Gagal memunculkan kamera.")
+        Helper.showToast(this,getString(R.string.failed_open_camera))
       }
     }, ContextCompat.getMainExecutor(this))
   }
