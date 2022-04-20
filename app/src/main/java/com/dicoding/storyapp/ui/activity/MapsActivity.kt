@@ -1,18 +1,21 @@
-package com.dicoding.storyapp
+package com.dicoding.storyapp.ui.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.dicoding.storyapp.R
 import com.dicoding.storyapp.data.model.UserModel
 import com.dicoding.storyapp.databinding.ActivityMapsBinding
+import com.dicoding.storyapp.data.ResultResponse
+import com.dicoding.storyapp.helper.Helper
 import com.dicoding.storyapp.ui.viewmodel.MapsViewModel
+import com.dicoding.storyapp.ui.viewmodel.ViewModelRepoFactory
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -21,7 +24,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.snackbar.Snackbar
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -29,7 +31,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
   private lateinit var binding: ActivityMapsBinding
   private lateinit var user: UserModel
 
-  private val viewModel: MapsViewModel by viewModels()
+  private val viewModel: MapsViewModel by viewModels {
+    ViewModelRepoFactory.getInstance(this)
+  }
+
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -47,7 +52,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     mMap = googleMap
     mMap.setMapStyle(
       MapStyleOptions.loadRawResourceStyle(
-        this, R.raw.map_style
+        this, R.raw.my_map_style
       )
     )
 
@@ -58,11 +63,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     showData()
 
-    viewModel.isLoading.observe(this) {
-      showLoading(it)
-    }
-
-    showSnackBar()
     getMyLocation()
   }
 
@@ -79,7 +79,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
   private fun getMyLocation() {
     if (ContextCompat.checkSelfPermission(
         this.applicationContext,
-        Manifest.permission.ACCESS_FINE_LOCATION
+        Manifest.permission.ACCESS_FINE_LOCATION,
       ) == PackageManager.PERMISSION_GRANTED
     ) {
       mMap.isMyLocationEnabled = true
@@ -89,40 +89,29 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
   }
 
   private fun showData() {
-    viewModel.showData(user.token)
     val boundsBuilder = LatLngBounds.Builder()
+    viewModel.getStories(user.token).observe(this){
+      if(it != null){
+        when(it){
+          is ResultResponse.Loading -> {
+            binding.progressBar.visibility = View.VISIBLE
+          }
+          is ResultResponse.Success -> {
+            binding.progressBar.visibility = View.GONE
+            it.data.forEachIndexed { _, element ->
+              val lastLatLng = LatLng(element.lat, element.lon)
 
-    viewModel.itemStory.observe(this) {
-      it.forEachIndexed { _, element ->
-        val lastLatLng = LatLng(element.lat, element.lon)
-
-        mMap.addMarker(MarkerOptions().position(lastLatLng).title(element.id))
-        boundsBuilder.include(lastLatLng)
-        val bounds: LatLngBounds = boundsBuilder.build()
-        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 64))
-        Log.e("CEK DATA: ", "${element.id}, lat : ${element.lat}, lon : ${element.lon}")
-      }
-    }
-  }
-
-  private fun showLoading(isLoading: Boolean) {
-    binding.apply {
-      if (isLoading) {
-        progressBar.visibility = View.VISIBLE
-      } else {
-        progressBar.visibility = View.GONE
-      }
-    }
-  }
-
-  private fun showSnackBar() {
-    viewModel.snackBarText.observe(this) {
-      it.getContentIfNotHandled()?.let { snackBarText ->
-        Snackbar.make(
-          findViewById(R.id.map),
-          snackBarText,
-          Snackbar.LENGTH_SHORT
-        ).show()
+              mMap.addMarker(MarkerOptions().position(lastLatLng).title(element.id))
+              boundsBuilder.include(lastLatLng)
+              val bounds: LatLngBounds = boundsBuilder.build()
+              mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 64))
+            }
+          }
+          is ResultResponse.Error -> {
+            binding.progressBar.visibility = View.GONE
+            Helper.showToast(this, getString(R.string.error_occurred))
+          }
+        }
       }
     }
   }

@@ -7,12 +7,9 @@
 
   <string name="picture_logo">Este logotipo de StoryApp</string>
 
-  <string name="invalid_username">No es un nombre de usuario válido</string>
   <string name="invalid_email">No es un correo electrónico válido</string>
   <string name="invalid_password">La contraseña debe tener &gt;5 caracteres</string>
-  <string name="login_failed">"Error de inicio de sesion"</string>
 
-  <string name="sign">Correo electrónico no válido</string>
   <string name="sign_in">Iniciar sesión</string>
   <string name="register">Registro</string>
   <string name="list_story">Historia de la lista</string>
@@ -56,7 +53,6 @@
   <string name="post_story">Publicar historia</string>
   <string name="invalid_permission">no puedo obtener permiso</string>
   <string name="no_attach_file">No hay archivo adjunto, adjunte la imagen primero</string>
-  <string name="rotate_image">Girar imagen</string>
 
   <string name="detail_story">Historia detallada</string>
   <string name="switch_camera">Cambiar cámara</string>
@@ -64,7 +60,6 @@
   <string name="must_filled">Debe ser llenado</string>
   <string name="retry">Rever</string>
   <string name="title_activity_maps">MapsActivity</string>
-  <string name="no_data">Sin datos</string>
   <string name="invalid_capture">Error al tomar fotos</string>
   <string name="failed_open_camera">Archivado para abrir la cámara</string>
 

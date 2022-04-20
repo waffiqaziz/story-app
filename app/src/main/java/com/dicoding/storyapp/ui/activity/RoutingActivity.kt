@@ -13,7 +13,7 @@ import com.dicoding.storyapp.data.model.UserPreference
 import com.dicoding.storyapp.MainActivity
 import com.dicoding.storyapp.R
 import com.dicoding.storyapp.ui.viewmodel.MainViewModel
-import com.dicoding.storyapp.ui.viewmodel.ViewModelFactory
+import com.dicoding.storyapp.ui.viewmodel.ViewModelPrefFactory
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
 
@@ -32,7 +32,7 @@ class RoutingActivity : AppCompatActivity() {
   private fun setupViewModel() {
     mainViewModel = ViewModelProvider(
       this,
-      ViewModelFactory(UserPreference.getInstance(dataStore))
+      ViewModelPrefFactory(UserPreference.getInstance(dataStore))
     )[MainViewModel::class.java]
 
     mainViewModel.getUser().observe(this) {

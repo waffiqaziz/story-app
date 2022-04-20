@@ -16,7 +16,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
 class AddStoryViewModel : ViewModel() {
   private val _isLoading = MutableLiveData<Boolean>()
   val isLoading: LiveData<Boolean> = _isLoading
@@ -27,36 +26,36 @@ class AddStoryViewModel : ViewModel() {
     imageMultipart: MultipartBody.Part,
     callback: Helper.ApiCallbackString
   ) {
-
-
     _isLoading.value = true
-      val service = ApiConfig().getApiService().addStories("Bearer ${user.token}", description, imageMultipart)
-      service.enqueue(object : Callback<ApiResponse> {
-        override fun onResponse(
-          call: Call<ApiResponse>,
-          response: Response<ApiResponse>
-        ) {
-          if (response.isSuccessful) {
-            val responseBody = response.body()
-            if (responseBody != null && !responseBody.error) {
-              callback.onResponse(response.body() != null, SUCCESS)
-            }
-          } else {
-            Log.e(TAG, "onFailure: ${response.message()}")
+    val service =
+      ApiConfig().getApiService().addStories("Bearer ${user.token}", description, imageMultipart)
 
-            // get message error
-            val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
-            val message = jsonObject.getString("message")
-            callback.onResponse(false, message)
+    service.enqueue(object : Callback<ApiResponse> {
+      override fun onResponse(
+        call: Call<ApiResponse>,
+        response: Response<ApiResponse>
+      ) {
+        if (response.isSuccessful) {
+          val responseBody = response.body()
+          if (responseBody != null && !responseBody.error) {
+            callback.onResponse(response.body() != null, SUCCESS)
           }
-        }
-        override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-          _isLoading.value = false
-          Log.e(TAG, "onFailure: ${t.message}")
-          callback.onResponse(false, t.message.toString())
-        }
-      })
+        } else {
+          Log.e(TAG, "onFailure: ${response.message()}")
 
+          // get message error
+          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val message = jsonObject.getString("message")
+          callback.onResponse(false, message)
+        }
+      }
+
+      override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+        _isLoading.value = false
+        Log.e(TAG, "onFailure: ${t.message}")
+        callback.onResponse(false, t.message.toString())
+      }
+    })
   }
 
   companion object {

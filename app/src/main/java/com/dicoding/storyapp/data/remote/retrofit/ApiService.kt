@@ -8,7 +8,6 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
-
 interface ApiService {
   @FormUrlEncoded
   @POST("register")
@@ -40,8 +39,8 @@ interface ApiService {
     @Query("size") size: Int,
   ): AllStoriesResponse
 
-  @GET("stories?location=1.")
-  fun getAllStoriesLocation(
+  @GET("stories?location=1")
+  suspend fun getAllStoriesLocation(
     @Header("Authorization") token: String
-  ): Call<AllStoriesResponse>
+  ): AllStoriesResponse
 }

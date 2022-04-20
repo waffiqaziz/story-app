@@ -7,12 +7,9 @@
 
   <string name="picture_logo">Этот логотип StoryApp</string>
 
-  <string name="invalid_username">Недопустимое имя пользователя</string>
   <string name="invalid_email">Недействительный адрес электронной почты</string>
   <string name="invalid_password">Пароль должен быть &gt;5 символов</string>
-  <string name="login_failed">"Авторизация не удалась"</string>
 
-  <string name="sign">Электронная почта недействительна</string>
   <string name="sign_in">Войти</string>
   <string name="register">регистр</string>
   <string name="list_story">Список историй</string>
@@ -56,7 +53,6 @@
   <string name="post_story">Опубликовать историю</string>
   <string name="invalid_permission">Не могу получить разрешение</string>
   <string name="no_attach_file">Файл не прикреплен, пожалуйста, сначала прикрепите изображение</string>
-  <string name="rotate_image">Повернуть изображение</string>
 
   <string name="detail_story">Подробная история</string>
   <string name="switch_camera">Переключить камеру</string>
@@ -64,7 +60,6 @@
   <string name="must_filled">должен быть заполнен</string>
   <string name="retry">повторить попытку</string>
   <string name="title_activity_maps">MapsActivity</string>
-  <string name="no_data">Нет данных</string>
   <string name="invalid_capture">Не удалось сделать снимки</string>
   <string name="failed_open_camera">Подано, чтобы открыть камеру</string>
 

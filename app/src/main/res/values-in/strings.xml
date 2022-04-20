@@ -7,12 +7,9 @@
 
   <string name="picture_logo">Logo aplikasi ini</string>
 
-  <string name="invalid_username">Bukan nama pengguna yang valid</string>
   <string name="invalid_email">Bukan email yang valid</string>
   <string name="invalid_password">Kata sandi harus &gt;5 karakter</string>
-  <string name="login_failed">"Gagal masuk"</string>
 
-  <string name="sign">Email Tidak Valid</string>
   <string name="sign_in">Masuk</string>
   <string name="register">Daftar</string>
   <string name="list_story">Daftar Cerita</string>
@@ -56,7 +53,6 @@
   <string name="post_story">Posting cerita</string>
   <string name="invalid_permission">Tidak bisa mendapatkan izin</string>
   <string name="no_attach_file">Tidak ada file terlampir, harap lampirkan gambar terlebih dahulu</string>
-  <string name="rotate_image">Putar gambar</string>
 
   <string name="detail_story">Detail Cerita</string>
   <string name="switch_camera">Ganti Kamera</string>
@@ -64,7 +60,6 @@
   <string name="must_filled">Kolom harus diisi</string>
   <string name="retry">Coba Lagi</string>
   <string name="title_activity_maps">MapsActivity</string>
-  <string name="no_data">Tidak ada data</string>
   <string name="invalid_capture">Gagal mengambil gambar</string>
   <string name="failed_open_camera">Gagal membuka kamera</string>
 

@@ -6,12 +6,9 @@
 
   <string name="picture_logo">This StoryApp logo</string>
 
-  <string name="invalid_username">Not a valid username</string>
   <string name="invalid_email">Not a valid email</string>
   <string name="invalid_password">Password must be >5 characters</string>
-  <string name="login_failed">"Login failed"</string>
 
-  <string name="sign">Email Not Valid</string>
   <string name="sign_in">Sign In</string>
   <string name="register">Register</string>
   <string name="list_story">List Story</string>
@@ -57,7 +54,6 @@
   <string name="post_story">Post story</string>
   <string name="invalid_permission">Can\'t get permission</string>
   <string name="no_attach_file">No file attached, please attach image first</string>
-  <string name="rotate_image">Rotate image</string>
 
   <string name="detail_story">Detail Story</string>
   <string name="switch_camera">Switch Camera</string>
@@ -66,6 +62,5 @@
 
   <string name="retry">Retry</string>
   <string name="title_activity_maps">MapsActivity</string>
-  <string name="no_data">No Data</string>
 
 </resources>

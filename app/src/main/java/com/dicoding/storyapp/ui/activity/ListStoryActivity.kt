@@ -7,13 +7,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dicoding.storyapp.MapsActivity
 import com.dicoding.storyapp.data.model.UserModel
 import com.dicoding.storyapp.databinding.ActivityListStoryBinding
 import com.dicoding.storyapp.ui.adapter.LoadingStateAdapter
 import com.dicoding.storyapp.ui.adapter.StoryAdapter
 import com.dicoding.storyapp.ui.viewmodel.ListStoryViewModel
-import com.dicoding.storyapp.ui.viewmodel.ListViewModelFactory
+import com.dicoding.storyapp.ui.viewmodel.ViewModelRepoFactory
 
 
 class ListStoryActivity : AppCompatActivity() {
@@ -25,7 +24,7 @@ class ListStoryActivity : AppCompatActivity() {
   private lateinit var adapter: StoryAdapter
 
   private val viewModel: ListStoryViewModel by viewModels {
-    ListViewModelFactory(this)
+    ViewModelRepoFactory.getInstance(this)
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,7 +93,6 @@ class ListStoryActivity : AppCompatActivity() {
   override fun onResume() {
     super.onResume()
     getData()
-//    adapter.refresh()
   }
 
   override fun onDestroy() {

@@ -19,7 +19,7 @@ import com.dicoding.storyapp.databinding.ActivityMainBinding
 import com.dicoding.storyapp.ui.activity.ListStoryActivity
 import com.dicoding.storyapp.ui.activity.SignInActivity
 import com.dicoding.storyapp.ui.viewmodel.MainViewModel
-import com.dicoding.storyapp.ui.viewmodel.ViewModelFactory
+import com.dicoding.storyapp.ui.viewmodel.ViewModelPrefFactory
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
 
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
   private fun setupViewModel() {
     mainViewModel = ViewModelProvider(
       this,
-      ViewModelFactory(UserPreference.getInstance(dataStore))
+      ViewModelPrefFactory(UserPreference.getInstance(dataStore))
     )[MainViewModel::class.java]
 
     mainViewModel.getUser().observe(this) {
