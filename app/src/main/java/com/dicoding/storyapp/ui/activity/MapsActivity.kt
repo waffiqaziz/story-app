@@ -15,7 +15,7 @@ import com.dicoding.storyapp.databinding.ActivityMapsBinding
 import com.dicoding.storyapp.data.ResultResponse
 import com.dicoding.storyapp.helper.Helper
 import com.dicoding.storyapp.ui.viewmodel.MapsViewModel
-import com.dicoding.storyapp.ui.viewmodel.ViewModelRepoFactory
+import com.dicoding.storyapp.ui.viewmodel.ViewModelStoryFactory
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -32,9 +32,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
   private lateinit var user: UserModel
 
   private val viewModel: MapsViewModel by viewModels {
-    ViewModelRepoFactory.getInstance(this)
+    ViewModelStoryFactory.getInstance(this)
   }
-
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -109,7 +108,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
           }
           is ResultResponse.Error -> {
             binding.progressBar.visibility = View.GONE
-            Helper.showToast(this, getString(R.string.error_occurred))
+            Helper.showToastShort(this, getString(R.string.error_occurred))
           }
         }
       }

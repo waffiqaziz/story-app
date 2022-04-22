@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.storyapp.R
+import com.dicoding.storyapp.data.ResultResponse
 import com.dicoding.storyapp.databinding.ActivityRegisterBinding
 import com.dicoding.storyapp.helper.Helper
 import com.dicoding.storyapp.ui.viewmodel.RegisterViewModel
@@ -27,7 +28,6 @@ class RegisterActivity : AppCompatActivity() {
     setMyButtonEnable()
     editTextListener()
     buttonListener()
-    showLoading()
   }
 
   private fun editTextListener() {
@@ -74,11 +74,21 @@ class RegisterActivity : AppCompatActivity() {
       val email = binding.etEmail.text.toString()
       val password = binding.etPass.text.toString()
 
-      registerViewModel.register(name, email, password, object : Helper.ApiCallbackString {
-        override fun onResponse(success: Boolean, message: String) {
-          showAlertDialog(success, message)
+      registerViewModel.register(name, email, password).observe(this){
+        when (it) {
+          is ResultResponse.Loading -> {
+            binding.progressBar.visibility = View.VISIBLE
+          }
+          is ResultResponse.Success -> {
+            binding.progressBar.visibility = View.GONE
+            showAlertDialog(true, getString(R.string.register_success))
+          }
+          is ResultResponse.Error -> {
+            binding.progressBar.visibility = View.GONE
+            showAlertDialog(false, it.error)
+          }
         }
-      })
+      }
     }
     binding.ivSetting.setOnClickListener {
       startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
@@ -89,7 +99,7 @@ class RegisterActivity : AppCompatActivity() {
     if (param) {
       AlertDialog.Builder(this).apply {
         setTitle(getString(R.string.information))
-        setMessage(getString(R.string.register_success))
+        setMessage(message)
         setPositiveButton(getString(R.string.continue_)) { _, _ ->
           val intent = Intent(context, SignInActivity::class.java)
           intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -108,15 +118,6 @@ class RegisterActivity : AppCompatActivity() {
         }
         create()
         show()
-      }
-    }
-  }
-
-  private fun showLoading() {
-    registerViewModel.isLoading.observe(this) {
-      binding.apply {
-        if (it) progressBar.visibility = View.VISIBLE
-        else progressBar.visibility = View.GONE
       }
     }
   }

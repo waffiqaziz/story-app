@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.storyapp.data.model.UserModel
@@ -12,8 +13,7 @@ import com.dicoding.storyapp.databinding.ActivityListStoryBinding
 import com.dicoding.storyapp.ui.adapter.LoadingStateAdapter
 import com.dicoding.storyapp.ui.adapter.StoryAdapter
 import com.dicoding.storyapp.ui.viewmodel.ListStoryViewModel
-import com.dicoding.storyapp.ui.viewmodel.ViewModelRepoFactory
-
+import com.dicoding.storyapp.ui.viewmodel.ViewModelStoryFactory
 
 class ListStoryActivity : AppCompatActivity() {
 
@@ -24,27 +24,48 @@ class ListStoryActivity : AppCompatActivity() {
   private lateinit var adapter: StoryAdapter
 
   private val viewModel: ListStoryViewModel by viewModels {
-    ViewModelRepoFactory.getInstance(this)
+    ViewModelStoryFactory.getInstance(this)
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     _binding = ActivityListStoryBinding.inflate(layoutInflater)
     setContentView(binding?.root)
-
-    setupToolbar()
-    buttonListener()
-
     user = intent.getParcelableExtra(EXTRA_USER)!!
 
-    setupRecycleView()
-
+    initAdapter()
+    initSwipeToRefresh()
+    initToolbar()
+    buttonListener()
     showRecycleView()
-
-    getData()
   }
 
-  private fun setupToolbar() {
+  private fun initAdapter() {
+    adapter = StoryAdapter()
+    binding?.rvStory?.adapter = adapter.withLoadStateHeaderAndFooter(
+      footer = LoadingStateAdapter(adapter::retry),
+      header = LoadingStateAdapter(adapter::retry)
+    )
+    binding?.rvStory?.layoutManager = LinearLayoutManager(this)
+    binding?.rvStory?.setHasFixedSize(true)
+
+    lifecycleScope.launchWhenCreated {
+      adapter.loadStateFlow.collect {
+        binding?.swipeRefresh?.isRefreshing = it.mediator?.refresh is LoadState.Loading
+      }
+    }
+
+    viewModel.getStory(user.token).observe(this) {
+      adapter.submitData(lifecycle, it)
+    }
+  }
+
+  // update data when swipe
+  private fun initSwipeToRefresh() {
+    binding?.swipeRefresh?.setOnRefreshListener { adapter.refresh() }
+  }
+
+  private fun initToolbar() {
     setSupportActionBar(binding?.toolbar)
     supportActionBar?.setDisplayHomeAsUpEnabled(true)
     supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -55,44 +76,24 @@ class ListStoryActivity : AppCompatActivity() {
     return true
   }
 
-  private fun getData() {
-
-    viewModel.getStory(user.token).observe(this) {
-      adapter.submitData(lifecycle, it)
-    }
-  }
-
-  private fun setupRecycleView() {
-    adapter = StoryAdapter()
-    binding?.rvStory?.layoutManager = LinearLayoutManager(this)
-    binding?.rvStory?.setHasFixedSize(true)
-    binding?.rvStory?.adapter = adapter
-
-    binding?.rvStory?.adapter = adapter.withLoadStateHeaderAndFooter(
-      footer = LoadingStateAdapter(adapter::retry),
-      header = LoadingStateAdapter(adapter::retry)
-    )
-  }
-
   private fun showRecycleView() {
     adapter.addLoadStateListener {
       binding?.apply {
-        if (it.source.refresh is LoadState.NotLoading && it.append.endOfPaginationReached && adapter.itemCount < 1) {
-          tvInfo.visibility = View.VISIBLE
+        if (it.source.refresh is LoadState.NotLoading
+          && it.append.endOfPaginationReached
+          && adapter.itemCount < 1
+        ) {
+
+          viewError.root.visibility = View.VISIBLE
           rvStory.visibility = View.VISIBLE
           progressBar.visibility = View.GONE
         } else {
           progressBar.visibility = View.GONE
           rvStory.visibility = View.VISIBLE
-          tvInfo.visibility = View.GONE
+          viewError.root.visibility = View.GONE
         }
       }
     }
-  }
-
-  override fun onResume() {
-    super.onResume()
-    getData()
   }
 
   override fun onDestroy() {

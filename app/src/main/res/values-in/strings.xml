@@ -34,7 +34,7 @@
   <string name="register_success">Daftar akun berhasil, Anda dapat masuk dengan akun Anda</string>
   <string name="register_failed">Daftar akun gagal</string>
   <string name="upload_failed">Gagal mengunggah</string>
-  <string name="upload_success">Berhasil mengunggah</string>
+  <string name="upload_success">Berhasil mengunggah, geser ke atas untuk menampilkan</string>
   <string name="sign_in_failed">Gagal masuk</string>
   <string name="log_out_success">Berhasil keluar</string>
   <string name="information">Informasi</string>
@@ -62,5 +62,7 @@
   <string name="title_activity_maps">MapsActivity</string>
   <string name="invalid_capture">Gagal mengambil gambar</string>
   <string name="failed_open_camera">Gagal membuka kamera</string>
+  <string name="invalid_description">Deskripsi wajib diisi</string>
+  <string name="something_wrong">Ups! Ada yang tidak beres</string>
 
 </resources>

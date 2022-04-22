@@ -1,8 +1,10 @@
 package com.dicoding.storyapp.ui.adapter
 
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +15,7 @@ import com.dicoding.storyapp.databinding.ItemListStoryBinding
 import com.dicoding.storyapp.helper.Helper
 import com.dicoding.storyapp.ui.activity.DetailStoryActivity
 import java.util.*
+import androidx.core.util.Pair
 
 class StoryAdapter :
   PagingDataAdapter<ListStoryItem, StoryAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -49,9 +52,18 @@ class StoryAdapter :
 
         // image OnClickListener
         imgItemImage.setOnClickListener {
+          val optionsCompat: ActivityOptionsCompat =
+            ActivityOptionsCompat.makeSceneTransitionAnimation(
+              itemView.context as Activity,
+              Pair(imgItemImage, "image"),
+              Pair(tvName, "name"),
+              Pair(tvCreatedTime, "created"),
+              Pair(tvDescription, "description"),
+            )
+
           val intent = Intent(it.context, DetailStoryActivity::class.java)
           intent.putExtra(DetailStoryActivity.EXTRA_STORY, story)
-          it.context.startActivity(intent)
+          it.context.startActivity(intent, optionsCompat.toBundle())
         }
       }
     }

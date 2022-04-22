@@ -34,8 +34,6 @@ class DetailStoryViewModelTest {
     )
 
     Assert.assertNotNull(actualStory)
-    Assert.assertEquals(
-      actualStory, expectedStory
-    )
+    Assert.assertEquals(actualStory, expectedStory)
   }
 }

@@ -33,29 +33,29 @@ class MapsViewModelTest {
   }
 
   @Test
-  fun `when Get getStories Should Not Null and Return Success`() {
-    val expectedMaps = MutableLiveData<ResultResponse<List<ListStoryItem>>>()
-    expectedMaps.value = ResultResponse.Success(dummyMaps)
-    `when`(mapsViewModel.getStories("Token")).thenReturn(expectedMaps)
+  fun `when getStories() is Called Should Not Null and Return Success`() {
+    val expectedStory = MutableLiveData<ResultResponse<List<ListStoryItem>>>()
+    expectedStory.value = ResultResponse.Success(dummyMaps)
+    `when`(mapsViewModel.getStories("Token")).thenReturn(expectedStory)
 
-    val actualMaps = mapsViewModel.getStories("Token").getOrAwaitValue()
+    val actualStory = mapsViewModel.getStories("Token").getOrAwaitValue()
 
     Mockito.verify(storyRepository).getStoryMap("Token")
-    Assert.assertNotNull(actualMaps)
-    Assert.assertTrue(actualMaps is ResultResponse.Success)
-    Assert.assertEquals(dummyMaps.size, (actualMaps as ResultResponse.Success).data.size)
+    Assert.assertNotNull(actualStory)
+    Assert.assertTrue(actualStory is ResultResponse.Success)
+    Assert.assertEquals(dummyMaps.size, (actualStory as ResultResponse.Success).data.size)
   }
 
   @Test
   fun `when Network Error Should Return Error`() {
-    val headlineNews = MutableLiveData<ResultResponse<List<ListStoryItem>>>()
-    headlineNews.value = ResultResponse.Error("Error")
-    `when`(mapsViewModel.getStories("Token")).thenReturn(headlineNews)
+    val expectedStory = MutableLiveData<ResultResponse<List<ListStoryItem>>>()
+    expectedStory.value = ResultResponse.Error("Error")
+    `when`(mapsViewModel.getStories("Token")).thenReturn(expectedStory)
 
-    val actualNews = mapsViewModel.getStories("Token").getOrAwaitValue()
+    val actualStory = mapsViewModel.getStories("Token").getOrAwaitValue()
 
     Mockito.verify(storyRepository).getStoryMap("Token")
-    Assert.assertNotNull(actualNews)
-    Assert.assertTrue(actualNews is ResultResponse.Error)
+    Assert.assertNotNull(actualStory)
+    Assert.assertTrue(actualStory is ResultResponse.Error)
   }
 }

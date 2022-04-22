@@ -53,7 +53,7 @@ class CameraActivity : AppCompatActivity() {
       ContextCompat.getMainExecutor(this),
       object : ImageCapture.OnImageSavedCallback {
         override fun onError(exc: ImageCaptureException) {
-          Helper.showToast(this@CameraActivity,getString(R.string.invalid_capture))
+          Helper.showToastShort(this@CameraActivity,getString(R.string.invalid_capture))
         }
 
         override fun onImageSaved(output: ImageCapture.OutputFileResults) {
@@ -91,7 +91,7 @@ class CameraActivity : AppCompatActivity() {
           imageCapture
         )
       } catch (exc: Exception) {
-        Helper.showToast(this,getString(R.string.failed_open_camera))
+        Helper.showToastShort(this,getString(R.string.failed_open_camera))
       }
     }, ContextCompat.getMainExecutor(this))
   }

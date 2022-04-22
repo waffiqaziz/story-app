@@ -16,10 +16,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.dicoding.storyapp.R
+import com.dicoding.storyapp.data.ResultResponse
 import com.dicoding.storyapp.data.model.UserModel
 import com.dicoding.storyapp.databinding.ActivityAddStoryBinding
-import com.dicoding.storyapp.helper.*
+import com.dicoding.storyapp.helper.Helper
 import com.dicoding.storyapp.ui.viewmodel.AddStoryViewModel
+import com.dicoding.storyapp.ui.viewmodel.ViewModelStoryFactory
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -35,7 +37,9 @@ class AddStoryActivity : AppCompatActivity() {
   private var getFile: File? = null
   private var result: Bitmap? = null
 
-  private val viewModel by viewModels<AddStoryViewModel>()
+  private val viewModel: AddStoryViewModel by viewModels {
+    ViewModelStoryFactory.getInstance(this)
+  }
 
   override fun onRequestPermissionsResult(
     requestCode: Int,
@@ -45,11 +49,7 @@ class AddStoryActivity : AppCompatActivity() {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     if (requestCode == REQUEST_CODE_PERMISSIONS) {
       if (!allPermissionsGranted()) {
-        Toast.makeText(
-          this,
-          getString(R.string.invalid_permission),
-          Toast.LENGTH_SHORT
-        ).show()
+        Helper.showToastLong(this, getString(R.string.invalid_permission))
         finish()
       }
     }
@@ -72,8 +72,6 @@ class AddStoryActivity : AppCompatActivity() {
     binding.btnCameraX.setOnClickListener { startCameraX() }
     binding.btnGallery.setOnClickListener { startGallery() }
     binding.btnUpload.setOnClickListener { uploadImage() }
-
-    showLoading()
   }
 
   private fun getPermission() {
@@ -140,57 +138,54 @@ class AddStoryActivity : AppCompatActivity() {
   }
 
   private fun uploadImage() {
+    when {
+      binding.etDescription.text.toString().isEmpty() -> {
+        binding.etDescription.error = getString(R.string.invalid_description)
+      }
+      getFile != null -> {
+        val file = Helper.reduceFileImage(getFile as File)
+        val description = binding.etDescription.text.toString()
+          .toRequestBody("application/json;charset=utf-8".toMediaType())
+        val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+        val imageMultipart = MultipartBody.Part.createFormData(
+          "photo",
+          file.name,
+          requestImageFile
+        )
 
-    if (getFile != null) {
-      val file = Helper.reduceFileImage(getFile as File)
-
-      val description = binding.etDescription.text.toString()
-        .toRequestBody("application/json;charset=utf-8".toMediaType())
-      val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-      val imageMultipart = MultipartBody.Part.createFormData(
-        "photo",
-        file.name,
-        requestImageFile
-      )
-
-      // upload image
-      viewModel.uploadImage(user, description, imageMultipart, object : Helper.ApiCallbackString {
-        override fun onResponse(success: Boolean, message: String) {
-          showDialog(success, message)
+        // upload story
+        viewModel.postStory(user.token, description, imageMultipart).observe(this) {
+          if (it != null) {
+            when (it) {
+              is ResultResponse.Loading -> {
+                binding.progressBar.visibility = View.VISIBLE
+              }
+              is ResultResponse.Success -> {
+                binding.progressBar.visibility = View.GONE
+                Helper.showToastLong(this, getString(R.string.upload_success))
+                finish()
+              }
+              is ResultResponse.Error -> {
+                binding.progressBar.visibility = View.GONE
+                AlertDialog.Builder(this).apply {
+                  setTitle(getString(R.string.information))
+                  setMessage(getString(R.string.upload_failed) + ", ${it.error}")
+                  setPositiveButton(getString(R.string.continue_)) { _, _ ->
+                    binding.progressBar.visibility = View.GONE
+                  }
+                  create()
+                  show()
+                }
+              }
+            }
+          }
         }
-      })
-
-    } else {
-      Helper.showToast(this@AddStoryActivity, getString(R.string.no_attach_file))
-    }
-  }
-
-  private fun showDialog(param: Boolean, message: String) {
-    if (param) {
-      Helper.showToast(this, getString(R.string.upload_success))
-      finish()
-    } else {
-      AlertDialog.Builder(this).apply {
-        setTitle(getString(R.string.information))
-        setMessage(getString(R.string.upload_failed) + ", $message")
-        setPositiveButton(getString(R.string.continue_)) { _, _ ->
-          binding.progressBar.visibility = View.GONE
-        }
-        create()
-        show()
+      }
+      else -> {
+        Helper.showToastShort(this@AddStoryActivity, getString(R.string.no_attach_file))
       }
     }
   }
-
-  private fun showLoading() {
-    viewModel.isLoading.observe(this) {
-      binding.apply {
-        if (it) progressBar.visibility = View.VISIBLE
-        else progressBar.visibility = View.GONE
-      }
-    }
-  }
-
 
   companion object {
     const val CAMERA_X_RESULT = 200

@@ -34,7 +34,7 @@
   <string name="register_success">Зарегистрируйтесь успешно, вы можете войти в свою учетную запись</string>
   <string name="register_failed">Регистрация не удалась</string>
   <string name="upload_failed">Загрузка не удалась</string>
-  <string name="upload_success">Загрузить успешно</string>
+  <string name="upload_success">Загрузить успешно Проведите вверх, чтобы обновить</string>
   <string name="sign_in_failed">Ошибка входа</string>
   <string name="log_out_success">Выйти успешно</string>
   <string name="information">Информация</string>
@@ -62,5 +62,7 @@
   <string name="title_activity_maps">MapsActivity</string>
   <string name="invalid_capture">Не удалось сделать снимки</string>
   <string name="failed_open_camera">Подано, чтобы открыть камеру</string>
+  <string name="invalid_description">Описание должно быть заполнено</string>
+  <string name="something_wrong">Упс! Что-то пошло не так</string>
 
 </resources>

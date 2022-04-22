@@ -11,7 +11,6 @@ import android.os.Environment
 import android.util.Patterns
 import android.widget.Toast
 import com.dicoding.storyapp.R
-import com.dicoding.storyapp.data.remote.response.ListStoryItem
 import java.io.*
 import java.text.SimpleDateFormat
 import java.time.Instant
@@ -104,11 +103,19 @@ object Helper {
     return file
   }
 
-  fun showToast(context: Context, text: String) {
+  fun showToastShort(context: Context, text: String) {
     Toast.makeText(
       context,
       text,
       Toast.LENGTH_SHORT
+    ).show()
+  }
+
+  fun showToastLong(context: Context, text: String) {
+    Toast.makeText(
+      context,
+      text,
+      Toast.LENGTH_LONG
     ).show()
   }
 

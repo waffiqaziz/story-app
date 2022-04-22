@@ -7,6 +7,7 @@ import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
@@ -15,17 +16,21 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.storyapp.MainActivity
 import com.dicoding.storyapp.R
+import com.dicoding.storyapp.data.ResultResponse
+import com.dicoding.storyapp.data.model.UserModel
 import com.dicoding.storyapp.data.model.UserPreference
 import com.dicoding.storyapp.databinding.ActivitySigninBinding
 import com.dicoding.storyapp.helper.Helper
-import com.dicoding.storyapp.ui.viewmodel.SignInViewModel
-import com.dicoding.storyapp.ui.viewmodel.ViewModelPrefFactory
+import com.dicoding.storyapp.ui.viewmodel.*
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
 
 class SignInActivity : AppCompatActivity() {
-  private lateinit var signInViewModel: SignInViewModel
+  private lateinit var saveUserViewModel: SaveUserViewModel
   private lateinit var binding: ActivitySigninBinding
+  private val loginViewModel: LoginViewModel by viewModels {
+    ViewModelStoryFactory.getInstance(this)
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     binding = ActivitySigninBinding.inflate(layoutInflater)
@@ -36,14 +41,13 @@ class SignInActivity : AppCompatActivity() {
     setMyButtonEnable()
     editTextListener()
     buttonListener()
-    showLoading()
   }
 
   private fun setupViewModel() {
-    signInViewModel = ViewModelProvider(
+    saveUserViewModel = ViewModelProvider(
       this,
-      ViewModelPrefFactory(UserPreference.getInstance(dataStore))
-    )[SignInViewModel::class.java]
+      ViewModelUserFactory(UserPreference.getInstance(dataStore))
+    )[SaveUserViewModel::class.java]
   }
 
   private fun editTextListener() {
@@ -102,13 +106,12 @@ class SignInActivity : AppCompatActivity() {
     } else {
       AlertDialog.Builder(this).apply {
         setTitle(getString(R.string.information))
-        setMessage(getString(R.string.sign_in_failed) +", $message")
+        setMessage(getString(R.string.sign_in_failed) + ", $message")
         setPositiveButton(getString(R.string.continue_)) { _, _ ->
           binding.progressBar.visibility = View.GONE
         }
         create()
         show()
-
       }
     }
   }
@@ -118,25 +121,34 @@ class SignInActivity : AppCompatActivity() {
       val email = binding.etEmail.text.toString()
       val pass = binding.etPass.text.toString()
 
-      signInViewModel.login(email, pass, object : Helper.ApiCallbackString {
-        override fun onResponse(success: Boolean,message: String) {
-          showAlertDialog(success, message)
+      loginViewModel.login(email, pass).observe(this) {
+        when (it) {
+          is ResultResponse.Loading -> {
+            binding.progressBar.visibility = View.VISIBLE
+          }
+          is ResultResponse.Success -> {
+            binding.progressBar.visibility = View.GONE
+            val user = UserModel(
+              it.data.name,
+              email,
+              pass,
+              it.data.userId,
+              it.data.token,
+              true
+            )
+            saveUserViewModel.saveUser(user)
+            showAlertDialog(true, "Success")
+          }
+          is ResultResponse.Error -> {
+            binding.progressBar.visibility = View.GONE
+            showAlertDialog(false, it.error)
+          }
         }
-      })
+      }
     }
 
     binding.ivSetting?.setOnClickListener {
       startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
     }
   }
-
-  private fun showLoading() {
-    signInViewModel.isLoading.observe(this) {
-      binding.apply {
-        if (it) progressBar.visibility = View.VISIBLE
-        else progressBar.visibility = View.GONE
-      }
-    }
-  }
-
 }

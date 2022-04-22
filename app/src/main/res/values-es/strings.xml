@@ -34,7 +34,7 @@
   <string name="register_success">Registro exitoso, puede iniciar sesión con su cuenta</string>
   <string name="register_failed">Registro fallido</string>
   <string name="upload_failed">Subida fallida</string>
-  <string name="upload_success">Subida exitosa</string>
+  <string name="upload_success">Subir correctamente Deslizar hacia arriba para actualizar</string>
   <string name="sign_in_failed">Fallo al iniciar sesion</string>
   <string name="log_out_success">Cerrar sesión con éxito</string>
   <string name="information">Información</string>
@@ -62,5 +62,8 @@
   <string name="title_activity_maps">MapsActivity</string>
   <string name="invalid_capture">Error al tomar fotos</string>
   <string name="failed_open_camera">Archivado para abrir la cámara</string>
+  <string name="invalid_description">La descripción debe ser completada</string>
+  <string name="something_wrong">Huy! Algo salió mal</string>
+
 
 </resources>

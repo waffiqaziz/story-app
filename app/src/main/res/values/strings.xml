@@ -33,7 +33,7 @@
   <string name="register_success">Register Success, You can Sign In with your account</string>
   <string name="register_failed">Register Failed</string>
   <string name="upload_failed">Upload Failed</string>
-  <string name="upload_success">Upload Success</string>
+  <string name="upload_success">Upload Success Swipe Up to Refresh</string>
   <string name="sign_in_failed">Sign In Failed</string>
   <string name="log_out_success">Log Out Success</string>
   <string name="information">Information</string>
@@ -54,6 +54,7 @@
   <string name="post_story">Post story</string>
   <string name="invalid_permission">Can\'t get permission</string>
   <string name="no_attach_file">No file attached, please attach image first</string>
+  <string name="invalid_description">Description must be filled</string>
 
   <string name="detail_story">Detail Story</string>
   <string name="switch_camera">Switch Camera</string>
@@ -62,5 +63,5 @@
 
   <string name="retry">Retry</string>
   <string name="title_activity_maps">MapsActivity</string>
-
+  <string name="something_wrong">Oops.. something went wrong</string>
 </resources>

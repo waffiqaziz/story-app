@@ -22,11 +22,12 @@
     android:orientation="vertical">
 
     <ImageView
-      android:layout_marginTop="60dp"
       android:id="@+id/iv_story"
       android:layout_width="match_parent"
       android:layout_height="400dp"
+      android:layout_marginTop="60dp"
       android:contentDescription="@string/image_story"
+      android:transitionName="image"
       tools:src="@drawable/ic_place_holder" />
 
     <LinearLayout
@@ -47,6 +48,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         android:textSize="20sp"
+        android:transitionName="name"
         tools:text="@string/name" />
 
       <TextView
@@ -56,6 +58,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
+        android:transitionName="created"
         tools:text="@string/created_add" />
 
     </LinearLayout>
@@ -82,6 +85,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_gravity="center"
+          android:transitionName="description"
           tools:text="@string/description" />
       </LinearLayout>
     </ScrollView>

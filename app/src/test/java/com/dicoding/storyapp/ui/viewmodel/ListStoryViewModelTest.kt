@@ -14,7 +14,8 @@ import com.dicoding.storyapp.data.remote.response.ListStoryItem
 import com.dicoding.storyapp.getOrAwaitValue
 import com.dicoding.storyapp.ui.adapter.StoryAdapter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
@@ -35,10 +36,9 @@ class ListStoryViewModelTest {
   @Mock
   private lateinit var listStoryViewModel: ListStoryViewModel
 
-
   @Test
-  fun `when Get Quote Should Not Null`() = mainCoroutineRules.runBlockingTest {
-    val dummyStory = DataDummy.generateDummyStoriesResponsePaging()
+  fun `when Get Story Should Not Null`() = runTest {
+    val dummyStory = DataDummy.generateDummyListStory()
     val data = PagedTestDataSources.snapshot(dummyStory)
     val story = MutableLiveData<PagingData<ListStoryItem>>()
     story.value = data
