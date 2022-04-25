@@ -3,6 +3,7 @@ package com.dicoding.storyapp.ui.activity
 
 import android.content.Context
 import android.content.Intent
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.launchActivity
@@ -10,6 +11,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
@@ -24,7 +26,6 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-
 
 @RunWith(AndroidJUnit4::class)
 @MediumTest
@@ -51,7 +52,6 @@ class ListStoryActivityTest {
   @After
   fun tearDown() {
     mockWebServer.shutdown()
-    scenario.close()
     IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
   }
 
@@ -62,19 +62,24 @@ class ListStoryActivityTest {
     scenario = launchActivity(intent)
 
     val mockResponse = MockResponse()
-      .setResponseCode(200)
+      .setResponseCode(200) // success
       .setBody(JsonConverter.readStringFromFile("success_response.json"))
     mockWebServer.enqueue(mockResponse)
 
     onView(withId(R.id.rv_story)).check(
       matches(isDisplayed())
     )
+    onView(withText("Zekken"))
+      .check(matches(isDisplayed()))
     onView(withId(R.id.rv_story)).perform(
       ViewActions.swipeUp()
     )
-    onView(withId(R.id.rv_story)).perform(
-      ViewActions.swipeDown()
-    )
+    onView(withId(R.id.rv_story))
+      .perform(
+        RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+          hasDescendant(withText("ya"))
+        )
+      )
   }
 
   @Test
@@ -84,11 +89,12 @@ class ListStoryActivityTest {
     scenario = launchActivity(intent)
 
     val mockResponse = MockResponse()
-      .setResponseCode(500)
+      .setResponseCode(500) // error
     mockWebServer.enqueue(mockResponse)
+
     onView(withId(R.id.rv_story))
       .check(matches(isDisplayed()))
-    onView(withText("Oops.. something went wrong"))
+    onView(withText("Oops.. something went wrong. Check your connection"))
       .check(matches(isDisplayed()))
   }
 

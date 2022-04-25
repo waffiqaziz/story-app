@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dicoding.storyapp.data.repository.StoryRepository
 import com.dicoding.storyapp.di.Injection
 
-class ViewModelStoryFactory private constructor(
+class ViewModelFactory private constructor(
   private val storyRepository: StoryRepository
 ) :
   ViewModelProvider.NewInstanceFactory() {
@@ -35,10 +35,10 @@ class ViewModelStoryFactory private constructor(
 
   companion object {
     @Volatile
-    private var instance: ViewModelStoryFactory? = null
-    fun getInstance(context: Context): ViewModelStoryFactory =
+    private var instance: ViewModelFactory? = null
+    fun getInstance(context: Context): ViewModelFactory =
       instance ?: synchronized(this) {
-        instance ?: ViewModelStoryFactory(Injection.provideStoryRepository(context))
+        instance ?: ViewModelFactory(Injection.provideStoryRepository(context))
       }.also { instance = it }
   }
 }

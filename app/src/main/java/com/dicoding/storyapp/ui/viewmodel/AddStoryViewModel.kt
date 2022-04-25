@@ -9,6 +9,8 @@ class AddStoryViewModel(private val storyRepository: StoryRepository) : ViewMode
   fun postStory(
     token: String,
     description: RequestBody,
-    imageMultipart: MultipartBody.Part
-  ) = storyRepository.postStory(token, description, imageMultipart)
+    imageMultipart: MultipartBody.Part,
+    lat: RequestBody? = null,
+    lon: RequestBody? = null
+  ) = storyRepository.postStory(token, description, imageMultipart, lat, lon)
 }

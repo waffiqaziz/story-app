@@ -14,11 +14,14 @@ import com.dicoding.storyapp.data.ResultResponse
 import com.dicoding.storyapp.databinding.ActivityRegisterBinding
 import com.dicoding.storyapp.helper.Helper
 import com.dicoding.storyapp.ui.viewmodel.RegisterViewModel
+import com.dicoding.storyapp.ui.viewmodel.ViewModelFactory
 
 class RegisterActivity : AppCompatActivity() {
 
   private lateinit var binding: ActivityRegisterBinding
-  private val registerViewModel by viewModels<RegisterViewModel>()
+  private val registerViewModel : RegisterViewModel by viewModels{
+    ViewModelFactory.getInstance(this)
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     binding = ActivityRegisterBinding.inflate(layoutInflater)

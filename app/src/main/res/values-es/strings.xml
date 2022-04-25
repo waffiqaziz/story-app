@@ -26,7 +26,7 @@
 
   <string name="greeting">Hola %1$s,</string>
   <string name="created_add">Creado en %1$s,</string>
-  <string name="by_waffiq">Por Waffiq 2022</string>
+  <string name="dicoding_course">Dicoding 2022</string>
   <string name="home_description">Publica y comparte tu historia, comparte tus actividades y conoce las historias de otras personas.</string>
   <string name="login_account">Inicie sesión en su cuenta</string>
   <string name="continue_">Continuar</string>
@@ -64,6 +64,8 @@
   <string name="failed_open_camera">Archivado para abrir la cámara</string>
   <string name="invalid_description">La descripción debe ser completada</string>
   <string name="something_wrong">Huy! Algo salió mal</string>
+  <string name="enable_gps_permission">Permita sus servicios de ubicación</string>
+  <string name="share_location">Comparte ubicación</string>
 
 
 </resources>

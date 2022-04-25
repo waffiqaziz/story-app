@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,7 +14,9 @@ import com.dicoding.storyapp.databinding.ActivityListStoryBinding
 import com.dicoding.storyapp.ui.adapter.LoadingStateAdapter
 import com.dicoding.storyapp.ui.adapter.StoryAdapter
 import com.dicoding.storyapp.ui.viewmodel.ListStoryViewModel
-import com.dicoding.storyapp.ui.viewmodel.ViewModelStoryFactory
+import com.dicoding.storyapp.ui.viewmodel.ViewModelFactory
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class ListStoryActivity : AppCompatActivity() {
 
@@ -24,7 +27,7 @@ class ListStoryActivity : AppCompatActivity() {
   private lateinit var adapter: StoryAdapter
 
   private val viewModel: ListStoryViewModel by viewModels {
-    ViewModelStoryFactory.getInstance(this)
+    ViewModelFactory.getInstance(this)
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,14 +40,13 @@ class ListStoryActivity : AppCompatActivity() {
     initSwipeToRefresh()
     initToolbar()
     buttonListener()
-    showRecycleView()
   }
 
   private fun initAdapter() {
     adapter = StoryAdapter()
     binding?.rvStory?.adapter = adapter.withLoadStateHeaderAndFooter(
-      footer = LoadingStateAdapter(adapter::retry),
-      header = LoadingStateAdapter(adapter::retry)
+      footer = LoadingStateAdapter { adapter.retry() },
+      header = LoadingStateAdapter { adapter.retry() }
     )
     binding?.rvStory?.layoutManager = LinearLayoutManager(this)
     binding?.rvStory?.setHasFixedSize(true)
@@ -53,6 +55,13 @@ class ListStoryActivity : AppCompatActivity() {
       adapter.loadStateFlow.collect {
         binding?.swipeRefresh?.isRefreshing = it.mediator?.refresh is LoadState.Loading
       }
+    }
+    lifecycleScope.launch {
+      adapter.loadStateFlow.collectLatest { loadStates ->
+        binding?.viewError?.root?.isVisible = loadStates.refresh is LoadState.Error
+      }
+      if (adapter.itemCount < 1) binding?.viewError?.root?.visibility = View.VISIBLE
+      else binding?.viewError?.root?.visibility = View.GONE
     }
 
     viewModel.getStory(user.token).observe(this) {
@@ -74,26 +83,6 @@ class ListStoryActivity : AppCompatActivity() {
   override fun onSupportNavigateUp(): Boolean {
     onBackPressed()
     return true
-  }
-
-  private fun showRecycleView() {
-    adapter.addLoadStateListener {
-      binding?.apply {
-        if (it.source.refresh is LoadState.NotLoading
-          && it.append.endOfPaginationReached
-          && adapter.itemCount < 1
-        ) {
-
-          viewError.root.visibility = View.VISIBLE
-          rvStory.visibility = View.VISIBLE
-          progressBar.visibility = View.GONE
-        } else {
-          progressBar.visibility = View.GONE
-          rvStory.visibility = View.VISIBLE
-          viewError.root.visibility = View.GONE
-        }
-      }
-    }
   }
 
   override fun onDestroy() {

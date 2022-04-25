@@ -5,6 +5,7 @@
   <uses-feature android:name="android.hardware.camera" />
 
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
   <uses-permission android:name="android.permission.CAMERA" />
   <uses-permission android:name="android.permission.INTERNET" />
@@ -22,7 +23,7 @@
     android:usesCleartextTraffic="true"
     android:theme="@style/Theme.StoryApp">
     <!--
-             TODO: Before you run your application, you need a Google Maps API key.
+             TODO: Before you run this application, you need a Google Maps API key.
 
              To get one, follow the directions here:
 
@@ -34,7 +35,7 @@
         -->
     <meta-data
       android:name="com.google.android.geo.API_KEY"
-      android:value="${MAPS_API_KEY}" />
+      android:value="${MAPS_API_KEY}" /> <!-- key on local.properties -->
 
     <activity
       android:name=".ui.activity.MapsActivity"

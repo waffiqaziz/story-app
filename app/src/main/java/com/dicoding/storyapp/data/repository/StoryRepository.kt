@@ -12,6 +12,7 @@ import com.dicoding.storyapp.data.remote.response.LoginResult
 import com.dicoding.storyapp.data.remote.retrofit.ApiService
 import com.dicoding.storyapp.data.room.StoryDatabase
 import com.dicoding.storyapp.util.wrapEspressoIdlingResource
+import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
@@ -75,11 +76,13 @@ class StoryRepository(
   fun postStory(
     token: String,
     description: RequestBody,
-    imageMultipart: MultipartBody.Part
+    imageMultipart: MultipartBody.Part,
+    lat: RequestBody? = null,
+    lon: RequestBody? = null
   ): LiveData<ResultResponse<ApiResponse>> = liveData {
     emit(ResultResponse.Loading)
     try {
-      val response = apiService.addStories("Bearer $token", description, imageMultipart)
+      val response = apiService.addStories("Bearer $token", description, imageMultipart, lat, lon)
       if (!response.error) {
         emit(ResultResponse.Success(response))
       } else {
@@ -92,7 +95,7 @@ class StoryRepository(
     }
   }
 
-  fun getPagingStories(token: String): LiveData<PagingData<ListStoryItem>> {
+  fun getPagingStories(token: String): Flow<PagingData<ListStoryItem>> {
     wrapEspressoIdlingResource {
       @OptIn(ExperimentalPagingApi::class)
       return Pager(
@@ -103,7 +106,7 @@ class StoryRepository(
         pagingSourceFactory = {
           storyDatabase.storyDao().getStory()
         }
-      ).liveData
+      ).flow
     }
   }
 

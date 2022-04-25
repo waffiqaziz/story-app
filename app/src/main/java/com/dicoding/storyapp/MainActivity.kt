@@ -13,6 +13,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.dicoding.storyapp.data.model.UserModel
 import com.dicoding.storyapp.data.model.UserPreference
 import com.dicoding.storyapp.databinding.ActivityMainBinding
@@ -20,6 +21,7 @@ import com.dicoding.storyapp.ui.activity.ListStoryActivity
 import com.dicoding.storyapp.ui.activity.SignInActivity
 import com.dicoding.storyapp.ui.viewmodel.MainViewModel
 import com.dicoding.storyapp.ui.viewmodel.ViewModelUserFactory
+import kotlinx.coroutines.launch
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
 
@@ -44,16 +46,20 @@ class MainActivity : AppCompatActivity() {
       ViewModelUserFactory(UserPreference.getInstance(dataStore))
     )[MainViewModel::class.java]
 
-    mainViewModel.getUser().observe(this) {
-      user = UserModel(
-        it.name,
-        it.email,
-        it.password,
-        it.userId,
-        it.token,
-        true
-      )
-      binding.nameTextView.text = getString(R.string.greeting, user.name)
+    lifecycleScope.launchWhenCreated {
+      launch {
+        mainViewModel.getUser().collect {
+          user = UserModel(
+            it.name,
+            it.email,
+            it.password,
+            it.userId,
+            it.token,
+            true
+          )
+          binding.nameTextView.text = getString(R.string.greeting, user.name)
+        }
+      }
     }
   }
 
@@ -83,7 +89,7 @@ class MainActivity : AppCompatActivity() {
     binding.ivSetting?.setOnClickListener {
       startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
     }
-    binding.btnLogOut.setOnClickListener {
+    binding.btnLogOut?.setOnClickListener {
       mainViewModel.logout()
       AlertDialog.Builder(this).apply {
         setTitle(getString(R.string.information))

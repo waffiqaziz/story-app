@@ -12,9 +12,6 @@ class ViewModelUserFactory(private val pref: UserPreference) : ViewModelProvider
       modelClass.isAssignableFrom(MainViewModel::class.java) -> {
         MainViewModel(pref) as T
       }
-      modelClass.isAssignableFrom(SaveUserViewModel::class.java) -> {
-        SaveUserViewModel(pref) as T
-      }
       else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }
   }

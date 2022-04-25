@@ -34,7 +34,7 @@
     android:layout_marginStart="32dp"
     android:layout_marginEnd="32dp"
     android:layout_marginBottom="8dp"
-    android:text="@string/by_waffiq"
+    android:text="@string/dicoding_course"
     android:textSize="14sp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"

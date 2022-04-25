@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.dicoding.storyapp.MainActivity
 import com.dicoding.storyapp.R
 import com.dicoding.storyapp.data.ResultResponse
@@ -26,10 +26,9 @@ import com.dicoding.storyapp.ui.viewmodel.*
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
 
 class SignInActivity : AppCompatActivity() {
-  private lateinit var saveUserViewModel: SaveUserViewModel
   private lateinit var binding: ActivitySigninBinding
   private val loginViewModel: LoginViewModel by viewModels {
-    ViewModelStoryFactory.getInstance(this)
+    ViewModelFactory.getInstance(this)
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,17 +36,9 @@ class SignInActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(binding.root)
 
-    setupViewModel()
     setMyButtonEnable()
     editTextListener()
     buttonListener()
-  }
-
-  private fun setupViewModel() {
-    saveUserViewModel = ViewModelProvider(
-      this,
-      ViewModelUserFactory(UserPreference.getInstance(dataStore))
-    )[SaveUserViewModel::class.java]
   }
 
   private fun editTextListener() {
@@ -106,6 +97,7 @@ class SignInActivity : AppCompatActivity() {
     } else {
       AlertDialog.Builder(this).apply {
         setTitle(getString(R.string.information))
+        binding.etPass.error = null
         setMessage(getString(R.string.sign_in_failed) + ", $message")
         setPositiveButton(getString(R.string.continue_)) { _, _ ->
           binding.progressBar.visibility = View.GONE
@@ -136,8 +128,12 @@ class SignInActivity : AppCompatActivity() {
               it.data.token,
               true
             )
-            saveUserViewModel.saveUser(user)
-            showAlertDialog(true, "Success")
+            showAlertDialog(true, getString(R.string.sign_in_success))
+
+            val userPref = UserPreference.getInstance(dataStore)
+            lifecycleScope.launchWhenStarted {
+               userPref.saveUser(user)
+            }
           }
           is ResultResponse.Error -> {
             binding.progressBar.visibility = View.GONE

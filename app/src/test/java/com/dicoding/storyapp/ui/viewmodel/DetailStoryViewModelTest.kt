@@ -17,7 +17,7 @@ class DetailStoryViewModelTest {
   private val dummyStory = DataDummy.singleDummy()
 
   @Test
-  fun `when setDetailStory() is called Should Not Null and Return False`() {
+  fun `when setDetailStory() is called Should Success`() {
     val expectedStory = dummyStory
     Mockito.`when`(detailsViewModel.setDetailStory(dummyStory)).thenReturn(expectedStory)
 

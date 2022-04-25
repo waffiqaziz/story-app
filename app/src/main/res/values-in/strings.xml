@@ -26,7 +26,7 @@
 
   <string name="greeting">Hai %1$s,</string>
   <string name="created_add">Diungguah pada %1$s,</string>
-  <string name="by_waffiq">Oleh Waffiq 2022</string>
+  <string name="dicoding_course">Dicoding 2022</string>
   <string name="home_description">Posting dan bagikan cerita Anda, bagikan aktivitas Anda, dan lihat cerita orang lain</string>
   <string name="login_account">Masuk ke akun Anda</string>
   <string name="continue_">Lanjutkan</string>
@@ -63,6 +63,8 @@
   <string name="invalid_capture">Gagal mengambil gambar</string>
   <string name="failed_open_camera">Gagal membuka kamera</string>
   <string name="invalid_description">Deskripsi wajib diisi</string>
-  <string name="something_wrong">Ups! Ada yang tidak beres</string>
+  <string name="something_wrong">Ups! Ada yang tidak beres<br/>. Coba periksa koneksi anda</string>
+  <string name="enable_gps_permission">" Izinkan layanan lokasi Anda"</string>
+  <string name="share_location">Berbagi lokasi</string>
 
 </resources>

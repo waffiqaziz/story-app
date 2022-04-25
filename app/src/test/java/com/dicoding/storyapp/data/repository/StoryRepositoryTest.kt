@@ -1,33 +1,28 @@
 package com.dicoding.storyapp.data.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.ExperimentalPagingApi
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.liveData
+import androidx.recyclerview.widget.ListUpdateCallback
 import com.dicoding.storyapp.DataDummy
-import com.dicoding.storyapp.data.remote.StoryRemoteMediator
+import com.dicoding.storyapp.MainCoroutineRule
 import com.dicoding.storyapp.data.remote.retrofit.ApiService
 import com.dicoding.storyapp.data.remote.retrofit.FakeApiService
 import com.dicoding.storyapp.data.room.FakeStoryDao
 import com.dicoding.storyapp.data.room.StoryDao
-import com.dicoding.storyapp.data.room.StoryDatabase
+import com.dicoding.storyapp.ui.adapter.StoryAdapter
+import com.dicoding.storyapp.utils.PagedTestDataSource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
-import java.io.File
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
@@ -36,27 +31,29 @@ class StoryRepositoryTest {
   var instantExecutorRule = InstantTaskExecutorRule()
 
   @Mock
-  private lateinit var storyDatabase: StoryDatabase
   private lateinit var storyRepository: StoryRepository
   private lateinit var apiService: ApiService
+
+  @Mock
   private lateinit var storyDao: StoryDao
-  private lateinit var storyRemoteMediator: StoryRemoteMediator
-  private var name = "user"
-  private var email = "user@email.com"
-  private var pass = "userPassword"
+  private var dummmyName = "user"
+  private var dummyEmail = "user@email.com"
+  private var dummyPass = "userPassword"
+  private var dummyMultipart = DataDummy.generateDummyMultipartFile()
+  private var dummyDescription = DataDummy.generateDummyRequestBody()
+  private var dummyLatitude = DataDummy.generateDummyRequestBody()
+  private var dummyLongitude = DataDummy.generateDummyRequestBody()
 
   @Before
   fun setUp() {
     apiService = FakeApiService()
     storyDao = FakeStoryDao()
-    storyRepository = StoryRepository(storyDatabase, apiService)
-    storyRemoteMediator = StoryRemoteMediator(storyDatabase, apiService, "Token")
   }
 
   @Test
   fun `when register() is called Should  Not Null`() = runTest {
     val expectedResponse = DataDummy.generateDummyApiResponseSuccess()
-    val actualResponse = apiService.register(name, email, pass)
+    val actualResponse = apiService.register(dummmyName, dummyEmail, dummyPass)
     Assert.assertNotNull(actualResponse)
     Assert.assertEquals(expectedResponse, actualResponse)
   }
@@ -64,7 +61,7 @@ class StoryRepositoryTest {
   @Test
   fun `when login() is called Should  Not Null`() = runTest {
     val expectedResponse = DataDummy.generateDummyLoginResponseSuccess()
-    val actualResponse = apiService.login(email, pass)
+    val actualResponse = apiService.login(dummyEmail, dummyPass)
     Assert.assertNotNull(actualResponse)
     Assert.assertEquals(expectedResponse, actualResponse)
   }
@@ -79,15 +76,8 @@ class StoryRepositoryTest {
 
   @Test
   fun `when postStory() is called Should Not Null`() = runTest {
-    val file = Mockito.mock(File::class.java)
-    val description = "Description".toRequestBody("text/plain".toMediaType())
-    val requestImageFile = file.asRequestBody("image/*".toMediaTypeOrNull())
-    val imageMultipart = MultipartBody.Part.createFormData(
-      "image", file.name, requestImageFile
-    )
-
     val expectedResponse = DataDummy.generateDummyApiResponseSuccess()
-    val actualResponse = apiService.addStories("Token", description, imageMultipart)
+    val actualResponse = apiService.addStories("Token", dummyDescription, dummyMultipart, dummyLatitude, dummyLongitude)
     Assert.assertNotNull(actualResponse)
     Assert.assertEquals(expectedResponse, actualResponse)
   }
@@ -95,17 +85,35 @@ class StoryRepositoryTest {
   @OptIn(ExperimentalPagingApi::class)
   @Test
   fun `when getPagingStories() is called Should Not Null`() = runTest {
-    val expectedStory = Pager(config = PagingConfig(pageSize = 3),
-      remoteMediator = StoryRemoteMediator(storyDatabase, apiService, "token"),
-      pagingSourceFactory = { storyDatabase.storyDao().getStory() }
-    ).liveData
+    val mainCoroutineRule = MainCoroutineRule()
 
-    val actualStory = Pager(config = PagingConfig(pageSize = 5),
-      remoteMediator = StoryRemoteMediator(storyDatabase, apiService, "token"),
-      pagingSourceFactory = { storyDao.getStory() }
-    ).liveData
+    val dummyStories = DataDummy.generateDummyListStory()
+    val data = PagedTestDataSource.snapshot(dummyStories)
 
-    Assert.assertNotNull(actualStory)
-    Assert.assertEquals(expectedStory.value, actualStory.value)
+    val expectedResult = flowOf(data)
+    `when`(storyRepository.getPagingStories("token")).thenReturn(expectedResult)
+
+    storyRepository.getPagingStories("token").collect {
+      val differ = AsyncPagingDataDiffer(
+        StoryAdapter.DIFF_CALLBACK,
+        listUpdateCallback,
+        mainCoroutineRule.dispatcher,
+        mainCoroutineRule.dispatcher
+      )
+
+      differ.submitData(it)
+      Assert.assertNotNull(differ.snapshot())
+      Assert.assertEquals(
+        DataDummy.generateDummyStoriesResponse().listStory.size,
+        differ.snapshot().size
+      )
+    }
+  }
+
+  private val listUpdateCallback = object : ListUpdateCallback {
+    override fun onInserted(position: Int, count: Int) {}
+    override fun onRemoved(position: Int, count: Int) {}
+    override fun onMoved(fromPosition: Int, toPosition: Int) {}
+    override fun onChanged(position: Int, count: Int, payload: Any?) {}
   }
 }

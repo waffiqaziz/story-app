@@ -24,8 +24,10 @@ class FakeApiService : ApiService {
 
   override suspend fun addStories(
     token: String,
-    des: RequestBody,
-    file: MultipartBody.Part
+    description: RequestBody,
+    file: MultipartBody.Part,
+    latitude: RequestBody?,
+    longitude: RequestBody?
   ): ApiResponse {
     return dummyApiResponseSuccess
   }

@@ -1,14 +1,16 @@
 package com.dicoding.storyapp.ui.activity
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -21,10 +23,13 @@ import com.dicoding.storyapp.data.model.UserModel
 import com.dicoding.storyapp.databinding.ActivityAddStoryBinding
 import com.dicoding.storyapp.helper.Helper
 import com.dicoding.storyapp.ui.viewmodel.AddStoryViewModel
-import com.dicoding.storyapp.ui.viewmodel.ViewModelStoryFactory
+import com.dicoding.storyapp.ui.viewmodel.ViewModelFactory
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
@@ -36,9 +41,11 @@ class AddStoryActivity : AppCompatActivity() {
   private lateinit var user: UserModel
   private var getFile: File? = null
   private var result: Bitmap? = null
+  private var location: Location? = null
+  private lateinit var fusedLocationClient: FusedLocationProviderClient
 
   private val viewModel: AddStoryViewModel by viewModels {
-    ViewModelStoryFactory.getInstance(this)
+    ViewModelFactory.getInstance(this)
   }
 
   override fun onRequestPermissionsResult(
@@ -66,12 +73,23 @@ class AddStoryActivity : AppCompatActivity() {
     setupToolbar()
 
     user = intent.getParcelableExtra(EXTRA_USER)!!
+    fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
     getPermission()
+    buttonListener()
+  }
 
+  private fun buttonListener() {
     binding.btnCameraX.setOnClickListener { startCameraX() }
     binding.btnGallery.setOnClickListener { startGallery() }
-    binding.btnUpload.setOnClickListener { uploadImage() }
+    binding.btnUpload.setOnClickListener { uploadStory() }
+    binding.switchCompat.setOnCheckedChangeListener { _, isChecked ->
+      if (isChecked) {
+        getMyLocation()
+      } else {
+        location = null
+      }
+    }
   }
 
   private fun getPermission() {
@@ -137,7 +155,7 @@ class AddStoryActivity : AppCompatActivity() {
     }
   }
 
-  private fun uploadImage() {
+  private fun uploadStory() {
     when {
       binding.etDescription.text.toString().isEmpty() -> {
         binding.etDescription.error = getString(R.string.invalid_description)
@@ -153,8 +171,15 @@ class AddStoryActivity : AppCompatActivity() {
           requestImageFile
         )
 
+        var lat: RequestBody? = null
+        var lon: RequestBody? = null
+        if (location != null) {
+          lat = location?.latitude.toString().toRequestBody("text/plain".toMediaType())
+          lon = location?.longitude.toString().toRequestBody("text/plain".toMediaType())
+        }
+
         // upload story
-        viewModel.postStory(user.token, description, imageMultipart).observe(this) {
+        viewModel.postStory(user.token, description, imageMultipart, lat, lon).observe(this) {
           if (it != null) {
             when (it) {
               is ResultResponse.Loading -> {
@@ -187,9 +212,39 @@ class AddStoryActivity : AppCompatActivity() {
     }
   }
 
+  @SuppressLint("MissingPermission")
+  private fun getMyLocation() {
+    if (ContextCompat.checkSelfPermission(
+        this.applicationContext,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+      ) == PackageManager.PERMISSION_GRANTED
+    ) { // Location permission granted, then set location
+      fusedLocationClient.lastLocation.addOnSuccessListener {
+        if (it != null) {
+          location = it
+          Log.d(TAG, "Lat : ${it.latitude}, Lon : ${it.longitude}")
+        } else {
+          Helper.showToastLong(this, getString(R.string.enable_gps_permission))
+          binding.switchCompat.isChecked = false
+        }
+      }
+    } else { // Location permission denied, then request permission
+      requestPermissionLauncher.launch(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION))
+    }
+  }
+
+  private val requestPermissionLauncher = registerForActivityResult(
+    ActivityResultContracts.RequestMultiplePermissions()
+  ) {
+    Log.d(TAG, "$it")
+    if (it[Manifest.permission.ACCESS_COARSE_LOCATION] == true) {
+      getMyLocation()
+    } else binding.switchCompat.isChecked = false
+  }
+
   companion object {
     const val CAMERA_X_RESULT = 200
-
+    private const val TAG = "AddStoryActivity"
     const val EXTRA_USER = "user"
 
     private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)

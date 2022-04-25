@@ -25,7 +25,7 @@
 
   <string name="greeting">Hi %1$s,</string>
   <string name="created_add">Created at %1$s,</string>
-  <string name="by_waffiq">By Waffiq 2022</string>
+  <string name="dicoding_course">Dicoding 2022</string>
   <string name="home_description">Post and share your story, share your activities, and get to know other people\'s stories</string>
   <string name="login_account">Login your account</string>
   <string name="continue_">Continue</string>
@@ -52,6 +52,7 @@
   <string name="name">Name</string>
   <string name="error_occurred">Some Error Occurred</string>
   <string name="post_story">Post story</string>
+  <string name="enable_gps_permission">Please allowed your location services</string>
   <string name="invalid_permission">Can\'t get permission</string>
   <string name="no_attach_file">No file attached, please attach image first</string>
   <string name="invalid_description">Description must be filled</string>
@@ -63,5 +64,6 @@
 
   <string name="retry">Retry</string>
   <string name="title_activity_maps">MapsActivity</string>
-  <string name="something_wrong">Oops.. something went wrong</string>
+  <string name="something_wrong">Oops.. something went wrong.<br /> Check your connection</string>
+  <string name="share_location">Share Location</string>
 </resources>

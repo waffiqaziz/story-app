@@ -123,10 +123,6 @@ object Helper {
     return Patterns.EMAIL_ADDRESS.matcher(email).matches()
   }
 
-  interface ApiCallbackString {
-    fun onResponse(success: Boolean, message: String)
-  }
-
   fun formatDate(currentDateString: String, targetTimeZone: String): String {
     val instant = Instant.parse(currentDateString)
     val formatter = DateTimeFormatter.ofPattern("dd MMM yyyy | HH:mm")

@@ -26,7 +26,7 @@
 
   <string name="greeting">Гало %1$s,</string>
   <string name="created_add">Создано в %1$s,</string>
-  <string name="by_waffiq">Ваффик 2022</string>
+  <string name="dicoding_course">Dicoding 2022</string>
   <string name="home_description">Публикуйте и делитесь своей историей, делитесь своей деятельностью и знакомьтесь с историями других людей.</string>
   <string name="login_account">Войдите в свою учетную запись</string>
   <string name="continue_">Продолжать</string>
@@ -64,5 +64,7 @@
   <string name="failed_open_camera">Подано, чтобы открыть камеру</string>
   <string name="invalid_description">Описание должно быть заполнено</string>
   <string name="something_wrong">Упс! Что-то пошло не так</string>
+  <string name="enable_gps_permission">Пожалуйста, разрешите свои службы определения местоположения</string>
+  <string name="share_location">Поделиться местоположением</string>
 
 </resources>

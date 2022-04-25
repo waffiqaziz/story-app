@@ -44,23 +44,36 @@ class AddStoryViewModelTest {
   }
 
   @Test
-  fun `when Get postStory() is called Should Not Null and Return Success`() {
+  fun `when postStory() is called Should Not Null and Return Success`() {
     val file = mock(File::class.java)
     val description = "Description".toRequestBody("text/plain".toMediaType())
     val requestImageFile = file.asRequestBody("image/*".toMediaTypeOrNull())
     val imageMultipart = MultipartBody.Part.createFormData(
       "image", file.name, requestImageFile
     )
+    val latitude = "-6.1755536".toRequestBody("text/plain".toMediaType())
+    val longitude = "106.8272159".toRequestBody("text/plain".toMediaType())
 
     val expectedResponse = MutableLiveData<ResultResponse<ApiResponse>>()
     expectedResponse.value = ResultResponse.Success(dummyResponse)
-    `when`(addStoryViewModel.postStory("Token", description, imageMultipart)).thenReturn(
+    `when`(
+      addStoryViewModel.postStory(
+        "Token",
+        description,
+        imageMultipart,
+        latitude,
+        longitude
+      )
+    ).thenReturn(
       expectedResponse
     )
 
-    val actualResponse = addStoryViewModel.postStory("Token",description, imageMultipart).getOrAwaitValue()
+    val actualResponse =
+      addStoryViewModel.postStory("Token", description, imageMultipart, latitude, longitude)
+        .getOrAwaitValue()
 
-    Mockito.verify(storyRepository).postStory("Token",description, imageMultipart)
+    Mockito.verify(storyRepository)
+      .postStory("Token", description, imageMultipart, latitude, longitude)
     assertNotNull(actualResponse)
     assertTrue(actualResponse is ResultResponse.Success)
     assertEquals(dummyResponse, (actualResponse as ResultResponse.Success).data)
@@ -81,9 +94,10 @@ class AddStoryViewModelTest {
       expectedResponse
     )
 
-    val actualResponse = addStoryViewModel.postStory("Token",description, imageMultipart).getOrAwaitValue()
+    val actualResponse =
+      addStoryViewModel.postStory("Token", description, imageMultipart).getOrAwaitValue()
 
-    Mockito.verify(storyRepository).postStory("Token",description, imageMultipart)
+    Mockito.verify(storyRepository).postStory("Token", description, imageMultipart)
     assertNotNull(actualResponse)
     assertTrue(actualResponse is ResultResponse.Error)
   }

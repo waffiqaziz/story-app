@@ -11,11 +11,12 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.dicoding.storyapp.data.model.UserPreference
 import com.dicoding.storyapp.MainActivity
-import com.dicoding.storyapp.R
 import com.dicoding.storyapp.ui.viewmodel.MainViewModel
 import com.dicoding.storyapp.ui.viewmodel.ViewModelUserFactory
+import kotlinx.coroutines.launch
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
 
@@ -26,8 +27,6 @@ class RoutingActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     installSplashScreen()
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_routing)
-
     setupViewModel()
   }
 
@@ -37,14 +36,31 @@ class RoutingActivity : AppCompatActivity() {
       ViewModelUserFactory(UserPreference.getInstance(dataStore))
     )[MainViewModel::class.java]
 
-    mainViewModel.getUser().observe(this) {
-      if (it.isLogin) {
-        startActivity(Intent(this, MainActivity::class.java), ActivityOptionsCompat.makeSceneTransitionAnimation(this as Activity).toBundle())
-        finish()
-      }else{
-        startActivity(Intent(this, SignInActivity::class.java), ActivityOptionsCompat.makeSceneTransitionAnimation(this as Activity).toBundle())
-        finish()
+    lifecycleScope.launchWhenCreated {
+      launch {
+        mainViewModel.getUser().collect {
+          if(it.isLogin){
+            gotoMainActivity(true)
+          }
+          else gotoMainActivity(false)
+        }
       }
+    }
+  }
+
+  private fun gotoMainActivity(boolean: Boolean){
+    if (boolean) {
+      startActivity(
+        Intent(this, MainActivity::class.java),
+        ActivityOptionsCompat.makeSceneTransitionAnimation(this as Activity).toBundle()
+      )
+      finish()
+    } else {
+      startActivity(
+        Intent(this, SignInActivity::class.java),
+        ActivityOptionsCompat.makeSceneTransitionAnimation(this as Activity).toBundle()
+      )
+      finish()
     }
   }
 }

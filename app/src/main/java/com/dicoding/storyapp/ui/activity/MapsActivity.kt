@@ -15,7 +15,7 @@ import com.dicoding.storyapp.databinding.ActivityMapsBinding
 import com.dicoding.storyapp.data.ResultResponse
 import com.dicoding.storyapp.helper.Helper
 import com.dicoding.storyapp.ui.viewmodel.MapsViewModel
-import com.dicoding.storyapp.ui.viewmodel.ViewModelStoryFactory
+import com.dicoding.storyapp.ui.viewmodel.ViewModelFactory
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -32,7 +32,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
   private lateinit var user: UserModel
 
   private val viewModel: MapsViewModel by viewModels {
-    ViewModelStoryFactory.getInstance(this)
+    ViewModelFactory.getInstance(this)
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,14 +65,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     getMyLocation()
   }
 
-  private val requestPermissionLauncher =
-    registerForActivityResult(
-      ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-      if (isGranted) {
-        getMyLocation()
-      }
+  private val requestPermissionLauncher = registerForActivityResult(
+    ActivityResultContracts.RequestPermission()
+  ) { isGranted: Boolean ->
+    if (isGranted) {
+      getMyLocation()
     }
+  }
 
   @SuppressLint("MissingPermission")
   private fun getMyLocation() {
@@ -89,9 +88,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
   private fun showData() {
     val boundsBuilder = LatLngBounds.Builder()
-    viewModel.getStories(user.token).observe(this){
-      if(it != null){
-        when(it){
+    viewModel.getStories(user.token).observe(this) {
+      if (it != null) {
+        when (it) {
           is ResultResponse.Loading -> {
             binding.progressBar.visibility = View.VISIBLE
           }

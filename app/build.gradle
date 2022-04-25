@@ -40,6 +40,11 @@ android {
   buildFeatures {
     viewBinding true
   }
+  packagingOptions {
+    resources {
+      excludes += ['META-INF/AL2.0', 'META-INF/LGPL2.1']
+    }
+  }
   testOptions {
     animationsDisabled = true
   }
@@ -47,7 +52,7 @@ android {
 
 dependencies {
   implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-
+  
   //desugaring
   coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
 
@@ -73,11 +78,12 @@ dependencies {
   androidTestImplementation 'androidx.test:rules:1.4.0'
   androidTestImplementation 'androidx.test:core-ktx:1.4.0'
 
-  //espresso
   implementation 'androidx.test.espresso:espresso-idling-resource:3.4.0'
   androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
   androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+  androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.4.0'
   androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
+  androidTestImplementation 'androidx.test.espresso:espresso-intents:3.4.0'
 
   //special testing
   testImplementation "androidx.arch.core:core-testing:2.1.0" // InstantTaskExecutorRule
@@ -105,6 +111,7 @@ dependencies {
 
   //google maps
   implementation 'com.google.android.gms:play-services-maps:18.0.2'
+  implementation "com.google.android.gms:play-services-location:19.0.1"
 
   //mockito
   testImplementation 'org.mockito:mockito-core:3.12.4'
