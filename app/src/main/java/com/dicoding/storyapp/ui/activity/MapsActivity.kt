@@ -99,7 +99,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             it.data.forEachIndexed { _, element ->
               val lastLatLng = LatLng(element.lat, element.lon)
 
-              mMap.addMarker(MarkerOptions().position(lastLatLng).title(element.id))
+              mMap.addMarker(MarkerOptions().position(lastLatLng).title(element.name + "\n" + element.description))
               boundsBuilder.include(lastLatLng)
               val bounds: LatLngBounds = boundsBuilder.build()
               mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 64))
