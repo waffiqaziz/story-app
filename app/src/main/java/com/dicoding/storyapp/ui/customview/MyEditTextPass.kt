@@ -11,7 +11,10 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
-import com.dicoding.storyapp.R
+import com.dicoding.storyapp.R.drawable.border_corner
+import com.dicoding.storyapp.R.drawable.ic_eye
+import com.dicoding.storyapp.R.drawable.ic_eye_off
+import com.dicoding.storyapp.R.string.invalid_password
 import com.google.android.material.textfield.TextInputEditText
 
 class MyEditTextPass : TextInputEditText, View.OnTouchListener {
@@ -37,13 +40,13 @@ class MyEditTextPass : TextInputEditText, View.OnTouchListener {
   override fun onDraw(canvas: Canvas) {
     super.onDraw(canvas)
     showEyeButton()
-    setBackgroundResource(R.drawable.border_corner)
+    setBackgroundResource(border_corner)
     textSize = 15f
     textAlignment = View.TEXT_ALIGNMENT_VIEW_START
   }
 
   private fun init() {
-    eyeIcon = ContextCompat.getDrawable(context, R.drawable.ic_eye_off) as Drawable // x button
+    eyeIcon = ContextCompat.getDrawable(context, ic_eye_off) as Drawable // x button
 
     setOnTouchListener(this)
 
@@ -58,13 +61,13 @@ class MyEditTextPass : TextInputEditText, View.OnTouchListener {
 
       override fun afterTextChanged(s: Editable) {
         // check input
-        if (s.toString().length < 6) showError()
+        if (s.toString().length < 8) showError()
       }
     })
   }
 
   private fun showError() {
-    error = context.getString(R.string.invalid_password)
+    error = context.getString(invalid_password)
   }
 
   private fun showEyeButton() {
@@ -104,23 +107,28 @@ class MyEditTextPass : TextInputEditText, View.OnTouchListener {
       }
 
       if (isEyeButtonClicked) {
+        // save last cursor position
+        val mSelectionStart = selectionStart
+        val mSelectionEnd = selectionEnd
+
         return when (event.action) {
           MotionEvent.ACTION_DOWN -> {
             hideEyeButton()
             if (transformationMethod.equals(HideReturnsTransformationMethod.getInstance())) {
               transformationMethod = PasswordTransformationMethod.getInstance() // hide password
-              eyeIcon = ContextCompat.getDrawable(context, R.drawable.ic_eye_off) as Drawable
+              eyeIcon = ContextCompat.getDrawable(context, ic_eye_off) as Drawable
               showEyeButton()
             } else {
               transformationMethod = HideReturnsTransformationMethod.getInstance() // show password
-              eyeIcon = ContextCompat.getDrawable(context, R.drawable.ic_eye) as Drawable
+              eyeIcon = ContextCompat.getDrawable(context, ic_eye) as Drawable
               showEyeButton()
             }
+            setSelection(mSelectionStart, mSelectionEnd)
             true
           }
           else -> false
         }
-      } else return false
+      }
     }
     return false
   }

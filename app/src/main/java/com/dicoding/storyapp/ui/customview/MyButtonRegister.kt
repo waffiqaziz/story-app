@@ -7,7 +7,12 @@ import android.util.AttributeSet
 import android.view.Gravity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
-import com.dicoding.storyapp.R
+import com.dicoding.storyapp.R.color.black
+import com.dicoding.storyapp.R.color.white
+import com.dicoding.storyapp.R.drawable.bg_button_disable
+import com.dicoding.storyapp.R.drawable.bg_button_regular
+import com.dicoding.storyapp.R.string.fill_all
+import com.dicoding.storyapp.R.string.register
 
 class MyButtonRegister : AppCompatButton {
 
@@ -31,19 +36,19 @@ class MyButtonRegister : AppCompatButton {
     init()
   }
 
-  override fun onDraw(canvas: Canvas?) {
+  override fun onDraw(canvas: Canvas) {
     super.onDraw(canvas)
-    background = if(isEnabled) enabledBackground else disabledBackground
+    background = if (isEnabled) enabledBackground else disabledBackground
 
-    setTextColor(ContextCompat.getColor(context,R.color.white))
+    setTextColor(ContextCompat.getColor(context, white))
     textSize = 15f
     gravity = Gravity.CENTER
-    text = if(isEnabled) context.getString(R.string.register) else context.getString(R.string.fill_all)
+    text = if (isEnabled) context.getString(register) else context.getString(fill_all)
   }
 
-  private fun init(){
-    txtColor = ContextCompat.getColor(context, R.color.black)
-    enabledBackground = ContextCompat.getDrawable(context, R.drawable.bg_button) as Drawable
-    disabledBackground = ContextCompat.getDrawable(context, R.drawable.bg_button_disable) as Drawable
+  private fun init() {
+    txtColor = ContextCompat.getColor(context, black)
+    enabledBackground = ContextCompat.getDrawable(context, bg_button_regular) as Drawable
+    disabledBackground = ContextCompat.getDrawable(context, bg_button_disable) as Drawable
   }
 }

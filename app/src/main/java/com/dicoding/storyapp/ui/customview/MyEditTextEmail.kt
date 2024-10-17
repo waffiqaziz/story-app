@@ -10,7 +10,9 @@ import android.util.Patterns
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
-import com.dicoding.storyapp.R
+import com.dicoding.storyapp.R.drawable.border_corner
+import com.dicoding.storyapp.R.drawable.ic_close
+import com.dicoding.storyapp.R.string.invalid_email
 import com.google.android.material.textfield.TextInputEditText
 
 class MyEditTextEmail : TextInputEditText, View.OnTouchListener {
@@ -35,13 +37,13 @@ class MyEditTextEmail : TextInputEditText, View.OnTouchListener {
 
   override fun onDraw(canvas: Canvas) {
     super.onDraw(canvas)
-    setBackgroundResource(R.drawable.border_corner)
+    setBackgroundResource(border_corner)
     textSize = 15f
     textAlignment = View.TEXT_ALIGNMENT_VIEW_START
   }
 
   private fun init() {
-    clearButton = ContextCompat.getDrawable(context, R.drawable.ic_close) as Drawable // x button
+    clearButton = ContextCompat.getDrawable(context, ic_close) as Drawable // x button
 
     setOnTouchListener(this)
 
@@ -57,7 +59,7 @@ class MyEditTextEmail : TextInputEditText, View.OnTouchListener {
       override fun afterTextChanged(s: Editable) {
         if (s.toString().isNotEmpty()) showClearButton() else hideClearButton()
 
-        if(!isEmailValid(s)) {
+        if (!isEmailValid(s)) {
           showError()
         }
       }
@@ -69,7 +71,7 @@ class MyEditTextEmail : TextInputEditText, View.OnTouchListener {
   }
 
   private fun showError() {
-    error = context.getString(R.string.invalid_email)
+    error = context.getString(invalid_email)
   }
 
   private fun showClearButton() {
@@ -111,16 +113,18 @@ class MyEditTextEmail : TextInputEditText, View.OnTouchListener {
       if (isClearButtonClicked) {
         return when (event.action) {
           MotionEvent.ACTION_DOWN -> {
-            clearButton = ContextCompat.getDrawable(context, R.drawable.ic_close) as Drawable
+            clearButton = ContextCompat.getDrawable(context, ic_close) as Drawable
             showClearButton() // show button x
             true
           }
+
           MotionEvent.ACTION_UP -> {
-            clearButton = ContextCompat.getDrawable(context, R.drawable.ic_close) as Drawable
+            clearButton = ContextCompat.getDrawable(context, ic_close) as Drawable
             if (text != null) text?.clear() // clear text
             hideClearButton()  // hide button x
             true
           }
+
           else -> false
         }
       } else return false

@@ -1,4 +1,4 @@
-package com.dicoding.storyapp.util
+package com.dicoding.storyapp.utils
 
 import androidx.test.espresso.idling.CountingIdlingResource
 

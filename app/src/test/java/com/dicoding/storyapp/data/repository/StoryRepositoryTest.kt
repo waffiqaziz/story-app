@@ -2,7 +2,6 @@ package com.dicoding.storyapp.data.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.AsyncPagingDataDiffer
-import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.ListUpdateCallback
 import com.dicoding.storyapp.DataDummy
 import com.dicoding.storyapp.MainCoroutineRule
@@ -77,12 +76,17 @@ class StoryRepositoryTest {
   @Test
   fun `when postStory() is called Should Not Null`() = runTest {
     val expectedResponse = DataDummy.generateDummyApiResponseSuccess()
-    val actualResponse = apiService.addStories("Token", dummyDescription, dummyMultipart, dummyLatitude, dummyLongitude)
+    val actualResponse = apiService.addStories(
+      "Token",
+      dummyDescription,
+      dummyMultipart,
+      dummyLatitude,
+      dummyLongitude
+    )
     Assert.assertNotNull(actualResponse)
     Assert.assertEquals(expectedResponse, actualResponse)
   }
 
-  @OptIn(ExperimentalPagingApi::class)
   @Test
   fun `when getPagingStories() is called Should Not Null`() = runTest {
     val mainCoroutineRule = MainCoroutineRule()

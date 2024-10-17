@@ -9,17 +9,22 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.dicoding.storyapp.R
+import com.dicoding.storyapp.R.string.continue_
+import com.dicoding.storyapp.R.string.information
+import com.dicoding.storyapp.R.string.register_failed
+import com.dicoding.storyapp.R.string.register_success
 import com.dicoding.storyapp.data.ResultResponse
 import com.dicoding.storyapp.databinding.ActivityRegisterBinding
-import com.dicoding.storyapp.helper.Helper
+import com.dicoding.storyapp.helper.Helper.isEmailValid
 import com.dicoding.storyapp.ui.viewmodel.RegisterViewModel
 import com.dicoding.storyapp.ui.viewmodel.ViewModelFactory
+import com.dicoding.storyapp.utils.Const.MIN_CHARACTERS
+import com.dicoding.storyapp.utils.Helpers.transparentStatusBar
 
 class RegisterActivity : AppCompatActivity() {
 
   private lateinit var binding: ActivityRegisterBinding
-  private val registerViewModel : RegisterViewModel by viewModels{
+  private val registerViewModel: RegisterViewModel by viewModels {
     ViewModelFactory.getInstance(this)
   }
 
@@ -28,6 +33,7 @@ class RegisterActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(binding.root)
 
+    transparentStatusBar(window)
     setMyButtonEnable()
     editTextListener()
     buttonListener()
@@ -66,9 +72,9 @@ class RegisterActivity : AppCompatActivity() {
   private fun setMyButtonEnable() {
     binding.btnRegister.isEnabled =
       binding.etEmail.text.toString().isNotEmpty() &&
-          binding.etPass.text.toString().isNotEmpty() &&
-          binding.etPass.text.toString().length >= 6 &&
-          Helper.isEmailValid(binding.etEmail.text.toString())
+        binding.etPass.text.toString().isNotEmpty() &&
+        binding.etPass.text.toString().length >= MIN_CHARACTERS &&
+        isEmailValid(binding.etEmail.text.toString())
   }
 
   private fun buttonListener() {
@@ -77,16 +83,20 @@ class RegisterActivity : AppCompatActivity() {
       val email = binding.etEmail.text.toString()
       val password = binding.etPass.text.toString()
 
-      registerViewModel.register(name, email, password).observe(this){
+      registerViewModel.register(name, email, password).observe(this) {
         when (it) {
           is ResultResponse.Loading -> {
             binding.progressBar.visibility = View.VISIBLE
+            binding.btnRegister.isEnabled = false
           }
+
           is ResultResponse.Success -> {
             binding.progressBar.visibility = View.GONE
-            showAlertDialog(true, getString(R.string.register_success))
+            showAlertDialog(true, getString(register_success))
           }
+
           is ResultResponse.Error -> {
+            binding.btnRegister.isEnabled = true
             binding.progressBar.visibility = View.GONE
             showAlertDialog(false, it.error)
           }
@@ -101,9 +111,9 @@ class RegisterActivity : AppCompatActivity() {
   private fun showAlertDialog(param: Boolean, message: String) {
     if (param) {
       AlertDialog.Builder(this).apply {
-        setTitle(getString(R.string.information))
+        setTitle(getString(information))
         setMessage(message)
-        setPositiveButton(getString(R.string.continue_)) { _, _ ->
+        setPositiveButton(getString(continue_)) { _, _ ->
           val intent = Intent(context, SignInActivity::class.java)
           intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
           startActivity(intent)
@@ -114,9 +124,9 @@ class RegisterActivity : AppCompatActivity() {
       }
     } else {
       AlertDialog.Builder(this).apply {
-        setTitle(getString(R.string.information))
-        setMessage(getString(R.string.register_failed)+", $message")
-        setPositiveButton(getString(R.string.continue_)) { _, _ ->
+        setTitle(getString(information))
+        setMessage(getString(register_failed) + ", $message")
+        setPositiveButton(getString(continue_)) { _, _ ->
           binding.progressBar.visibility = View.GONE
         }
         create()

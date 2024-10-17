@@ -17,13 +17,23 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.dicoding.storyapp.R
+import com.dicoding.storyapp.R.string.invalid_permission
+import com.dicoding.storyapp.R.string.invalid_description
+import com.dicoding.storyapp.R.string.upload_success
+import com.dicoding.storyapp.R.string.information
+import com.dicoding.storyapp.R.string.upload_failed
+import com.dicoding.storyapp.R.string.continue_
+import com.dicoding.storyapp.R.string.no_attach_file
+import com.dicoding.storyapp.R.string.enable_gps_permission
 import com.dicoding.storyapp.data.ResultResponse
 import com.dicoding.storyapp.data.model.UserModel
 import com.dicoding.storyapp.databinding.ActivityAddStoryBinding
 import com.dicoding.storyapp.helper.Helper
+import com.dicoding.storyapp.helper.Helper.showToastShort
 import com.dicoding.storyapp.ui.viewmodel.AddStoryViewModel
 import com.dicoding.storyapp.ui.viewmodel.ViewModelFactory
+import com.dicoding.storyapp.utils.Helpers.parcelable
+import com.dicoding.storyapp.utils.Helpers.serializable
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import okhttp3.MediaType.Companion.toMediaType
@@ -33,7 +43,6 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
-
 
 class AddStoryActivity : AppCompatActivity() {
   private lateinit var binding: ActivityAddStoryBinding
@@ -56,7 +65,7 @@ class AddStoryActivity : AppCompatActivity() {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     if (requestCode == REQUEST_CODE_PERMISSIONS) {
       if (!allPermissionsGranted()) {
-        Helper.showToastLong(this, getString(R.string.invalid_permission))
+        Helper.showToastLong(this, getString(invalid_permission))
         finish()
       }
     }
@@ -72,11 +81,18 @@ class AddStoryActivity : AppCompatActivity() {
     setContentView(binding.root)
     setupToolbar()
 
-    user = intent.getParcelableExtra(EXTRA_USER)!!
+    getParcelable()
     fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
     getPermission()
     buttonListener()
+  }
+
+  private fun getParcelable() {
+    user = requireNotNull(intent.parcelable(EXTRA_USER)) {
+      showToastShort(this, "Something went wrong")
+      Log.e(TAG, "Data Extra is Null")
+    }
   }
 
   private fun buttonListener() {
@@ -109,7 +125,7 @@ class AddStoryActivity : AppCompatActivity() {
   }
 
   override fun onSupportNavigateUp(): Boolean {
-    onBackPressed()
+    onBackPressedDispatcher.onBackPressed()
     finish()
     return true
   }
@@ -121,19 +137,26 @@ class AddStoryActivity : AppCompatActivity() {
 
   private val launcherIntentCameraX = registerForActivityResult(
     ActivityResultContracts.StartActivityForResult()
-  ) {
-    if (it.resultCode == CAMERA_X_RESULT) {
-      val myFile = it.data?.getSerializableExtra("picture") as File
-      val isBackCamera = it.data?.getBooleanExtra("isBackCamera", true) as Boolean
+  ) { result ->
+    if (result.resultCode == CAMERA_X_RESULT) {
+      // Use the serializable extension function to retrieve the File object from the intent's data
+      val myFile: File? = result.data?.serializable("picture")
 
+      // Retrieve the boolean flag indicating if it's from the back camera
+      val isBackCamera = result.data?.getBooleanExtra("isBackCamera", true) ?: true
+
+      // Store the file and apply necessary operations (like rotating the bitmap)
       getFile = myFile
-      result =
-        Helper.rotateBitmap(
-          BitmapFactory.decodeFile(getFile?.path),
+      getFile?.let { file ->
+        // Decode and rotate the bitmap if the file exists
+        this.result = Helper.rotateBitmap(
+          BitmapFactory.decodeFile(file.path),
           isBackCamera
         )
+        // Update the ImageView with the rotated bitmap
+        binding.ivPreview.setImageBitmap(this.result)
+      }
     }
-    binding.ivPreview.setImageBitmap(result)
   }
 
   private fun startGallery() {
@@ -158,8 +181,9 @@ class AddStoryActivity : AppCompatActivity() {
   private fun uploadStory() {
     when {
       binding.etDescription.text.toString().isEmpty() -> {
-        binding.etDescription.error = getString(R.string.invalid_description)
+        binding.etDescription.error = getString(invalid_description)
       }
+
       getFile != null -> {
         val file = Helper.reduceFileImage(getFile as File)
         val description = binding.etDescription.text.toString()
@@ -185,17 +209,19 @@ class AddStoryActivity : AppCompatActivity() {
               is ResultResponse.Loading -> {
                 binding.progressBar.visibility = View.VISIBLE
               }
+
               is ResultResponse.Success -> {
                 binding.progressBar.visibility = View.GONE
-                Helper.showToastLong(this, getString(R.string.upload_success))
+                Helper.showToastLong(this, getString(upload_success))
                 finish()
               }
+
               is ResultResponse.Error -> {
                 binding.progressBar.visibility = View.GONE
                 AlertDialog.Builder(this).apply {
-                  setTitle(getString(R.string.information))
-                  setMessage(getString(R.string.upload_failed) + ", ${it.error}")
-                  setPositiveButton(getString(R.string.continue_)) { _, _ ->
+                  setTitle(getString(information))
+                  setMessage(getString(upload_failed) + ", ${it.error}")
+                  setPositiveButton(getString(continue_)) { _, _ ->
                     binding.progressBar.visibility = View.GONE
                   }
                   create()
@@ -206,8 +232,9 @@ class AddStoryActivity : AppCompatActivity() {
           }
         }
       }
+
       else -> {
-        Helper.showToastShort(this@AddStoryActivity, getString(R.string.no_attach_file))
+        showToastShort(this@AddStoryActivity, getString(no_attach_file))
       }
     }
   }
@@ -224,7 +251,7 @@ class AddStoryActivity : AppCompatActivity() {
           location = it
           Log.d(TAG, "Lat : ${it.latitude}, Lon : ${it.longitude}")
         } else {
-          Helper.showToastLong(this, getString(R.string.enable_gps_permission))
+          Helper.showToastLong(this, getString(enable_gps_permission))
           binding.switchCompat.isChecked = false
         }
       }

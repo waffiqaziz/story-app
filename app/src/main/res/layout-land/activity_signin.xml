@@ -2,13 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/parentRelative"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:id="@+id/parentRelative"
-  android:paddingStart="40dp"
-  android:paddingEnd="40dp"
+  android:paddingHorizontal="@dimen/margin_edge"
   tools:context=".ui.activity.SignInActivity">
-
 
   <ProgressBar
     android:id="@+id/progress_bar"
@@ -25,8 +23,10 @@
 
   <ImageView
     android:id="@+id/imageView"
-    android:layout_width="250dp"
+    android:layout_width="0dp"
     android:layout_height="300dp"
+    android:layout_marginStart="@dimen/margin_edge"
+    android:layout_marginEnd="10dp"
     android:contentDescription="@string/picture_logo"
     android:src="@drawable/ic_logo"
     app:layout_constraintBottom_toBottomOf="parent"
@@ -56,18 +56,15 @@
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="32dp"
-    android:layout_marginTop="24dp"
-    android:layout_marginEnd="16dp"
+    android:layout_marginEnd="@dimen/margin_edge"
     android:layout_marginBottom="10dp"
     android:hint="@string/input_email"
     android:inputType="textEmailAddress"
     android:minHeight="48dp"
-    android:paddingStart="16sp"
-    android:paddingEnd="16sp"
+    android:paddingHorizontal="16sp"
     app:layout_constraintBottom_toTopOf="@+id/et_pass"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="@+id/guideline2"
-    app:layout_constraintTop_toBottomOf="@+id/textView" />
+    app:layout_constraintStart_toStartOf="@+id/guideline2" />
 
   <com.dicoding.storyapp.ui.customview.MyEditTextPass
     android:id="@+id/et_pass"
@@ -76,13 +73,12 @@
     android:layout_height="wrap_content"
     android:layout_gravity="start"
     android:layout_marginStart="32dp"
-    android:layout_marginEnd="16dp"
+    android:layout_marginEnd="@dimen/margin_edge"
     android:layout_marginBottom="16dp"
     android:hint="@string/input_password"
     android:inputType="textPassword"
     android:minHeight="48dp"
-    android:paddingStart="16sp"
-    android:paddingEnd="16sp"
+    android:paddingHorizontal="16sp"
     app:layout_constraintBottom_toTopOf="@+id/btn_signIn"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -94,8 +90,7 @@
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="32dp"
-    android:layout_marginEnd="16dp"
-    android:layout_marginBottom="16dp"
+    android:layout_marginEnd="@dimen/margin_edge"
     android:contentDescription="@string/login_account"
     app:layout_constraintBottom_toTopOf="@+id/et_signIn"
     app:layout_constraintEnd_toEndOf="parent"
@@ -108,6 +103,8 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="32dp"
     android:layout_marginEnd="16dp"
+    android:background="@drawable/ripple_rounded_background"
+    android:padding="15dp"
     android:text="@string/did_t_have_account"
     android:textColor="@color/blue_300"
     android:textStyle="bold"
@@ -122,5 +119,16 @@
     android:orientation="vertical"
     app:layout_constraintGuide_begin="286dp" />
 
+  <TextView
+    android:id="@+id/copyrightTextView"
+    style="@style/TextViewRegular"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin_edge"
+    android:text="@string/dicoding_course"
+    android:textSize="14sp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@+id/guideline2"
+    app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

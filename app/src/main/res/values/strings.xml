@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">StoryApp</string>
+  <string name="app_name">Story App</string>
 
   <string name="input_password">Input your password</string>
   <string name="input_email">Input your email</string>
@@ -7,7 +7,7 @@
   <string name="picture_logo">This StoryApp logo</string>
 
   <string name="invalid_email">Not a valid email</string>
-  <string name="invalid_password">Password must be >5 characters</string>
+  <string name="invalid_password">Password must be at least 8 characters long</string>
 
   <string name="sign_in">Sign In</string>
   <string name="register">Register</string>
@@ -24,7 +24,7 @@
   <string name="fill_all">Fill All The Field With Correctly</string>
 
   <string name="greeting">Hi %1$s,</string>
-  <string name="created_add">Created at %1$s,</string>
+  <string name="created_add">Created at %1$s</string>
   <string name="dicoding_course">Dicoding 2022</string>
   <string name="home_description">Post and share your story, share your activities, and get to know other people\'s stories</string>
   <string name="login_account">Login your account</string>
@@ -36,6 +36,9 @@
   <string name="upload_success">Upload Success Swipe Up to Refresh</string>
   <string name="sign_in_failed">Sign In Failed</string>
   <string name="log_out_success">Log Out Success</string>
+  <string name="warning">Warning</string>
+  <string name="warning_log_out">Signing out will end your session. Are you sure you want to continue?</string>
+  <string name="no">No</string>
   <string name="information">Information</string>
 
   <string name="camera">Camera</string>

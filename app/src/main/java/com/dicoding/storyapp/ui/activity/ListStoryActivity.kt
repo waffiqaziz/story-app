@@ -2,19 +2,24 @@ package com.dicoding.storyapp.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.storyapp.data.model.UserModel
 import com.dicoding.storyapp.databinding.ActivityListStoryBinding
+import com.dicoding.storyapp.helper.Helper
 import com.dicoding.storyapp.ui.adapter.LoadingStateAdapter
 import com.dicoding.storyapp.ui.adapter.StoryAdapter
 import com.dicoding.storyapp.ui.viewmodel.ListStoryViewModel
 import com.dicoding.storyapp.ui.viewmodel.ViewModelFactory
+import com.dicoding.storyapp.utils.Helpers.parcelable
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -34,12 +39,19 @@ class ListStoryActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     _binding = ActivityListStoryBinding.inflate(layoutInflater)
     setContentView(binding?.root)
-    user = intent.getParcelableExtra(EXTRA_USER)!!
 
+    getParcelable()
     initAdapter()
     initSwipeToRefresh()
     initToolbar()
     buttonListener()
+  }
+
+  private fun getParcelable() {
+    user = requireNotNull(intent.parcelable(EXTRA_USER)) {
+      Helper.showToastShort(this, "Something went wrong")
+      Log.e(TAG, "Data Extra is Null")
+    }
   }
 
   private fun initAdapter() {
@@ -51,9 +63,11 @@ class ListStoryActivity : AppCompatActivity() {
     binding?.rvStory?.layoutManager = LinearLayoutManager(this)
     binding?.rvStory?.setHasFixedSize(true)
 
-    lifecycleScope.launchWhenCreated {
-      adapter.loadStateFlow.collect {
-        binding?.swipeRefresh?.isRefreshing = it.mediator?.refresh is LoadState.Loading
+    lifecycleScope.launch {
+      lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        adapter.loadStateFlow.collect {
+          binding?.swipeRefresh?.isRefreshing = it.mediator?.refresh is LoadState.Loading
+        }
       }
     }
     lifecycleScope.launch {
@@ -81,7 +95,8 @@ class ListStoryActivity : AppCompatActivity() {
   }
 
   override fun onSupportNavigateUp(): Boolean {
-    onBackPressed()
+    onBackPressedDispatcher.onBackPressed()
+    finish()
     return true
   }
 
@@ -104,6 +119,7 @@ class ListStoryActivity : AppCompatActivity() {
   }
 
   companion object {
+    const val TAG = "ListStoryActivity"
     const val EXTRA_USER = "user"
   }
 }

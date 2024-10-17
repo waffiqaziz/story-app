@@ -1,19 +1,20 @@
 package com.dicoding.storyapp.ui.activity
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.app.ActivityOptionsCompat
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.dicoding.storyapp.data.model.UserPreference
+import androidx.lifecycle.repeatOnLifecycle
 import com.dicoding.storyapp.MainActivity
+import com.dicoding.storyapp.data.model.UserPreference
 import com.dicoding.storyapp.ui.viewmodel.MainViewModel
 import com.dicoding.storyapp.ui.viewmodel.ViewModelUserFactory
 import kotlinx.coroutines.launch
@@ -23,10 +24,12 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("s
 class RoutingActivity : AppCompatActivity() {
 
   private lateinit var mainViewModel: MainViewModel
+  private lateinit var splashScreen: SplashScreen
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    installSplashScreen()
+    splashScreen = installSplashScreen()
     super.onCreate(savedInstanceState)
+    splashScreen.setKeepOnScreenCondition { true }
     setupViewModel()
   }
 
@@ -36,31 +39,23 @@ class RoutingActivity : AppCompatActivity() {
       ViewModelUserFactory(UserPreference.getInstance(dataStore))
     )[MainViewModel::class.java]
 
-    lifecycleScope.launchWhenCreated {
-      launch {
+    lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
         mainViewModel.getUser().collect {
-          if(it.isLogin){
+          if (it.isLogin) {
             gotoMainActivity(true)
-          }
-          else gotoMainActivity(false)
+          } else gotoMainActivity(false)
         }
       }
     }
   }
 
-  private fun gotoMainActivity(boolean: Boolean){
+  private fun gotoMainActivity(boolean: Boolean) {
     if (boolean) {
-      startActivity(
-        Intent(this, MainActivity::class.java),
-        ActivityOptionsCompat.makeSceneTransitionAnimation(this as Activity).toBundle()
-      )
-      finish()
+      startActivity(Intent(this, MainActivity::class.java))
     } else {
-      startActivity(
-        Intent(this, SignInActivity::class.java),
-        ActivityOptionsCompat.makeSceneTransitionAnimation(this as Activity).toBundle()
-      )
-      finish()
+      startActivity(Intent(this, SignInActivity::class.java))
     }
+    finish()
   }
 }

@@ -1,29 +1,11 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/detail_view"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:orientation="vertical"
-  tools:context=".ui.activity.DetailStoryActivity"
-  android:id="@+id/detail_view">
-
-  <ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="16dp"
-    android:layout_marginEnd="16dp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/tv_created_time">
-
-    <TextView
-      android:id="@+id/tv_description"
-      style="@style/TextViewRegular"
-      android:transitionName="description"
-      tools:text="@string/description" />
-
-  </ScrollView>
+  tools:context=".ui.activity.DetailStoryActivity">
 
   <androidx.appcompat.widget.Toolbar
     android:id="@+id/toolbar"
@@ -37,47 +19,81 @@
     app:layout_constraintTop_toTopOf="parent"
     app:title="@string/detail_story" />
 
-
   <ImageView
     android:id="@+id/iv_story"
     android:layout_width="match_parent"
     android:layout_height="400dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="12dp"
-    android:layout_marginEnd="16dp"
+    android:layout_margin="@dimen/margin_edge"
+    android:adjustViewBounds="true"
     android:contentDescription="@string/image_story"
+    android:scaleType="centerCrop"
     android:transitionName="image"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.0"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/toolbar"
     tools:src="@drawable/ic_place_holder" />
 
-  <TextView
-    android:id="@+id/tv_name"
-    style="@style/TextViewBold"
-    android:layout_width="wrap_content"
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="20dp"
-    android:textSize="20sp"
-    android:transitionName="name"
-    app:layout_constraintEnd_toStartOf="@+id/tv_created_time"
-    app:layout_constraintHorizontal_bias="0.0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/iv_story"
-    tools:text="@string/name" />
+    android:layout_marginHorizontal="@dimen/margin_edge"
+    android:orientation="horizontal">
 
-  <TextView
-    android:id="@+id/tv_created_time"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="16dp"
-    android:transitionName="created"
-    app:layout_constraintBottom_toBottomOf="@+id/tv_name"
+    <TextView
+      android:id="@+id/tv_name"
+      style="@style/TextViewBold"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:textSize="20sp"
+      android:transitionName="name"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@+id/tv_created_time"
+      app:layout_constraintHorizontal_chainStyle="spread"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="A very long name that could overlap" />
+
+    <TextView
+      android:id="@+id/tv_created_time"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:transitionName="created"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="Created at 16 Okt 2024 | 12:00" />
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+  <ScrollView
+    android:id="@+id/scroll_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="@dimen/margin_edge"
+    android:layout_marginTop="@dimen/margin_spacing"
+    app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="@+id/tv_name"
-    tools:text="@string/created_add" />
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/tv_created_time"
+    tools:layout_height="wrap_content">
 
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+      <TextView
+        android:id="@+id/tv_description"
+        style="@style/TextViewRegular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:transitionName="description"
+        tools:text="Lorem ipsum odor amet, consectetuer adipiscing elit. Pellentesque mauris nullam cras ullamcorper mollis facilisis. Nullam congue inceptos imperdiet hendrerit felis faucibus fusce tincidunt ornare. Scelerisque nisi luctus praesent potenti; curae finibus lacus. Fames aliquet consequat hac arcu, lacus sollicitudin imperdiet curae. Congue urna suscipit arcu curabitur luctus vitae per metus. Tincidunt ultricies fames et pellentesque potenti aliquam porta potenti. Facilisis accumsan lacus leo urna morbi parturient vitae. \n\nPharetra elementum litora purus aliquet duis quam ornare. Suspendisse nostra placerat magnis penatibus, arcu gravida cras luctus phasellus. Neque primis elementum posuere dignissim penatibus nulla. Eu facilisis per taciti phasellus tristique elit magnis. Potenti nisl sapien habitant amet aenean vehicula feugiat eleifend malesuada. Libero ut gravida interdum gravida justo nisi morbi dictumst cubilia." />
+
+    </LinearLayout>
+  </ScrollView>
+
+</LinearLayout>

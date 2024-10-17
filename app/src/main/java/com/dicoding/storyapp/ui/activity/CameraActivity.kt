@@ -12,7 +12,8 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import com.dicoding.storyapp.R
+import com.dicoding.storyapp.R.string.failed_open_camera
+import com.dicoding.storyapp.R.string.invalid_capture
 import com.dicoding.storyapp.databinding.ActivityCameraBinding
 import com.dicoding.storyapp.helper.Helper
 import com.dicoding.storyapp.ui.activity.AddStoryActivity.Companion.CAMERA_X_RESULT
@@ -30,8 +31,9 @@ class CameraActivity : AppCompatActivity() {
 
     binding.captureImage.setOnClickListener { takePhoto() }
     binding.switchCamera.setOnClickListener {
-      cameraSelector = if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) CameraSelector.DEFAULT_FRONT_CAMERA
-      else CameraSelector.DEFAULT_BACK_CAMERA
+      cameraSelector =
+        if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) CameraSelector.DEFAULT_FRONT_CAMERA
+        else CameraSelector.DEFAULT_BACK_CAMERA
       startCamera()
     }
   }
@@ -53,7 +55,7 @@ class CameraActivity : AppCompatActivity() {
       ContextCompat.getMainExecutor(this),
       object : ImageCapture.OnImageSavedCallback {
         override fun onError(exc: ImageCaptureException) {
-          Helper.showToastShort(this@CameraActivity,getString(R.string.invalid_capture))
+          Helper.showToastShort(this@CameraActivity, getString(invalid_capture))
         }
 
         override fun onImageSaved(output: ImageCapture.OutputFileResults) {
@@ -91,7 +93,7 @@ class CameraActivity : AppCompatActivity() {
           imageCapture
         )
       } catch (exc: Exception) {
-        Helper.showToastShort(this,getString(R.string.failed_open_camera))
+        Helper.showToastShort(this, getString(failed_open_camera))
       }
     }, ContextCompat.getMainExecutor(this))
   }

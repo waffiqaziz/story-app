@@ -19,14 +19,27 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.dicoding.storyapp.MainActivity
-import com.dicoding.storyapp.R
+import com.dicoding.storyapp.R.id.btn_camera_x
+import com.dicoding.storyapp.R.id.btn_gallery
+import com.dicoding.storyapp.R.id.btn_upload
+import com.dicoding.storyapp.R.id.detail_view
+import com.dicoding.storyapp.R.id.et_description
+import com.dicoding.storyapp.R.id.iv_add_story
+import com.dicoding.storyapp.R.id.iv_show_map
+import com.dicoding.storyapp.R.id.iv_story
+import com.dicoding.storyapp.R.id.map_view
+import com.dicoding.storyapp.R.id.rv_story
+import com.dicoding.storyapp.R.id.swipe_refresh
+import com.dicoding.storyapp.R.id.switchCompat
+import com.dicoding.storyapp.R.id.tv_created_time
+import com.dicoding.storyapp.R.id.tv_description
+import com.dicoding.storyapp.R.id.tv_name
 import com.dicoding.storyapp.data.model.UserModel
-import com.dicoding.storyapp.util.EspressoIdlingResource
+import com.dicoding.storyapp.utils.EspressoIdlingResource
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
@@ -59,16 +72,16 @@ class ListStoryActivityEndToEndTest {
     scenario = launchActivity(intent)
 
     Intents.init()
-    onView(withId(R.id.rv_story)).check(matches(isDisplayed()))
-    onView(withId(R.id.rv_story)).perform(
+    onView(withId(rv_story)).check(matches(isDisplayed()))
+    onView(withId(rv_story)).perform(
       RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
         10
       )
     )
-    onView(withId(R.id.swipe_refresh)).check(matches(isDisplayed()))
-    onView(withId(R.id.iv_add_story)).check(matches(isDisplayed()))
-    onView(withId(R.id.iv_show_map)).check(matches(isDisplayed()))
-    onView(withId(R.id.rv_story)).perform(
+    onView(withId(swipe_refresh)).check(matches(isDisplayed()))
+    onView(withId(iv_add_story)).check(matches(isDisplayed()))
+    onView(withId(iv_show_map)).check(matches(isDisplayed()))
+    onView(withId(rv_story)).perform(
       RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
         0,
         click()
@@ -84,18 +97,18 @@ class ListStoryActivityEndToEndTest {
     scenario = launchActivity(intent)
 
     Intents.init()
-    onView(withId(R.id.rv_story)).perform(
+    onView(withId(rv_story)).perform(
       RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
         0,
         click()
       )
     )
     intended(hasComponent(DetailStoryActivity::class.java.name))
-    onView(withId(R.id.detail_view)).check(matches(isDisplayed()))
-    onView(withId(R.id.tv_description)).check(matches(isDisplayed()))
-    onView(withId(R.id.iv_story)).check(matches(isDisplayed()))
-    onView(withId(R.id.tv_name)).check(matches(isDisplayed()))
-    onView(withId(R.id.tv_created_time)).check(matches(isDisplayed()))
+    onView(withId(detail_view)).check(matches(isDisplayed()))
+    onView(withId(tv_description)).check(matches(isDisplayed()))
+    onView(withId(iv_story)).check(matches(isDisplayed()))
+    onView(withId(tv_name)).check(matches(isDisplayed()))
+    onView(withId(tv_created_time)).check(matches(isDisplayed()))
     Intents.release()
   }
 
@@ -106,9 +119,9 @@ class ListStoryActivityEndToEndTest {
     scenario = launchActivity(intent)
 
     Intents.init()
-    onView(withId(R.id.iv_show_map)).perform(click())
+    onView(withId(iv_show_map)).perform(click())
     intended(hasComponent(MapsActivity::class.java.name))
-    onView(withId(R.id.map_view)).check(matches(isDisplayed()))
+    onView(withId(map_view)).check(matches(isDisplayed()))
     Intents.release()
   }
 
@@ -118,11 +131,11 @@ class ListStoryActivityEndToEndTest {
     intent.putExtra(ListStoryActivity.EXTRA_USER, user)
     scenario = launchActivity(intent)
 
-    onView(withId(R.id.iv_add_story)).perform(click())
-    onView(withId(R.id.switchCompat)).check(matches(isDisplayed()))
-    onView(withId(R.id.btn_gallery)).check(matches(isDisplayed()))
-    onView(withId(R.id.btn_camera_x)).check(matches(isDisplayed()))
-    onView(withId(R.id.et_description)).check(matches(isDisplayed()))
-    onView(withId(R.id.btn_upload)).check(matches(isDisplayed()))
+    onView(withId(iv_add_story)).perform(click())
+    onView(withId(switchCompat)).check(matches(isDisplayed()))
+    onView(withId(btn_gallery)).check(matches(isDisplayed()))
+    onView(withId(btn_camera_x)).check(matches(isDisplayed()))
+    onView(withId(et_description)).check(matches(isDisplayed()))
+    onView(withId(btn_upload)).check(matches(isDisplayed()))
   }
 }

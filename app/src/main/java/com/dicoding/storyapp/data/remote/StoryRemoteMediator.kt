@@ -95,5 +95,4 @@ class StoryRemoteMediator(
   private companion object {
     const val INITIAL_PAGE_INDEX = 1
   }
-
 }

@@ -1,0 +1,47 @@
+name: Android CI
+
+on:
+  push:
+    branches:
+      - updated-version
+    paths-ignore:
+      - 'README.md'
+      - 'TEST_CASE.md'
+  pull_request:
+    paths-ignore:
+      - 'README.md'
+      - 'TEST_CASE.md'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for Gradle wrapper
+        run: chmod +x gradlew
+
+      - name: Inject MAPS_API_KEY into local.properties
+        run: echo "MAPS_API_KEY=${{ secrets.MAPS_API_KEY }}" >> local.properties
+
+      - name: Run unit tests
+        run: ./gradlew test --stacktrace --info
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-reports
+          path: app/build/reports/tests/testDebugUnitTest/
+
+      - name: Build with Gradle Wrapper
+        run: ./gradlew assembleDebug --stacktrace

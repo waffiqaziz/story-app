@@ -7,20 +7,20 @@ import androidx.paging.PagingState
 import com.dicoding.storyapp.data.remote.response.ListStoryItem
 
 class PagedTestDataSource :
-    PagingSource<Int, LiveData<List<ListStoryItem>>>() {
+  PagingSource<Int, LiveData<List<ListStoryItem>>>() {
 
-    companion object {
-        fun snapshot(items: List<ListStoryItem>): PagingData<ListStoryItem> {
-            return PagingData.from(items)
-        }
+  companion object {
+    fun snapshot(items: List<ListStoryItem>): PagingData<ListStoryItem> {
+      return PagingData.from(items)
     }
+  }
 
-    override fun getRefreshKey(state: PagingState<Int, LiveData<List<ListStoryItem>>>): Int {
-        return 0
-    }
+  override fun getRefreshKey(state: PagingState<Int, LiveData<List<ListStoryItem>>>): Int {
+    return 0
+  }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, LiveData<List<ListStoryItem>>> {
-        return LoadResult.Page(emptyList(), 0, 1)
-    }
+  override suspend fun load(params: LoadParams<Int>): LoadResult<Int, LiveData<List<ListStoryItem>>> {
+    return LoadResult.Page(emptyList(), 0, 1)
+  }
 
 }

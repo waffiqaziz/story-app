@@ -10,13 +10,17 @@ import android.net.Uri
 import android.os.Environment
 import android.util.Patterns
 import android.widget.Toast
-import com.dicoding.storyapp.R
-import java.io.*
+import com.dicoding.storyapp.R.string.app_name
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.util.*
+import java.util.Locale
 
 object Helper {
 
@@ -34,7 +38,7 @@ object Helper {
 
   fun createFile(application: Application): File {
     val mediaDir = application.externalMediaDirs.firstOrNull()?.let {
-      File(it, application.resources.getString(R.string.app_name)).apply { mkdirs() }
+      File(it, application.resources.getString(app_name)).apply { mkdirs() }
     }
 
     val outputDirectory = if (
@@ -129,6 +133,5 @@ object Helper {
       .withZone(ZoneId.of(targetTimeZone))
     return formatter.format(instant)
   }
-
 }
 

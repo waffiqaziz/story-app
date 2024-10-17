@@ -16,10 +16,10 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.dicoding.storyapp.JsonConverter
-import com.dicoding.storyapp.R
+import com.dicoding.storyapp.R.id.rv_story
 import com.dicoding.storyapp.data.model.UserModel
 import com.dicoding.storyapp.data.remote.retrofit.ApiConfig
-import com.dicoding.storyapp.util.EspressoIdlingResource
+import com.dicoding.storyapp.utils.EspressoIdlingResource
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
@@ -66,15 +66,15 @@ class ListStoryActivityTest {
       .setBody(JsonConverter.readStringFromFile("success_response.json"))
     mockWebServer.enqueue(mockResponse)
 
-    onView(withId(R.id.rv_story)).check(
+    onView(withId(rv_story)).check(
       matches(isDisplayed())
     )
     onView(withText("Zekken"))
       .check(matches(isDisplayed()))
-    onView(withId(R.id.rv_story)).perform(
+    onView(withId(rv_story)).perform(
       ViewActions.swipeUp()
     )
-    onView(withId(R.id.rv_story))
+    onView(withId(rv_story))
       .perform(
         RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
           hasDescendant(withText("ya"))
@@ -92,10 +92,9 @@ class ListStoryActivityTest {
       .setResponseCode(500) // error
     mockWebServer.enqueue(mockResponse)
 
-    onView(withId(R.id.rv_story))
+    onView(withId(rv_story))
       .check(matches(isDisplayed()))
     onView(withText("Oops.. something went wrong. Check your connection"))
       .check(matches(isDisplayed()))
   }
-
 }

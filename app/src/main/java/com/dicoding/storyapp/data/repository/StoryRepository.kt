@@ -11,7 +11,7 @@ import com.dicoding.storyapp.data.remote.response.ListStoryItem
 import com.dicoding.storyapp.data.remote.response.LoginResult
 import com.dicoding.storyapp.data.remote.retrofit.ApiService
 import com.dicoding.storyapp.data.room.StoryDatabase
-import com.dicoding.storyapp.util.wrapEspressoIdlingResource
+import com.dicoding.storyapp.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

@@ -5,17 +5,19 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.dicoding.storyapp.R
+import com.dicoding.storyapp.R.drawable.ic_broken_image
+import com.dicoding.storyapp.R.drawable.ic_place_holder
+import com.dicoding.storyapp.R.string.created_add
 import com.dicoding.storyapp.data.remote.response.ListStoryItem
 import com.dicoding.storyapp.databinding.ItemListStoryBinding
 import com.dicoding.storyapp.helper.Helper
 import com.dicoding.storyapp.ui.activity.DetailStoryActivity
-import java.util.*
-import androidx.core.util.Pair
+import java.util.TimeZone
 
 class StoryAdapter :
   PagingDataAdapter<ListStoryItem, StoryAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -36,22 +38,21 @@ class StoryAdapter :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(story: ListStoryItem) {
-      with(binding) {
+      binding.apply {
         Glide.with(imgItemImage)
           .load(story.photoUrl) // URL Avatar
-          .placeholder(R.drawable.ic_place_holder)
-          .error(R.drawable.ic_broken_image)
+          .placeholder(ic_place_holder)
+          .error(ic_broken_image)
           .into(imgItemImage)
         tvName.text = story.name
         tvDescription.text = story.description
         tvCreatedTime.text =
           binding.root.resources.getString(
-            R.string.created_add,
+            created_add,
             Helper.formatDate(story.createdAt, TimeZone.getDefault().id)
           )
 
-        // image OnClickListener
-        imgItemImage.setOnClickListener {
+        itemView.setOnClickListener {
           val optionsCompat: ActivityOptionsCompat =
             ActivityOptionsCompat.makeSceneTransitionAnimation(
               itemView.context as Activity,

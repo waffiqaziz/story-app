@@ -2,11 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/parentRelative"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:id="@+id/parentRelative"
-  android:paddingStart="40dp"
-  android:paddingEnd="40dp"
+  android:paddingHorizontal="@dimen/margin_edge"
   tools:context=".ui.activity.SignInActivity">
 
   <ImageView
@@ -14,7 +13,7 @@
     android:layout_width="40dp"
     android:layout_height="40dp"
     android:layout_alignParentEnd="true"
-    android:layout_marginTop="16dp"
+    android:layout_marginTop="@dimen/margin_edge"
     android:contentDescription="@string/change_language"
     android:src="@drawable/ic_setting" />
 
@@ -59,8 +58,7 @@
       android:hint="@string/input_email"
       android:inputType="textEmailAddress"
       android:minHeight="48dp"
-      android:paddingStart="16sp"
-      android:paddingEnd="16sp" />
+      android:paddingHorizontal="16sp" />
 
     <com.dicoding.storyapp.ui.customview.MyEditTextPass
       android:id="@+id/et_pass"
@@ -72,8 +70,7 @@
       android:hint="@string/input_password"
       android:inputType="textPassword"
       android:minHeight="48dp"
-      android:paddingStart="16sp"
-      android:paddingEnd="16sp"
+      android:paddingHorizontal="16sp"
       app:passwordToggleEnabled="true" />
 
     <com.dicoding.storyapp.ui.customview.MyButtonSignIn
@@ -82,7 +79,8 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="32dp"
-      android:contentDescription="@string/login_account" />
+      android:contentDescription="@string/login_account"
+      android:foreground="?attr/selectableItemBackgroundBorderless" />
 
     <TextView
       android:id="@+id/et_signIn"
@@ -91,12 +89,13 @@
       android:layout_height="wrap_content"
       android:layout_gravity="center"
       android:layout_marginTop="10dp"
+      android:background="@drawable/ripple_rounded_background"
+      android:padding="15dp"
       android:text="@string/did_t_have_account"
       android:textColor="@color/blue_300"
       android:textStyle="bold" />
 
   </LinearLayout>
-
 
 
 </RelativeLayout>

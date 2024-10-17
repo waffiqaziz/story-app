@@ -13,15 +13,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.dicoding.storyapp.MainActivity
-import com.dicoding.storyapp.R
+import com.dicoding.storyapp.R.string.continue_
+import com.dicoding.storyapp.R.string.information
+import com.dicoding.storyapp.R.string.sign_in_failed
+import com.dicoding.storyapp.R.string.sign_in_success
 import com.dicoding.storyapp.data.ResultResponse
 import com.dicoding.storyapp.data.model.UserModel
 import com.dicoding.storyapp.data.model.UserPreference
 import com.dicoding.storyapp.databinding.ActivitySigninBinding
-import com.dicoding.storyapp.helper.Helper
-import com.dicoding.storyapp.ui.viewmodel.*
+import com.dicoding.storyapp.helper.Helper.isEmailValid
+import com.dicoding.storyapp.ui.viewmodel.LoginViewModel
+import com.dicoding.storyapp.ui.viewmodel.ViewModelFactory
+import com.dicoding.storyapp.utils.Const.MIN_CHARACTERS
+import com.dicoding.storyapp.utils.Helpers.transparentStatusBar
+import kotlinx.coroutines.launch
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
 
@@ -36,6 +45,7 @@ class SignInActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(binding.root)
 
+    transparentStatusBar(window)
     setMyButtonEnable()
     editTextListener()
     buttonListener()
@@ -76,16 +86,16 @@ class SignInActivity : AppCompatActivity() {
     val resultEmail = binding.etEmail.text
 
     binding.btnSignIn.isEnabled = resultPass != null && resultEmail != null &&
-        binding.etPass.text.toString().length >= 6 &&
-        Helper.isEmailValid(binding.etEmail.text.toString())
+      binding.etPass.text.toString().length >= MIN_CHARACTERS &&
+      isEmailValid(binding.etEmail.text.toString())
   }
 
   private fun showAlertDialog(param: Boolean, message: String) {
     if (param) {
       AlertDialog.Builder(this).apply {
-        setTitle(getString(R.string.information))
-        setMessage(getString(R.string.sign_in_success))
-        setPositiveButton(getString(R.string.continue_)) { _, _ ->
+        setTitle(getString(information))
+        setMessage(getString(sign_in_success))
+        setPositiveButton(getString(continue_)) { _, _ ->
           val intent = Intent(context, MainActivity::class.java)
           intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
           startActivity(intent)
@@ -96,10 +106,10 @@ class SignInActivity : AppCompatActivity() {
       }
     } else {
       AlertDialog.Builder(this).apply {
-        setTitle(getString(R.string.information))
+        setTitle(getString(information))
         binding.etPass.error = null
-        setMessage(getString(R.string.sign_in_failed) + ", $message")
-        setPositiveButton(getString(R.string.continue_)) { _, _ ->
+        setMessage(getString(sign_in_failed) + ", $message")
+        setPositiveButton(getString(continue_)) { _, _ ->
           binding.progressBar.visibility = View.GONE
         }
         create()
@@ -117,8 +127,11 @@ class SignInActivity : AppCompatActivity() {
         when (it) {
           is ResultResponse.Loading -> {
             binding.progressBar.visibility = View.VISIBLE
+            binding.btnSignIn.isEnabled = false
           }
+
           is ResultResponse.Success -> {
+            binding.btnSignIn.isEnabled = true
             binding.progressBar.visibility = View.GONE
             val user = UserModel(
               it.data.name,
@@ -128,14 +141,18 @@ class SignInActivity : AppCompatActivity() {
               it.data.token,
               true
             )
-            showAlertDialog(true, getString(R.string.sign_in_success))
+            showAlertDialog(true, getString(sign_in_success))
 
             val userPref = UserPreference.getInstance(dataStore)
-            lifecycleScope.launchWhenStarted {
-               userPref.saveUser(user)
+            lifecycleScope.launch {
+              lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                userPref.saveUser(user)
+              }
             }
           }
+
           is ResultResponse.Error -> {
+            binding.btnSignIn.isEnabled = true
             binding.progressBar.visibility = View.GONE
             showAlertDialog(false, it.error)
           }

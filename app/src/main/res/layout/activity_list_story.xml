@@ -31,31 +31,23 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    app:title="@string/list_story"/>
+    app:title="@string/list_story" />
 
-  <ImageView
+  <ImageButton
     android:id="@+id/iv_add_story"
-    android:layout_width="36dp"
-    android:layout_height="36dp"
-    android:layout_gravity="end"
+    style="@style/BtnActionBar"
     android:layout_marginEnd="8dp"
-    android:clickable="true"
-    android:contentDescription="@string/post_story"
-    android:focusable="true"
+    android:background="?actionBarItemBackground"
+    android:contentDescription="@string/add_story"
     android:src="@drawable/ic_capture"
     app:layout_constraintBottom_toBottomOf="@+id/toolbar"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
 
-  <ImageView
+  <ImageButton
     android:id="@+id/iv_show_map"
-    android:layout_width="36dp"
-    android:layout_height="36dp"
-    android:layout_gravity="end"
-    android:layout_marginEnd="8dp"
-    android:clickable="true"
-    android:contentDescription="@string/post_story"
-    android:focusable="true"
+    style="@style/BtnActionBar"
+    android:contentDescription="@string/title_activity_maps"
     android:src="@drawable/ic_show_map"
     app:layout_constraintBottom_toBottomOf="@+id/toolbar"
     app:layout_constraintEnd_toStartOf="@+id/iv_add_story"
@@ -65,10 +57,10 @@
     android:id="@+id/view_error"
     layout="@layout/view_error"
     android:visibility="gone"
-    tools:visibility="visible"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

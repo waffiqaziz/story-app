@@ -12,15 +12,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.dicoding.storyapp.R.string.continue_
+import com.dicoding.storyapp.R.string.log_out_success
+import com.dicoding.storyapp.R.string.no
+import com.dicoding.storyapp.R.string.warning
+import com.dicoding.storyapp.R.string.warning_log_out
 import com.dicoding.storyapp.data.model.UserModel
 import com.dicoding.storyapp.data.model.UserPreference
 import com.dicoding.storyapp.databinding.ActivityMainBinding
+import com.dicoding.storyapp.helper.Helper.showToastShort
 import com.dicoding.storyapp.ui.activity.ListStoryActivity
 import com.dicoding.storyapp.ui.activity.SignInActivity
 import com.dicoding.storyapp.ui.viewmodel.MainViewModel
 import com.dicoding.storyapp.ui.viewmodel.ViewModelUserFactory
+import com.dicoding.storyapp.utils.Helpers.transparentStatusBar
 import kotlinx.coroutines.launch
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
@@ -35,6 +44,7 @@ class MainActivity : AppCompatActivity() {
     binding = ActivityMainBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
+    transparentStatusBar(window)
     setupViewModel()
     playAnimation()
     buttonListener()
@@ -46,8 +56,8 @@ class MainActivity : AppCompatActivity() {
       ViewModelUserFactory(UserPreference.getInstance(dataStore))
     )[MainViewModel::class.java]
 
-    lifecycleScope.launchWhenCreated {
-      launch {
+    lifecycleScope.launch {
+      lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
         mainViewModel.getUser().collect {
           user = UserModel(
             it.name,
@@ -92,11 +102,16 @@ class MainActivity : AppCompatActivity() {
     binding.btnLogOut?.setOnClickListener {
       mainViewModel.logout()
       AlertDialog.Builder(this).apply {
-        setTitle(getString(R.string.information))
-        setMessage(getString(R.string.log_out_success))
-        setPositiveButton(getString(R.string.continue_)) { _, _ ->
+        setTitle(getString(warning))
+        setMessage(getString(warning_log_out))
+        setPositiveButton(getString(continue_)) { dialog, _ ->
           startActivity(Intent(this@MainActivity, SignInActivity::class.java))
+          dialog.dismiss()
+          showToastShort(this@MainActivity, getString(log_out_success))
           finish()
+        }
+        setNegativeButton(getString(no)) { dialog, _ ->
+          dialog.dismiss()
         }
         create()
         show()
