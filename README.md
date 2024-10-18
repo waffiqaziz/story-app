@@ -31,6 +31,7 @@ Follow these steps to install the app on your Android device or emulator:
    instruction [here](https://developers.google.com/maps/documentation/android-sdk/get-api-key).
    After you got the key put in `local.properties`
 5. Run the App: Select a physical device or emulator, and click the "Run" button in Android Studio.
+6. (Optional) Custom your map style and edit [my_map_style.json](app/src/main/res/raw/my_map_style.json). For reference [here](https://mapstyle.withgoogle.com/) and [here](https://snazzymaps.com/).
 
 ## Screenshots 📸
 
