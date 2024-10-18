@@ -34,6 +34,8 @@ Follow these steps to install the app on your Android device or emulator:
 
 ## Screenshots 📸
 
+### Light Mode
+
 <img src="assets/images/ss-light-splashscreen.jpg" width=200 alt="Splash Screen">&nbsp;
 <img src="assets/images/ss-light-signin.jpg" width=200 alt="SignIn Page">&nbsp;
 <img src="assets/images/ss-light-register.jpg" width=200 alt="Register Page">&nbsp;
@@ -42,7 +44,7 @@ Follow these steps to install the app on your Android device or emulator:
 <img src="assets/images/ss-light-addpost.jpg" width=200 alt="Add Post Page">&nbsp;
 <img src="assets/images/ss-light-map.jpg" width=200 alt="Map Page">&nbsp;
 
-### Light Mode
+### Night Mode
 
 <img src="assets/images/ss-dark-splashscreen.jpg" width=200 alt="Splash Screen">&nbsp;
 <img src="assets/images/ss-dark-signin.jpg" width=200 alt="SignIn Page">&nbsp;
@@ -51,8 +53,6 @@ Follow these steps to install the app on your Android device or emulator:
 <img src="assets/images/ss-dark-list.jpg" width=200 alt="List Page">&nbsp;
 <img src="assets/images/ss-dark-addpost.jpg" width=200 alt="Add Post Page">&nbsp;
 <img src="assets/images/ss-dark-map.jpg" width=200 alt="Map Page">&nbsp;
-
-### Night Mode
 
 ## Technologies Used 🛠️
 
@@ -70,13 +70,13 @@ This app is built solely for educational purposes, and by using it, users agree 
 terms:
 
 1. Non-commercial Use: Story App is not to be used for any commercial activities.
-2. Third-party API Use: The third-party API used in this app is provided from an external source (
-   bootcamp), and users should acknowledge that it is for learning purposes only.
-3. User Content: Users are responsible for the stories they post. No inappropriate, offensive, or
+2. Third-party API Use: The API is provided from an external source and
+   users should acknowledge that it is for learning purposes only.
+4. User Content: Users are responsible for the stories they post. No inappropriate, offensive, or
    illegal content is allowed.
-4. Privacy: Users should avoid sharing any personal, sensitive, or private information within the
+5. Privacy: Users should avoid sharing any personal, sensitive, or private information within the
    app.
-5. Non-liability: The app developer is not liable for any misuse of the API or user-generated
+6. Non-liability: The app developer is not liable for any misuse of the API or user-generated
    content shared through the app.
 
 ## Contributing 🤝
