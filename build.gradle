@@ -5,16 +5,3 @@ plugins {
   id 'org.jetbrains.kotlin.android' version '1.9.10' apply false
   id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin' version '2.0.1' apply false
 }
-
-tasks.register('clean', Delete) {
-  delete rootProject.buildDir
-}
-
-tasks.withType(Test).configureEach {
-  // Show more detailed output for tests
-  testLogging {
-    events "passed", "skipped", "failed"
-    showStandardStreams = true
-    exceptionFormat = 'full'
-  }
-}
