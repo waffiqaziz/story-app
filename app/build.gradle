@@ -23,6 +23,15 @@ android {
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
   }
 
+  secrets{
+    propertiesFileName = "secrets.properties"
+
+    defaultPropertiesFileName = "local.defaults.properties"
+
+    ignoreList.add("keyToIgnore") // Ignore the key "keyToIgnore"
+    ignoreList.add("sdk.*")       // Ignore all keys matching the regexp "sdk.*"
+  }
+
   buildTypes {
     release {
       minifyEnabled false
@@ -30,12 +39,12 @@ android {
     }
   }
   compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
     coreLibraryDesugaringEnabled true
   }
   kotlinOptions {
-    jvmTarget = '1.8'
+    jvmTarget = '17'
     freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]
   }
   buildFeatures {
@@ -72,7 +81,7 @@ dependencies {
   implementation 'androidx.core:core-ktx:1.13.1'
   implementation 'androidx.appcompat:appcompat:1.7.0'
   implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-  implementation "androidx.activity:activity-ktx:1.9.3"
+  implementation "androidx.activity:activity-ktx:1.9.2"
 
   // for custom view
   implementation 'com.google.android.material:material:1.12.0'

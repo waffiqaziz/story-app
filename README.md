@@ -29,9 +29,19 @@ Follow these steps to install the app on your Android device or emulator:
 3. Sync Gradle Files: Android Studio will automatically sync the necessary Gradle files.
 4. Setup your `MAPS_API_KEY`, follow this
    instruction [here](https://developers.google.com/maps/documentation/android-sdk/get-api-key).
-   After you got the key put in `local.properties`
+   If you get an error message in logcat like the one below, it means you haven't set up your `
+   MAP_API_KEY
+   ```logcat
+   Authorization failure. Please see ....
+   In the Google Developer Console ....
+   Ensure that the "Maps SDK for Android" is enabled.
+   Ensure that the following Android Key exists:
+   API Key: DEFAULT_API_KEY
+   ```
+   (Optional) Custom your map style and
+   edit [my_map_style.json](app/src/main/res/raw/my_map_style.json). For
+   reference [here](https://mapstyle.withgoogle.com/) and [here](https://snazzymaps.com/).
 5. Run the App: Select a physical device or emulator, and click the "Run" button in Android Studio.
-6. (Optional) Custom your map style and edit [my_map_style.json](app/src/main/res/raw/my_map_style.json). For reference [here](https://mapstyle.withgoogle.com/) and [here](https://snazzymaps.com/).
 
 ## Screenshots 📸
 
@@ -71,13 +81,13 @@ This app is built solely for educational purposes, and by using it, users agree 
 terms:
 
 1. Non-commercial Use: Story App is not to be used for any commercial activities.
-2. Third-party API Use: The API is provided from an external source and
-   users should acknowledge that it is for learning purposes only.
-4. User Content: Users are responsible for the stories they post. No inappropriate, offensive, or
+2. Third-party API Use: The API is provided from an external source and users should acknowledge
+   that it is for learning purposes only.
+3. User Content: Users are responsible for the stories they post. No inappropriate, offensive, or
    illegal content is allowed.
-5. Privacy: Users should avoid sharing any personal, sensitive, or private information within the
+4. Privacy: Users should avoid sharing any personal, sensitive, or private information within the
    app.
-6. Non-liability: The app developer is not liable for any misuse of the API or user-generated
+5. Non-liability: The app developer is not liable for any misuse of the API or user-generated
    content shared through the app.
 
 ## Contributing 🤝
@@ -86,6 +96,7 @@ Contributions to the Story App are welcome! Follow these steps if you’d like t
 
 1. Fork the repository.
 2. Create a new branch `git checkout -b improve/new-improve`
-3. Commit your changes `git commit -m 'Add new improve'`
-4. Push the branch `git push origin improve/new-improve`
-5. Open a pull request.
+3. Run `unit-testing`, `ui-testing` and `build` the project. Make sure there are no errors.
+4. Commit your changes `git commit -m 'Add new improve'`
+5. Push the branch `git push origin improve/new-improve`
+6. Open a pull request.
