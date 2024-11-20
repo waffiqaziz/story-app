@@ -91,7 +91,7 @@ dependencies {
   //splashscreen API
   implementation 'androidx.core:core-splashscreen:1.0.1'
 
-  implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.6'
+  implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.7'
   implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6'
   implementation "androidx.datastore:datastore-preferences:1.1.1"
 
