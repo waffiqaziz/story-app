@@ -29,8 +29,8 @@ Follow these steps to install the app on your Android device or emulator:
 3. Sync Gradle Files: Android Studio will automatically sync the necessary Gradle files.
 4. Setup your `MAPS_API_KEY`, follow this
    instruction [here](https://developers.google.com/maps/documentation/android-sdk/get-api-key).
-   If you get an error message in logcat like the one below, it means you haven't set up your `
-   MAP_API_KEY
+   If you get an error message in logcat like something like below, it means you haven't set up
+   your `MAPS_API_KEY`
    ```logcat
    Authorization failure. Please see ....
    In the Google Developer Console ....

@@ -40,11 +40,11 @@ jobs:
       - name: Grant execute permission for Gradle wrapper
         run: chmod +x gradlew
 
-      - name: Inject MAPS_API_KEY into local.properties
-        run: echo "MAPS_API_KEY=${{ secrets.MAPS_API_KEY }}" >> local.properties
+      - name: Inject MAPS_API_KEY into secrets.properties
+        run: echo "MAPS_API_KEY=${{ secrets.MAPS_API_KEY }}" >> secrets.properties
 
       - name: Run unit tests
-        run: ./gradlew test --stacktrace --info
+        run: ./gradlew test
 
       - name: Upload test reports
         if: always()
