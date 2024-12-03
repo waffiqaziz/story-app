@@ -1,0 +1,118 @@
+[versions]
+# plugin versions
+agp = "8.2.0"
+kotlin = "2.0.21"
+coreKtx = "1.13.1"
+appcompat = "1.7.0"
+activityKtx = "1.9.3"
+annotation = "1.9.1"
+
+# camera
+camera = "1.4.0"
+
+# ui related
+lifecycleViewmodelKtx = "2.8.7"
+constraintlayout = "2.2.0"
+coreSplashscreen = "1.0.1"
+glide = "4.16.0"
+material = "1.12.0"
+
+desugar_jdk_libs = "2.1.3"
+
+# networking
+loggingInterceptor = "4.12.0"
+converterGson = "2.11.0"
+
+legacySupportV4 = "1.0.0"
+
+# google service
+mapsplatform = "2.0.1"
+playServicesLocation = "21.3.0"
+playServicesMaps = "19.0.0"
+
+# room, paging, datastore
+roomKtx = "2.6.1"
+roomCompiler = "2.6.1"
+pagingRuntimeKtx = "3.3.4"
+datastorePreferences = "1.1.1"
+
+# testing
+coreTesting = "2.2.0"
+espresso = "3.6.1"
+espressoCore = "3.0.2"
+espressoContrib = "3.0.2"
+junit = "4.13.2"
+kotlinxCoroutinesTest = "1.9.0"
+mockito = "5.14.2"
+mockitoInline = "5.2.0"
+mockwebserver = "4.9.3"
+okhttpTls = "4.9.3"
+testCore = "1.6.1"
+testExtJunit = "1.2.1"
+testRunner = "1.6.2"
+
+[libraries]
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
+androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "annotation" }
+
+# camera
+androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "camera" }
+androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "camera" }
+androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "camera" }
+
+# ui related
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
+androidx-legacy-support-v4 = { module = "androidx.legacy:legacy-support-v4", version.ref = "legacySupportV4" }
+androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleViewmodelKtx" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+google-material = { module = "com.google.android.material:material", version.ref = "material" }
+
+# room, paging, datastore
+androidx-paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.ref = "pagingRuntimeKtx" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
+androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "roomKtx" }
+
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesTest" }
+desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
+
+# networking
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "converterGson" }
+logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "loggingInterceptor" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
+
+# google services
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
+play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
+
+# testing
+androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
+androidx-espresso-contrib = { module = "androidx.test.espresso:espresso-contrib", version.ref = "espresso" }
+androidx-espresso-idling-resource = { module = "androidx.test.espresso:espresso-idling-resource", version.ref = "espresso" }
+androidx-espresso-intents = { module = "androidx.test.espresso:espresso-intents", version.ref = "espresso" }
+espresso-core = { module = "com.android.support.test.espresso:espresso-core", version.ref = "espressoCore" }
+espresso-contrib = { module = "com.android.support.test.espresso:espresso-contrib", version.ref = "espressoContrib" }
+
+androidx-rules = { module = "androidx.test:rules", version.ref = "testCore" }
+androidx-test-core-ktx = { module = "androidx.test:core-ktx", version.ref = "testCore" }
+androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
+androidx-test-runner = { module = "androidx.test:runner", version.ref = "testRunner" }
+androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "testExtJunit" }
+junit = { module = "junit:junit", version.ref = "junit" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+
+mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockitoInline" }
+mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "mockwebserver" }
+okhttp-tls = { module = "com.squareup.okhttp3:okhttp-tls", version.ref = "okhttpTls" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+mapsplatform-secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "mapsplatform" }
