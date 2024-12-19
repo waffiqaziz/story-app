@@ -1,8 +1,8 @@
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
-  id("kotlin-kapt")
   id("kotlin-parcelize")
+  id("com.google.devtools.ksp")
   alias(libs.plugins.mapsplatform.secrets)
 }
 
@@ -139,7 +139,7 @@ dependencies {
 
   //room & paging
   implementation(libs.androidx.room.ktx)
-  kapt(libs.androidx.room.compiler)
+  ksp(libs.androidx.room.compiler)
   implementation(libs.androidx.room.paging)
   implementation(libs.androidx.paging.runtime.ktx)
 
