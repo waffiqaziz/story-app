@@ -2,8 +2,8 @@ plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
   id("kotlin-parcelize")
-  id("com.google.devtools.ksp")
   alias(libs.plugins.mapsplatform.secrets)
+  alias(libs.plugins.ksp)
 }
 
 android {
@@ -13,7 +13,7 @@ android {
   defaultConfig {
     applicationId = "com.dicoding.storyapp"
     minSdk = 23
-    targetSdk = 34
+    targetSdk = 35
     versionCode = 1
     versionName = "1.0"
 
@@ -43,19 +43,14 @@ android {
     targetCompatibility = JavaVersion.VERSION_17
     isCoreLibraryDesugaringEnabled = true
   }
-  kotlinOptions {
-    jvmTarget = "17"
-    freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
-  }
+  kotlinOptions.jvmTarget = "17"
+  packaging.resources.excludes += "/META-INF/{AL2.0,LGPL2.1}"
   buildFeatures {
     viewBinding = true
     buildConfig = true
   }
-  packaging {
-    resources {
-      excludes += "/META-INF/{AL2.0,LGPL2.1}"
-    }
-  }
+
+  @Suppress("UnstableApiUsage")
   testOptions {
     animationsDisabled = true
     unitTests.apply {
@@ -75,19 +70,14 @@ android {
 }
 
 dependencies {
-  implementation(libs.androidx.legacy.support.v4)
-
-  //desugaring
   coreLibraryDesugaring(libs.desugar.jdk.libs)
-
+  implementation(libs.androidx.legacy.support.v4)
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.appcompat)
   implementation(libs.androidx.constraintlayout)
   implementation(libs.androidx.activity.ktx)
 
-  // for custom view
   implementation(libs.google.material)
-
   implementation(libs.androidx.annotation)
 
   //splashscreen API
@@ -99,33 +89,6 @@ dependencies {
 
   implementation(libs.glide)
   implementation(libs.kotlinx.coroutines.android)
-
-  //testing
-  testImplementation(libs.junit)
-  testImplementation(libs.mockito.inline)
-  androidTestImplementation(libs.androidx.test.ext.junit)
-  androidTestImplementation(libs.androidx.test.runner)
-  androidTestImplementation(libs.androidx.rules)
-  androidTestImplementation(libs.androidx.test.core.ktx)
-
-  implementation(libs.androidx.espresso.idling.resource)
-  androidTestImplementation(libs.espresso.core)
-  androidTestImplementation(libs.androidx.espresso.core)
-  androidTestImplementation(libs.androidx.espresso.contrib)
-  androidTestImplementation(libs.espresso.contrib)
-  androidTestImplementation(libs.androidx.espresso.intents)
-
-  //mockito
-  testImplementation(libs.mockito)
-  testImplementation(libs.mockito.inline)
-
-  //mock web server
-  androidTestImplementation(libs.mockwebserver)
-  androidTestImplementation(libs.okhttp.tls)
-
-  //special testing
-  testImplementation(libs.androidx.core.testing)
-  testImplementation(libs.kotlinx.coroutines.test)
 
   //retrofit
   implementation(libs.retrofit)
@@ -146,4 +109,32 @@ dependencies {
   //google maps
   implementation(libs.play.services.maps)
   implementation(libs.play.services.location)
+
+  //testing
+  androidTestImplementation(libs.androidx.test.ext.junit)
+  androidTestImplementation(libs.androidx.test.runner)
+  androidTestImplementation(libs.androidx.rules)
+  androidTestImplementation(libs.androidx.test.core.ktx)
+
+  implementation(libs.androidx.espresso.idling.resource)
+  androidTestImplementation(libs.espresso.core)
+  androidTestImplementation(libs.androidx.espresso.core)
+  androidTestImplementation(libs.androidx.espresso.contrib)
+  androidTestImplementation(libs.espresso.contrib)
+  androidTestImplementation(libs.androidx.espresso.intents)
+
+  //mock web server
+  androidTestImplementation(libs.mockwebserver)
+  androidTestImplementation(libs.okhttp.tls)
+
+  //mockito
+  testImplementation(libs.mockito)
+  testImplementation(libs.mockito.inline)
+
+  testImplementation(libs.junit)
+  testImplementation(libs.mockito.inline)
+
+  //special testing
+  testImplementation(libs.androidx.core.testing)
+  testImplementation(libs.kotlinx.coroutines.test)
 }
