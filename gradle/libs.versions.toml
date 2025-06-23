@@ -33,7 +33,7 @@ playServicesMaps = "19.2.0"
 
 # room, paging, datastore
 roomKtx = "2.7.1"
-roomCompiler = "2.7.1"
+roomCompiler = "2.7.2"
 pagingRuntimeKtx = "3.3.6"
 datastorePreferences = "1.1.7"
 
