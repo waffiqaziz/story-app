@@ -39,7 +39,7 @@ datastorePreferences = "1.1.7"
 
 # testing
 coreTesting = "2.2.0"
-espresso = "3.6.1"
+espresso = "3.7.0"
 espressoCore = "3.0.2"
 espressoContrib = "3.0.2"
 junit = "4.13.2"
