@@ -50,7 +50,7 @@ mockwebserver = "5.1.0"
 okhttpTls = "5.1.0"
 testCore = "1.6.1"
 testExtJunit = "1.2.1"
-testRunner = "1.6.2"
+testRunner = "1.7.0"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
