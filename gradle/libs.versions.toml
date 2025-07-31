@@ -49,7 +49,7 @@ mockitoInline = "5.2.0"
 mockwebserver = "5.1.0"
 okhttpTls = "5.1.0"
 testCore = "1.7.0"
-testExtJunit = "1.2.1"
+testExtJunit = "1.3.0"
 testRunner = "1.7.0"
 
 [libraries]
