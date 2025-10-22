@@ -32,8 +32,7 @@ playServicesLocation = "21.3.0"
 playServicesMaps = "19.2.0"
 
 # room, paging, datastore
-roomKtx = "2.8.2"
-roomCompiler = "2.8.2"
+room = "2.8.3"
 pagingRuntimeKtx = "3.3.6"
 datastorePreferences = "1.1.7"
 
@@ -75,9 +74,9 @@ google-material = { module = "com.google.android.material:material", version.ref
 # room, paging, datastore
 androidx-paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.ref = "pagingRuntimeKtx" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
-androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
-androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
-androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "roomKtx" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "room" }
 
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesTest" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
