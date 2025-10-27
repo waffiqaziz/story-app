@@ -15,6 +15,7 @@ import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
@@ -36,6 +37,7 @@ import com.dicoding.storyapp.R.id.switchCompat
 import com.dicoding.storyapp.R.id.tv_created_time
 import com.dicoding.storyapp.R.id.tv_description
 import com.dicoding.storyapp.R.id.tv_name
+import com.dicoding.storyapp.TestUtils.waitFor
 import com.dicoding.storyapp.data.model.UserModel
 import com.dicoding.storyapp.utils.EspressoIdlingResource
 import org.junit.After
@@ -65,6 +67,17 @@ class ListStoryActivityEndToEndTest {
 
   @After
   fun tearDown() {
+    // release Intents if initialized
+    try {
+      Intents.release()
+    } catch (_: IllegalStateException) {
+      // intents not initialized, ignore
+    }
+
+    // xlose scenario if initialized
+    if (::scenario.isInitialized) {
+      scenario.close()
+    }
     IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
   }
 
@@ -73,8 +86,9 @@ class ListStoryActivityEndToEndTest {
     val intent = Intent(context, ListStoryActivity::class.java)
     intent.putExtra(ListStoryActivity.EXTRA_USER, user)
     scenario = launchActivity(intent)
-
     Intents.init()
+    onView(isRoot()).perform(waitFor(1500))
+
     onView(withId(rv_story)).check(matches(isDisplayed()))
     onView(withId(rv_story)).perform(
       RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
@@ -97,8 +111,9 @@ class ListStoryActivityEndToEndTest {
     val intent = Intent(context, ListStoryActivity::class.java)
     intent.putExtra(ListStoryActivity.EXTRA_USER, user)
     scenario = launchActivity(intent)
-
     Intents.init()
+    onView(isRoot()).perform(waitFor(1500))
+
     onView(withId(rv_story)).perform(
       RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
         0, click()
@@ -118,8 +133,9 @@ class ListStoryActivityEndToEndTest {
     val intent = Intent(context, ListStoryActivity::class.java)
     intent.putExtra(ListStoryActivity.EXTRA_USER, user)
     scenario = launchActivity(intent)
-
     Intents.init()
+    onView(isRoot()).perform(waitFor(500))
+
     onView(withId(iv_show_map)).perform(click())
     intended(hasComponent(MapsActivity::class.java.name))
     onView(withId(map_view)).check(matches(isDisplayed()))

@@ -77,6 +77,7 @@ class ListStoryActivityTest {
     val intent = Intent(context, ListStoryActivity::class.java)
     intent.putExtra(ListStoryActivity.EXTRA_USER, user)
     scenario = launchActivity(intent)
+    onView(isRoot()).perform(waitFor(500))
 
     onView(withId(rv_story)).check(matches(isDisplayed()))
     Espresso.onIdle()
@@ -104,6 +105,7 @@ class ListStoryActivityTest {
     val intent = Intent(context, ListStoryActivity::class.java)
     intent.putExtra(ListStoryActivity.EXTRA_USER, user)
     scenario = launchActivity(intent)
+    onView(isRoot()).perform(waitFor(500))
 
     onView(withId(rv_story)).check(matches(isDisplayed()))
     onView(withText(context.getString(something_wrong))).check(matches(isDisplayed()))
