@@ -6,10 +6,11 @@ import android.os.Bundle
 import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -29,30 +30,31 @@ import com.dicoding.storyapp.helper.Helper.isEmailValid
 import com.dicoding.storyapp.ui.viewmodel.LoginViewModel
 import com.dicoding.storyapp.ui.viewmodel.ViewModelFactory
 import com.dicoding.storyapp.utils.Const.MIN_CHARACTERS
-import com.dicoding.storyapp.utils.Helpers.transparentStatusBar
 import kotlinx.coroutines.launch
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
 
 class SignInActivity : AppCompatActivity() {
+
   private lateinit var binding: ActivitySigninBinding
+
   private val loginViewModel: LoginViewModel by viewModels {
     ViewModelFactory.getInstance(this)
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    enableEdgeToEdge()
     binding = ActivitySigninBinding.inflate(layoutInflater)
     super.onCreate(savedInstanceState)
     setContentView(binding.root)
 
-    transparentStatusBar(window)
     setMyButtonEnable()
     editTextListener()
     buttonListener()
   }
 
   private fun editTextListener() {
-    binding.etEmail.addTextChangedListener(object : TextWatcher {
+    binding.edLoginEmail.addTextChangedListener(object : TextWatcher {
       override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
       }
 
@@ -63,7 +65,7 @@ class SignInActivity : AppCompatActivity() {
       override fun afterTextChanged(s: Editable) {
       }
     })
-    binding.etPass.addTextChangedListener(object : TextWatcher {
+    binding.edLoginPassword.addTextChangedListener(object : TextWatcher {
       override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
       }
 
@@ -74,20 +76,16 @@ class SignInActivity : AppCompatActivity() {
       override fun afterTextChanged(s: Editable) {
       }
     })
-
-    binding.etSignIn.setOnClickListener {
-      startActivity(Intent(this@SignInActivity, RegisterActivity::class.java))
-      finish()
-    }
   }
 
   private fun setMyButtonEnable() {
-    val resultPass = binding.etPass.text
-    val resultEmail = binding.etEmail.text
+    val resultPass = binding.edLoginPassword.text
+    val resultEmail = binding.edLoginEmail.text
 
-    binding.btnSignIn.isEnabled = resultPass != null && resultEmail != null &&
-      binding.etPass.text.toString().length >= MIN_CHARACTERS &&
-      isEmailValid(binding.etEmail.text.toString())
+    binding.btnSignIn.isEnabled =
+      resultPass != null && resultEmail != null && binding.edLoginPassword.text.toString().length >= MIN_CHARACTERS && isEmailValid(
+        binding.edLoginEmail.text.toString()
+      )
   }
 
   private fun showAlertDialog(param: Boolean, message: String) {
@@ -95,22 +93,18 @@ class SignInActivity : AppCompatActivity() {
       AlertDialog.Builder(this).apply {
         setTitle(getString(information))
         setMessage(getString(sign_in_success))
-        setPositiveButton(getString(continue_)) { _, _ ->
-          val intent = Intent(context, MainActivity::class.java)
-          intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-          startActivity(intent)
-          finish()
-        }
+        setPositiveButton(getString(continue_)) { _, _ -> openMainActivity() }
+        setOnDismissListener { openMainActivity() }
         create()
         show()
       }
     } else {
       AlertDialog.Builder(this).apply {
         setTitle(getString(information))
-        binding.etPass.error = null
+        binding.edLoginPassword.error = null
         setMessage(getString(sign_in_failed) + ", $message")
         setPositiveButton(getString(continue_)) { _, _ ->
-          binding.progressBar.visibility = View.GONE
+          binding.progressBar.isVisible = false
         }
         create()
         show()
@@ -118,28 +112,34 @@ class SignInActivity : AppCompatActivity() {
     }
   }
 
+  private fun openMainActivity() {
+    val intent = Intent(this, MainActivity::class.java)
+    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+    startActivity(intent)
+    finish()
+  }
+
   private fun buttonListener() {
+    binding.btnOpenRegister.setOnClickListener {
+      startActivity(Intent(this@SignInActivity, RegisterActivity::class.java))
+      finish()
+    }
     binding.btnSignIn.setOnClickListener {
-      val email = binding.etEmail.text.toString()
-      val pass = binding.etPass.text.toString()
+      val email = binding.edLoginEmail.text.toString()
+      val pass = binding.edLoginPassword.text.toString()
 
       loginViewModel.login(email, pass).observe(this) {
         when (it) {
           is ResultResponse.Loading -> {
-            binding.progressBar.visibility = View.VISIBLE
+            binding.progressBar.isVisible = true
             binding.btnSignIn.isEnabled = false
           }
 
           is ResultResponse.Success -> {
             binding.btnSignIn.isEnabled = true
-            binding.progressBar.visibility = View.GONE
+            binding.progressBar.isVisible = false
             val user = UserModel(
-              it.data.name,
-              email,
-              pass,
-              it.data.userId,
-              it.data.token,
-              true
+              it.data.name, email, pass, it.data.userId, it.data.token, true
             )
             showAlertDialog(true, getString(sign_in_success))
 
@@ -153,14 +153,14 @@ class SignInActivity : AppCompatActivity() {
 
           is ResultResponse.Error -> {
             binding.btnSignIn.isEnabled = true
-            binding.progressBar.visibility = View.GONE
+            binding.progressBar.isVisible = false
             showAlertDialog(false, it.error)
           }
         }
       }
     }
 
-    binding.ivSetting?.setOnClickListener {
+    binding.ivSetting.setOnClickListener {
       startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
     }
   }

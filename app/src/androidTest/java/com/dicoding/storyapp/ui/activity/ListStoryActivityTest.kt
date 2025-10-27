@@ -7,18 +7,26 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.launchActivity
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.isRoot
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.dicoding.storyapp.JsonConverter
 import com.dicoding.storyapp.R.id.rv_story
+import com.dicoding.storyapp.R.string.something_wrong
+import com.dicoding.storyapp.TestUtils.waitFor
 import com.dicoding.storyapp.data.model.UserModel
 import com.dicoding.storyapp.data.remote.retrofit.ApiConfig
+import com.dicoding.storyapp.ui.viewmodel.ViewModelFactory
 import com.dicoding.storyapp.utils.EspressoIdlingResource
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -44,8 +52,13 @@ class ListStoryActivityTest {
 
   @Before
   fun setUp() {
-    mockWebServer.start(8080)
-    ApiConfig.BASE_URL = "http://127.0.0.1:8080/"
+    mockWebServer.start(8077)
+    ApiConfig.BASE_URL = "http://127.0.0.1:8077/"
+
+    // clear viewmodel factory
+    ViewModelFactory.clearInstance()
+
+    ApiConfig.BASE_URL = "http://127.0.0.1:8077/"
     IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
   }
 
@@ -57,44 +70,44 @@ class ListStoryActivityTest {
 
   @Test
   fun getStory_Success() {
-    val intent = Intent(context, ListStoryActivity::class.java)
-    intent.putExtra(ListStoryActivity.EXTRA_USER, user)
-    scenario = launchActivity(intent)
-
-    val mockResponse = MockResponse()
-      .setResponseCode(200) // success
+    val mockResponse = MockResponse().setResponseCode(200) // success
       .setBody(JsonConverter.readStringFromFile("success_response.json"))
     mockWebServer.enqueue(mockResponse)
 
-    onView(withId(rv_story)).check(
-      matches(isDisplayed())
-    )
-    onView(withText("Zekken"))
-      .check(matches(isDisplayed()))
+    val intent = Intent(context, ListStoryActivity::class.java)
+    intent.putExtra(ListStoryActivity.EXTRA_USER, user)
+    scenario = launchActivity(intent)
+    onView(isRoot()).perform(waitFor(500))
+
+    onView(withId(rv_story)).check(matches(isDisplayed()))
+    Espresso.onIdle()
+    onView(isRoot()).perform(waitFor(200))
+
     onView(withId(rv_story)).perform(
-      ViewActions.swipeUp()
-    )
-    onView(withId(rv_story))
-      .perform(
-        RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-          hasDescendant(withText("ya"))
-        )
+      RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+        hasDescendant(withText("Zekken"))
       )
+    )
+    onView(withText("Zekken")).check(matches(isDisplayed()))
+    onView(withId(rv_story)).perform(ViewActions.swipeUp())
+    onView(withId(rv_story)).perform(
+      RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+        hasDescendant(withText("ya"))
+      )
+    )
   }
 
   @Test
   fun getStory_Error() {
+    val mockResponse = MockResponse().setResponseCode(500) // error
+    mockWebServer.enqueue(mockResponse)
+
     val intent = Intent(context, ListStoryActivity::class.java)
     intent.putExtra(ListStoryActivity.EXTRA_USER, user)
     scenario = launchActivity(intent)
+    onView(isRoot()).perform(waitFor(500))
 
-    val mockResponse = MockResponse()
-      .setResponseCode(500) // error
-    mockWebServer.enqueue(mockResponse)
-
-    onView(withId(rv_story))
-      .check(matches(isDisplayed()))
-    onView(withText("Oops.. something went wrong. Check your connection"))
-      .check(matches(isDisplayed()))
+    onView(withId(rv_story)).check(matches(isDisplayed()))
+    onView(withText(context.getString(something_wrong))).check(matches(isDisplayed()))
   }
 }

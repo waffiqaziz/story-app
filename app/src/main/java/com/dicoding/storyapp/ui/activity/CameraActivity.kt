@@ -79,7 +79,7 @@ class CameraActivity : AppCompatActivity() {
       val preview = Preview.Builder()
         .build()
         .also {
-          it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
+          it.surfaceProvider = binding.viewFinder.surfaceProvider
         }
 
       imageCapture = ImageCapture.Builder().build()
@@ -93,7 +93,7 @@ class CameraActivity : AppCompatActivity() {
           imageCapture
         )
       } catch (exc: Exception) {
-        Helper.showToastShort(this, getString(failed_open_camera))
+        Helper.showToastShort(this, exc.toString().ifEmpty { getString(failed_open_camera) })
       }
     }, ContextCompat.getMainExecutor(this))
   }
