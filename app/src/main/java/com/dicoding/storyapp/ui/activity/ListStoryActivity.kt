@@ -100,6 +100,11 @@ class ListStoryActivity : AppCompatActivity() {
     return true
   }
 
+  override fun onResume() {
+    super.onResume()
+    adapter.refresh()
+  }
+
   override fun onDestroy() {
     super.onDestroy()
     _binding = null

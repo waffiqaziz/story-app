@@ -1,11 +1,8 @@
 package com.dicoding.storyapp.ui.activity
 
-import android.graphics.text.LineBreaker.JUSTIFICATION_MODE_INTER_WORD
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.dicoding.storyapp.R.drawable.ic_broken_image
@@ -14,6 +11,7 @@ import com.dicoding.storyapp.R.string.created_add
 import com.dicoding.storyapp.data.remote.response.ListStoryItem
 import com.dicoding.storyapp.databinding.ActivityDetailStoryBinding
 import com.dicoding.storyapp.helper.Helper
+import com.dicoding.storyapp.helper.Helper.justifyTextView
 import com.dicoding.storyapp.ui.viewmodel.DetailStoryViewModel
 import com.dicoding.storyapp.utils.Helpers.parcelable
 import java.util.TimeZone
@@ -24,18 +22,13 @@ class DetailStoryActivity : AppCompatActivity() {
 
   private val vm: DetailStoryViewModel by viewModels()
 
-  @RequiresApi(Build.VERSION_CODES.Q)
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     binding = ActivityDetailStoryBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
     // set text view description to justify
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      run {
-        binding.tvDescription.justificationMode = JUSTIFICATION_MODE_INTER_WORD
-      }
-    }
+    justifyTextView(binding.tvDescription)
 
     getParcelable()
     vm.setDetailStory(story)
@@ -62,7 +55,6 @@ class DetailStoryActivity : AppCompatActivity() {
     return true
   }
 
-  @RequiresApi(Build.VERSION_CODES.O)
   private fun displayResult() {
     binding.apply {
       tvName.text = vm.storyItem.name

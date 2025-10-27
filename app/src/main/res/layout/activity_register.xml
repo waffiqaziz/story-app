@@ -9,20 +9,12 @@
 
   <ImageView
     android:id="@+id/iv_setting"
-    android:layout_width="40dp"
-    android:layout_height="40dp"
-    android:layout_alignParentEnd="true"
-    android:layout_marginTop="@dimen/margin_edge"
-    android:contentDescription="@string/change_language"
-    android:src="@drawable/ic_setting" />
+    style="@style/LanguageButtonStyle"
+    android:contentDescription="@string/change_language" />
 
   <ProgressBar
     android:id="@+id/progress_bar"
-    style="?android:attr/progressBarStyle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerInParent="true"
-    android:visibility="gone"
+    style="@style/ProgressBarStyle"
     tools:visibility="visible" />
 
   <LinearLayout
@@ -50,7 +42,7 @@
       android:textSize="30sp" />
 
     <com.dicoding.storyapp.ui.customview.MyEditTextName
-      android:id="@+id/et_name"
+      android:id="@+id/ed_register_name"
       style="@style/EditTextGeneral"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -61,7 +53,7 @@
       android:maxLines="1" />
 
     <com.dicoding.storyapp.ui.customview.MyEditTextEmail
-      android:id="@+id/et_email"
+      android:id="@+id/ed_register_email"
       style="@style/EditTextGeneral"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -71,7 +63,7 @@
       android:maxLines="1" />
 
     <com.dicoding.storyapp.ui.customview.MyEditTextPass
-      android:id="@+id/et_pass"
+      android:id="@+id/ed_register_password"
       style="@style/EditTextGeneral"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"

@@ -10,20 +10,12 @@
 
   <ImageView
     android:id="@+id/iv_setting"
-    android:layout_width="40dp"
-    android:layout_height="40dp"
-    android:layout_alignParentEnd="true"
-    android:layout_marginTop="@dimen/margin_edge"
-    android:contentDescription="@string/change_language"
-    android:src="@drawable/ic_setting" />
+    style="@style/LanguageButtonStyle"
+    android:contentDescription="@string/change_language" />
 
   <ProgressBar
     android:id="@+id/progress_bar"
-    style="?android:attr/progressBarStyle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerInParent="true"
-    android:visibility="gone"
+    style="@style/ProgressBarStyle"
     tools:visibility="visible" />
 
   <LinearLayout
@@ -50,7 +42,7 @@
       android:textSize="30sp" />
 
     <com.dicoding.storyapp.ui.customview.MyEditTextEmail
-      android:id="@+id/et_email"
+      android:id="@+id/ed_login_email"
       style="@style/EditTextGeneral"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -61,7 +53,7 @@
       android:paddingHorizontal="16sp" />
 
     <com.dicoding.storyapp.ui.customview.MyEditTextPass
-      android:id="@+id/et_pass"
+      android:id="@+id/ed_login_password"
       style="@style/EditTextGeneral"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -80,10 +72,11 @@
       android:layout_height="wrap_content"
       android:layout_marginTop="32dp"
       android:contentDescription="@string/login_account"
-      android:foreground="?attr/selectableItemBackgroundBorderless" />
+      android:foreground="?attr/selectableItemBackgroundBorderless"
+      tools:text="Sign In" />
 
     <TextView
-      android:id="@+id/et_signIn"
+      android:id="@+id/btn_open_register"
       style="@style/TextViewBold"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -97,5 +90,15 @@
 
   </LinearLayout>
 
+  <TextView
+    android:id="@+id/dicoding_course"
+    style="@style/TextViewRegular"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="@dimen/margin_edge"
+    android:text="@string/dicoding_course"
+    android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
 
 </RelativeLayout>

@@ -6,9 +6,13 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import android.graphics.text.LineBreaker
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
+import android.text.Layout
 import android.util.Patterns
+import android.widget.TextView
 import android.widget.Toast
 import com.dicoding.storyapp.R.string.app_name
 import java.io.ByteArrayOutputStream
@@ -132,6 +136,15 @@ object Helper {
     val formatter = DateTimeFormatter.ofPattern("dd MMM yyyy | HH:mm")
       .withZone(ZoneId.of(targetTimeZone))
     return formatter.format(instant)
+  }
+
+  @Suppress("WrongConstant")
+  fun justifyTextView(textView: TextView) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+      textView.justificationMode = LineBreaker.JUSTIFICATION_MODE_INTER_WORD
+    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      textView.justificationMode = Layout.JUSTIFICATION_MODE_INTER_WORD
+    }
   }
 }
 
