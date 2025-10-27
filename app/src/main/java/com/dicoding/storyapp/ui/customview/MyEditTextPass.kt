@@ -42,7 +42,7 @@ class MyEditTextPass : TextInputEditText, View.OnTouchListener {
     showEyeButton()
     setBackgroundResource(border_corner)
     textSize = 15f
-    textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+    textAlignment = TEXT_ALIGNMENT_VIEW_START
   }
 
   private fun init() {
@@ -98,7 +98,7 @@ class MyEditTextPass : TextInputEditText, View.OnTouchListener {
       val eyeButtonEnd: Float
       var isEyeButtonClicked = false
 
-      if (layoutDirection == View.LAYOUT_DIRECTION_RTL) {
+      if (layoutDirection == LAYOUT_DIRECTION_RTL) {
         eyeButtonEnd = (eyeIcon.intrinsicWidth + paddingStart).toFloat()
         if (event.x < eyeButtonEnd) isEyeButtonClicked = true
       } else {

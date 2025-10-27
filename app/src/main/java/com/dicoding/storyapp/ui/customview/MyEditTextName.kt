@@ -38,7 +38,7 @@ class MyEditTextName : TextInputEditText, View.OnTouchListener {
     super.onDraw(canvas)
     setBackgroundResource(border_corner)
     textSize = 15f
-    textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+    textAlignment = TEXT_ALIGNMENT_VIEW_START
   }
 
   private fun init() {
@@ -96,7 +96,7 @@ class MyEditTextName : TextInputEditText, View.OnTouchListener {
       val clearButtonEnd: Float
       var isClearButtonClicked = false
 
-      if (layoutDirection == View.LAYOUT_DIRECTION_RTL) {
+      if (layoutDirection == LAYOUT_DIRECTION_RTL) {
         clearButtonEnd = (clearButton.intrinsicWidth + paddingStart).toFloat()
         if (event.x < clearButtonEnd) isClearButtonClicked = true
       } else {

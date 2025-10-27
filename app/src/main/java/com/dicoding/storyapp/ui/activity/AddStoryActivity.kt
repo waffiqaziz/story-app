@@ -17,18 +17,19 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.dicoding.storyapp.R.string.invalid_permission
-import com.dicoding.storyapp.R.string.invalid_description
-import com.dicoding.storyapp.R.string.upload_success
-import com.dicoding.storyapp.R.string.information
-import com.dicoding.storyapp.R.string.upload_failed
 import com.dicoding.storyapp.R.string.continue_
-import com.dicoding.storyapp.R.string.no_attach_file
 import com.dicoding.storyapp.R.string.enable_gps_permission
+import com.dicoding.storyapp.R.string.information
+import com.dicoding.storyapp.R.string.invalid_description
+import com.dicoding.storyapp.R.string.invalid_permission
+import com.dicoding.storyapp.R.string.no_attach_file
+import com.dicoding.storyapp.R.string.upload_failed
+import com.dicoding.storyapp.R.string.upload_success
 import com.dicoding.storyapp.data.ResultResponse
 import com.dicoding.storyapp.data.model.UserModel
 import com.dicoding.storyapp.databinding.ActivityAddStoryBinding
 import com.dicoding.storyapp.helper.Helper
+import com.dicoding.storyapp.helper.Helper.reduceFileImage
 import com.dicoding.storyapp.helper.Helper.showToastShort
 import com.dicoding.storyapp.ui.viewmodel.AddStoryViewModel
 import com.dicoding.storyapp.ui.viewmodel.ViewModelFactory
@@ -139,21 +140,18 @@ class AddStoryActivity : AppCompatActivity() {
     ActivityResultContracts.StartActivityForResult()
   ) { result ->
     if (result.resultCode == CAMERA_X_RESULT) {
-      // Use the serializable extension function to retrieve the File object from the intent's data
+      // get File object from the intent data
       val myFile: File? = result.data?.serializable("picture")
 
-      // Retrieve the boolean flag indicating if it's from the back camera
       val isBackCamera = result.data?.getBooleanExtra("isBackCamera", true) ?: true
 
-      // Store the file and apply necessary operations (like rotating the bitmap)
+      // store file and rotating the bitmap
       getFile = myFile
       getFile?.let { file ->
-        // Decode and rotate the bitmap if the file exists
         this.result = Helper.rotateBitmap(
           BitmapFactory.decodeFile(file.path),
           isBackCamera
         )
-        // Update the ImageView with the rotated bitmap
         binding.ivPreview.setImageBitmap(this.result)
       }
     }
@@ -185,7 +183,7 @@ class AddStoryActivity : AppCompatActivity() {
       }
 
       getFile != null -> {
-        val file = Helper.reduceFileImage(getFile as File)
+        val file = reduceFileImage(getFile as File)
         val description = binding.etDescription.text.toString()
           .toRequestBody("application/json;charset=utf-8".toMediaType())
         val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())

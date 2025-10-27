@@ -1,0 +1,49 @@
+name: build
+
+on:
+  push:
+    branches:
+      - updated-version
+    paths-ignore:
+      - '**/*.md'
+      - '**.md'
+  pull_request:
+    branches:
+      - updated-version
+    paths-ignore:
+      - '**/*.md'
+      - '**.md'
+
+env:
+  JAVA_VERSION: '21'
+  JAVA_DISTRIBUTION: 'temurin'
+  GRADLE_CACHE: 'gradle'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Grant execute permission for Gradle wrapper
+        run: chmod +x ./gradlew
+
+      - name: Inject MAPS_API_KEY into secrets.properties
+        run: echo "MAPS_API_KEY=${{ secrets.MAPS_API_KEY }}" >> secrets.properties
+
+      - name: Set up JDK 21
+        if: github.actor != 'renovate[bot]'
+        uses: actions/setup-java@v5
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
+          cache: ${{ env.GRADLE_CACHE }}
+
+      - name: Build with Gradle Wrapper
+        run: ./gradlew build --stacktrace
