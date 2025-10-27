@@ -18,6 +18,8 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.UiDevice
 import com.dicoding.storyapp.MainActivity
 import com.dicoding.storyapp.R.id.btn_camera_x
 import com.dicoding.storyapp.R.id.btn_gallery
@@ -38,6 +40,7 @@ import com.dicoding.storyapp.data.model.UserModel
 import com.dicoding.storyapp.utils.EspressoIdlingResource
 import org.junit.After
 import org.junit.Before
+import org.junit.BeforeClass
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -49,7 +52,7 @@ class ListStoryActivityEndToEndTest {
     email = "string",
     password = "string",
     userId = "string",
-    token = "string",
+    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLWFqc3ZFbzQzRHEybVBab3QiLCJpYXQiOjE3NDM2ODg3NzJ9.QXmMc94G4dtE2icUr1T9_XP9HzBh3de9w_aWfhEt1YY",
     true
   )
   private lateinit var scenario: ActivityScenario<MainActivity>
@@ -83,8 +86,7 @@ class ListStoryActivityEndToEndTest {
     onView(withId(iv_show_map)).check(matches(isDisplayed()))
     onView(withId(rv_story)).perform(
       RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-        0,
-        click()
+        0, click()
       )
     )
     Intents.release()
@@ -99,8 +101,7 @@ class ListStoryActivityEndToEndTest {
     Intents.init()
     onView(withId(rv_story)).perform(
       RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-        0,
-        click()
+        0, click()
       )
     )
     intended(hasComponent(DetailStoryActivity::class.java.name))
@@ -137,5 +138,26 @@ class ListStoryActivityEndToEndTest {
     onView(withId(btn_camera_x)).check(matches(isDisplayed()))
     onView(withId(et_description)).check(matches(isDisplayed()))
     onView(withId(btn_upload)).check(matches(isDisplayed()))
+  }
+
+  companion object {
+    @JvmStatic
+    @BeforeClass
+    fun grantPermissions() {
+      val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+      val packageName = InstrumentationRegistry.getInstrumentation().targetContext.packageName
+
+      val permissions = listOf(
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+      )
+
+      permissions.forEach { permission ->
+        device.executeShellCommand("pm grant $packageName $permission")
+      }
+    }
   }
 }

@@ -1,9 +1,11 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
-  id("kotlin-parcelize")
   alias(libs.plugins.mapsplatform.secrets)
   alias(libs.plugins.ksp)
+  id("kotlin-parcelize")
 }
 
 android {
@@ -12,7 +14,7 @@ android {
 
   defaultConfig {
     applicationId = "com.dicoding.storyapp"
-    minSdk = 23
+    minSdk = 24
     targetSdk = 36
     versionCode = 1
     versionName = "1.0"
@@ -39,18 +41,21 @@ android {
     }
   }
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
     isCoreLibraryDesugaringEnabled = true
   }
-  kotlinOptions.jvmTarget = "17"
+  kotlin {
+    compilerOptions {
+      jvmTarget = JvmTarget.JVM_21
+    }
+  }
   packaging.resources.excludes += "/META-INF/{AL2.0,LGPL2.1}"
   buildFeatures {
     viewBinding = true
     buildConfig = true
   }
 
-  @Suppress("UnstableApiUsage")
   testOptions {
     animationsDisabled = true
     unitTests.apply {
@@ -110,31 +115,30 @@ dependencies {
   implementation(libs.play.services.maps)
   implementation(libs.play.services.location)
 
+  implementation(libs.androidx.espresso.idling.resource)
+
   //testing
   androidTestImplementation(libs.androidx.test.ext.junit)
   androidTestImplementation(libs.androidx.test.runner)
   androidTestImplementation(libs.androidx.rules)
   androidTestImplementation(libs.androidx.test.core.ktx)
 
-  implementation(libs.androidx.espresso.idling.resource)
   androidTestImplementation(libs.espresso.core)
+  androidTestImplementation(libs.espresso.contrib)
   androidTestImplementation(libs.androidx.espresso.core)
   androidTestImplementation(libs.androidx.espresso.contrib)
-  androidTestImplementation(libs.espresso.contrib)
   androidTestImplementation(libs.androidx.espresso.intents)
+  androidTestImplementation(libs.androidx.uiautomator)
 
   //mock web server
   androidTestImplementation(libs.mockwebserver)
   androidTestImplementation(libs.okhttp.tls)
 
   //mockito
+  testImplementation(libs.androidx.core.testing)
+  testImplementation(libs.junit)
+  testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.mockito)
   testImplementation(libs.mockito.inline)
 
-  testImplementation(libs.junit)
-  testImplementation(libs.mockito.inline)
-
-  //special testing
-  testImplementation(libs.androidx.core.testing)
-  testImplementation(libs.kotlinx.coroutines.test)
 }

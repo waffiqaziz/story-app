@@ -1,6 +1,7 @@
 package com.dicoding.storyapp.ui.viewmodel
 
 import android.content.Context
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.storyapp.data.repository.StoryRepository
@@ -40,5 +41,11 @@ class ViewModelFactory private constructor(
       instance ?: synchronized(this) {
         instance ?: ViewModelFactory(Injection.provideStoryRepository(context))
       }.also { instance = it }
+
+    // clear viewmodel factory cache
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun clearInstance() {
+      instance = null
+    }
   }
 }

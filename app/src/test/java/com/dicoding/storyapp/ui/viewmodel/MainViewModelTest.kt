@@ -1,9 +1,8 @@
 package com.dicoding.storyapp.ui.viewmodel
 
-import com.dicoding.storyapp.DataDummy
+import com.dicoding.storyapp.DataDummy.generateDummyUserModel
 import com.dicoding.storyapp.MainCoroutineRule
 import com.dicoding.storyapp.data.model.UserPreference
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
@@ -32,14 +31,15 @@ class MainViewModelTest {
 
   @Test
   fun `when getUser() is called should no null and Return Success`() = runTest {
-    val expectedResponse = flowOf(DataDummy.generateDummyUserModel())
+    val expectedResponse = flowOf(generateDummyUserModel())
     `when`(mainViewModel.getUser()).thenReturn(expectedResponse)
 
     mainViewModel.getUser().collect {
       Assert.assertNotNull(it.token)
-      Assert.assertEquals(DataDummy.generateDummyUserModel().token, it.token)
+      Assert.assertEquals(generateDummyUserModel().token, it.token)
     }
 
+    @Suppress("UNUSED_EXPRESSION")
     Mockito.verify(userPreference).getUser()
   }
 
