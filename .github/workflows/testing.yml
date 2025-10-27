@@ -1,4 +1,4 @@
-name: Android CI
+name: testing
 
 on:
   push:
@@ -26,6 +26,7 @@ env:
 
 jobs:
   unit_test:
+    name: Unit Tests
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -37,7 +38,6 @@ jobs:
         run: chmod +x gradlew
 
       - name: Set up JDK 21
-        if: github.actor != 'renovate[bot]'
         uses: actions/setup-java@v5
         with:
           java-version: ${{ env.JAVA_VERSION }}
@@ -59,7 +59,6 @@ jobs:
 
   instrumentation_test:
     name: Instrumentation Tests
-    needs: detekt_checks
     runs-on: ubuntu-latest
     timeout-minutes: 30
     continue-on-error: true
