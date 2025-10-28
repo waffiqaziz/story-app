@@ -9,7 +9,7 @@ import com.dicoding.storyapp.data.remote.response.ListStoryItem
 @Database(
   entities = [ListStoryItem::class, RemoteKeys::class],
   version = 1,
-  exportSchema = false
+  exportSchema = true
 )
 abstract class StoryDatabase : RoomDatabase() {
   abstract fun storyDao(): StoryDao
@@ -26,7 +26,7 @@ abstract class StoryDatabase : RoomDatabase() {
           context.applicationContext,
           StoryDatabase::class.java, "story.db"
         )
-          .fallbackToDestructiveMigration()
+          .fallbackToDestructiveMigration(dropAllTables = true)
           .build()
           .also { INSTANCE = it }
       }

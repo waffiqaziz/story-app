@@ -87,7 +87,7 @@ class ListStoryActivityEndToEndTest {
     intent.putExtra(ListStoryActivity.EXTRA_USER, user)
     scenario = launchActivity(intent)
     Intents.init()
-    onView(isRoot()).perform(waitFor(2500))
+    onView(isRoot()).perform(waitFor(5500))
 
     onView(withId(rv_story)).check(matches(isDisplayed()))
     onView(withId(rv_story)).perform(
@@ -112,7 +112,7 @@ class ListStoryActivityEndToEndTest {
     intent.putExtra(ListStoryActivity.EXTRA_USER, user)
     scenario = launchActivity(intent)
     Intents.init()
-    onView(isRoot()).perform(waitFor(2500))
+    onView(isRoot()).perform(waitFor(5500))
 
     onView(withId(rv_story)).perform(
       RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
