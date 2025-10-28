@@ -74,6 +74,10 @@ android {
   }
 }
 
+ksp {
+  arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 dependencies {
   coreLibraryDesugaring(libs.desugar.jdk.libs)
   implementation(libs.androidx.legacy.support.v4)
@@ -140,5 +144,4 @@ dependencies {
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.mockito)
   testImplementation(libs.mockito.inline)
-
 }
