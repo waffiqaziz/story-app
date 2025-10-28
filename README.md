@@ -1,7 +1,8 @@
 # Story App 📖
 
 ![Header](assets/logo/feature_graphic.png)
-![Unit Testing](https://github.com/waffiqaziz/story-app/actions/workflows/unit_testing.yml/badge.svg)
+![Unit Testing](https://github.com/waffiqaziz/story-app/actions/workflows/testing.yml/badge.svg)
+![Build](https://github.com/waffiqaziz/story-app/actions/workflows/build.yml/badge.svg)
 
 **Story App** is an Android application developed for **educational purposes only**. It allows users
 to create an account, log in, post stories with pictures from their gallery or camera, add
