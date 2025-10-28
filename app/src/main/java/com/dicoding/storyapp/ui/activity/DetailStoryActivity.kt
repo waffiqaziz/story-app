@@ -2,9 +2,11 @@ package com.dicoding.storyapp.ui.activity
 
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.dicoding.storyapp.R.drawable.ic_broken_image
 import com.dicoding.storyapp.R.drawable.ic_place_holder
 import com.dicoding.storyapp.R.string.created_add
@@ -23,6 +25,7 @@ class DetailStoryActivity : AppCompatActivity() {
   private val vm: DetailStoryViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    enableEdgeToEdge()
     super.onCreate(savedInstanceState)
     binding = ActivityDetailStoryBinding.inflate(layoutInflater)
     setContentView(binding.root)
@@ -69,6 +72,7 @@ class DetailStoryActivity : AppCompatActivity() {
       Glide.with(ivStory)
         .load(vm.storyItem.photoUrl) // URL Avatar
         .placeholder(ic_place_holder)
+        .transition(withCrossFade())
         .error(ic_broken_image)
         .into(ivStory)
     }

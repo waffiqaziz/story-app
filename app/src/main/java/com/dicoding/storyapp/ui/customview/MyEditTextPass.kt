@@ -21,6 +21,8 @@ class MyEditTextPass : TextInputEditText, View.OnTouchListener {
 
   private lateinit var eyeIcon: Drawable
 
+  var isValid = false
+
   constructor(context: Context) : super(context) {
     init()
   }
@@ -56,7 +58,7 @@ class MyEditTextPass : TextInputEditText, View.OnTouchListener {
       }
 
       override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-        // Do nothing.
+        isValid = s.toString().length >= 8
       }
 
       override fun afterTextChanged(s: Editable) {
@@ -82,7 +84,7 @@ class MyEditTextPass : TextInputEditText, View.OnTouchListener {
     startOfTheText: Drawable? = null,
     topOfTheText: Drawable? = null,
     endOfTheText: Drawable? = null,
-    bottomOfTheText: Drawable? = null
+    bottomOfTheText: Drawable? = null,
   ) {
     setCompoundDrawablesWithIntrinsicBounds(
       startOfTheText,
