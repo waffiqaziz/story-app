@@ -69,6 +69,9 @@
   <string name="share_location">Comparte ubicación</string>
   <string name="warning_log_out">Al cerrar sesión, finalizará su sesión. ¿Está seguro de que desea continuar?</string>
   <string name="no">No</string>
+  <string name="no_stories_yet">Aún no hay historias.</string>
+  <string name="open_the_app_to_load_your_stories">Open the app to load your stories</string>
+  <string name="swipe_to_explore_stories">Desliza para explorar historias</string>
 
 
 </resources>
