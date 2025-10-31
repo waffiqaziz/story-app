@@ -20,6 +20,7 @@ import com.dicoding.storyapp.ui.adapter.LoadingStateAdapter
 import com.dicoding.storyapp.ui.adapter.StoryAdapter
 import com.dicoding.storyapp.ui.viewmodel.ListStoryViewModel
 import com.dicoding.storyapp.ui.viewmodel.ViewModelFactory
+import com.dicoding.storyapp.ui.widget.WidgetUpdateHelper
 import com.dicoding.storyapp.utils.Helpers.parcelable
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -105,6 +106,7 @@ class ListStoryActivity : AppCompatActivity() {
   override fun onResume() {
     super.onResume()
     adapter.refresh()
+    WidgetUpdateHelper.updateStackWidget(this)
   }
 
   override fun onDestroy() {
