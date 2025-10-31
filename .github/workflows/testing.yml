@@ -95,24 +95,26 @@ jobs:
           key: avd-29
 
       - name: create AVD and generate snapshot for caching
-        if: steps.avd-cache.outputs.cache-hit != 'true'
+#        if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ env.ANDROID_API_LEVEL }}
-          force-avd-creation: false
+          force-avd-creation: true
           arch: ${{ env.ANDROID_ARCH }}
           profile: ${{ env.ANDROID_PROFILE }}
           disable-animations: false
-          script: echo "Generated AVD snapshot for caching."
-
-      - name: Run instrumentation test
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: ${{ env.ANDROID_API_LEVEL }}
-          force-avd-creation: false
-          arch: ${{ env.ANDROID_ARCH }}
-          profile: ${{ env.ANDROID_PROFILE }}
-          disable-animations: true
           script: |
             adb wait-for-device
             ./gradlew connectedDebugAndroidTest --stacktrace
+
+#      - name: Run instrumentation test
+#        uses: reactivecircus/android-emulator-runner@v2
+#        with:
+#          api-level: ${{ env.ANDROID_API_LEVEL }}
+#          force-avd-creation: false
+#          arch: ${{ env.ANDROID_ARCH }}
+#          profile: ${{ env.ANDROID_PROFILE }}
+#          disable-animations: true
+#          script: |
+#            adb wait-for-device
+#            ./gradlew connectedDebugAndroidTest --stacktrace
