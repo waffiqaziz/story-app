@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -26,10 +27,8 @@ import com.dicoding.storyapp.data.ResultResponse
 import com.dicoding.storyapp.data.model.UserModel
 import com.dicoding.storyapp.data.model.UserPreference
 import com.dicoding.storyapp.databinding.ActivitySigninBinding
-import com.dicoding.storyapp.helper.Helper.isEmailValid
 import com.dicoding.storyapp.ui.viewmodel.LoginViewModel
 import com.dicoding.storyapp.ui.viewmodel.ViewModelFactory
-import com.dicoding.storyapp.utils.Const.MIN_CHARACTERS
 import kotlinx.coroutines.launch
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
@@ -79,13 +78,10 @@ class SignInActivity : AppCompatActivity() {
   }
 
   private fun setMyButtonEnable() {
-    val resultPass = binding.edLoginPassword.text
-    val resultEmail = binding.edLoginEmail.text
+    val resultPass = binding.edLoginPassword.isValid
+    val resultEmail = binding.edLoginEmail.isValid
 
-    binding.btnSignIn.isEnabled =
-      resultPass != null && resultEmail != null && binding.edLoginPassword.text.toString().length >= MIN_CHARACTERS && isEmailValid(
-        binding.edLoginEmail.text.toString()
-      )
+    binding.btnSignIn.isEnabled = resultPass && resultEmail
   }
 
   private fun showAlertDialog(param: Boolean, message: String) {

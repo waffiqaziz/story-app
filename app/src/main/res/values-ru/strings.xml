@@ -69,5 +69,8 @@
   <string name="share_location">Поделиться местоположением</string>
   <string name="warning_log_out">Выход из системы завершит ваш сеанс. Вы уверены, что хотите продолжить?</string>
   <string name="no">Нет</string>
+  <string name="no_stories_yet">Пока нет историй</string>
+  <string name="open_the_app_to_load_your_stories">Откройте приложение, чтобы загрузить свои истории.</string>
+  <string name="swipe_to_explore_stories">Проведите пальцем, чтобы просмотреть истории</string>
 
 </resources>

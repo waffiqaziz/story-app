@@ -69,4 +69,8 @@
   <string name="title_activity_maps">MapsActivity</string>
   <string name="something_wrong">Oops.. something went wrong.<br /> Check your connection</string>
   <string name="share_location">Share Location</string>
+
+  <string name="no_stories_yet">No Stories Yet</string>
+  <string name="open_the_app_to_load_your_stories">Open the app to load your stories</string>
+  <string name="swipe_to_explore_stories">Swipe to explore stories</string>
 </resources>

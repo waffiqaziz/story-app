@@ -19,6 +19,8 @@ class MyEditTextEmail : TextInputEditText, View.OnTouchListener {
 
   private lateinit var clearButton: Drawable
 
+  var isValid = false
+
   constructor(context: Context) : super(context) {
     init()
   }
@@ -53,7 +55,7 @@ class MyEditTextEmail : TextInputEditText, View.OnTouchListener {
       }
 
       override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
+        isValid = s.toString().length >= 8
       }
 
       override fun afterTextChanged(s: Editable) {

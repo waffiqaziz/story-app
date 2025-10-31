@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.launchActivity
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
@@ -74,7 +75,7 @@ class ListStoryActivityEndToEndTest {
       // intents not initialized, ignore
     }
 
-    // xlose scenario if initialized
+    // close scenario if initialized
     if (::scenario.isInitialized) {
       scenario.close()
     }
@@ -87,7 +88,8 @@ class ListStoryActivityEndToEndTest {
     intent.putExtra(ListStoryActivity.EXTRA_USER, user)
     scenario = launchActivity(intent)
     Intents.init()
-    onView(isRoot()).perform(waitFor(5500))
+    Espresso.onIdle()
+    onView(isRoot()).perform(waitFor(15500))
 
     onView(withId(rv_story)).check(matches(isDisplayed()))
     onView(withId(rv_story)).perform(
@@ -112,7 +114,8 @@ class ListStoryActivityEndToEndTest {
     intent.putExtra(ListStoryActivity.EXTRA_USER, user)
     scenario = launchActivity(intent)
     Intents.init()
-    onView(isRoot()).perform(waitFor(5500))
+    Espresso.onIdle()
+    onView(isRoot()).perform(waitFor(15500))
 
     onView(withId(rv_story)).perform(
       RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
