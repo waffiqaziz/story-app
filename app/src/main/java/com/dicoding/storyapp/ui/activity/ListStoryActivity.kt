@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -19,6 +20,7 @@ import com.dicoding.storyapp.ui.adapter.LoadingStateAdapter
 import com.dicoding.storyapp.ui.adapter.StoryAdapter
 import com.dicoding.storyapp.ui.viewmodel.ListStoryViewModel
 import com.dicoding.storyapp.ui.viewmodel.ViewModelFactory
+import com.dicoding.storyapp.ui.widget.WidgetUpdateHelper
 import com.dicoding.storyapp.utils.Helpers.parcelable
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -36,6 +38,7 @@ class ListStoryActivity : AppCompatActivity() {
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    enableEdgeToEdge()
     super.onCreate(savedInstanceState)
     _binding = ActivityListStoryBinding.inflate(layoutInflater)
     setContentView(binding?.root)
@@ -103,6 +106,7 @@ class ListStoryActivity : AppCompatActivity() {
   override fun onResume() {
     super.onResume()
     adapter.refresh()
+    WidgetUpdateHelper.updateStackWidget(this)
   }
 
   override fun onDestroy() {

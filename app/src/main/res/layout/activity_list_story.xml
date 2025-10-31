@@ -18,6 +18,8 @@
       android:id="@+id/rv_story"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      android:clipToPadding="false"
+      android:paddingTop="@dimen/margin_edge"
       app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
       tools:listitem="@layout/item_list_story" />
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -28,6 +30,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="end"
+    android:paddingTop="@dimen/margin_edge"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="parent"
@@ -36,6 +39,7 @@
   <ImageButton
     android:id="@+id/iv_add_story"
     style="@style/BtnActionBar"
+    android:layout_marginTop="@dimen/margin_edge"
     android:layout_marginEnd="8dp"
     android:background="?actionBarItemBackground"
     android:contentDescription="@string/add_story"
@@ -47,6 +51,7 @@
   <ImageButton
     android:id="@+id/iv_show_map"
     style="@style/BtnActionBar"
+    android:layout_marginTop="@dimen/margin_edge"
     android:contentDescription="@string/title_activity_maps"
     android:src="@drawable/ic_show_map"
     app:layout_constraintBottom_toBottomOf="@+id/toolbar"

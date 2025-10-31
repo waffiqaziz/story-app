@@ -15,6 +15,10 @@ class FakeStoryDao : StoryDao {
     TODO("Not yet implemented")
   }
 
+  override suspend fun getAllAsList(): List<ListStoryItem> {
+    TODO("Not yet implemented")
+  }
+
   override suspend fun deleteAll() {
     storyData.clear()
   }

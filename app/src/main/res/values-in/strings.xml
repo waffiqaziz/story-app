@@ -69,5 +69,8 @@
   <string name="share_location">Berbagi lokasi</string>
   <string name="warning_log_out">Operasi ini akan mengakhiri sesi Anda. Apakah Anda yakin ingin melanjutkan?</string>
   <string name="no">Tidak</string>
+  <string name="no_stories_yet">Belum ada cerita</string>
+  <string name="open_the_app_to_load_your_stories">Buka aplikasi, login, dan lihat story terlebih dahulu</string>
+  <string name="swipe_to_explore_stories">Geser untuk menjelajah cerita</string>
 
 </resources>
