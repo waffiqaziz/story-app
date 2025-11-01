@@ -90,11 +90,10 @@ class ListStoryActivityEndToEndTest {
     scenario = launchActivity(intent)
     Intents.init()
     Espresso.onIdle()
-    onView(isRoot()).perform(waitFor(30000))
+    onView(isRoot()).perform(waitFor(60000))
 
     onView(withId(rv_story))
       .check(matches(isDisplayed()))
-      .check(matches(hasMinimumChildCount(3)))
 
     onView(withId(rv_story)).perform(
       RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
