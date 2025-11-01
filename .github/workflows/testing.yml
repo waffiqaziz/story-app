@@ -102,13 +102,11 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ env.ANDROID_API_LEVEL }}
-          force-avd-creation: true
           arch: ${{ env.ANDROID_ARCH }}
           profile: ${{ env.ANDROID_PROFILE }}
           disable-animations: false
-          script: |
-            adb wait-for-device
-            ./gradlew connectedDebugAndroidTest --stacktrace
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: ./gradlew connectedDebugAndroidTest --stacktrace
 
 #      - name: Run instrumentation test
 #        uses: reactivecircus/android-emulator-runner@v2
