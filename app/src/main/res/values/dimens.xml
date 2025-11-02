@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!-- Default screen margins, per the Android Design guidelines. -->
+  <dimen name="padding_bottom">48dp</dimen>
   <dimen name="margin_edge">24dp</dimen>
   <dimen name="margin_spacing">10dp</dimen>
   <dimen name="corner_radius">8dp</dimen>
-
-  <!--
-Refer to App Widget Documentation for margin information
-http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
-    -->
-  <dimen name="widget_margin">0dp</dimen>
 </resources>
