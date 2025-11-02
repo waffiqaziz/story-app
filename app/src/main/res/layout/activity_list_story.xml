@@ -20,6 +20,7 @@
       android:layout_height="match_parent"
       android:clipToPadding="false"
       android:paddingTop="@dimen/margin_edge"
+      android:paddingBottom="@dimen/padding_bottom"
       app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
       tools:listitem="@layout/item_list_story" />
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
