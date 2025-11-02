@@ -1,8 +1,8 @@
 package com.dicoding.storyapp.ui.viewmodel
 
-import com.dicoding.storyapp.DataDummy.generateDummyUserModel
-import com.dicoding.storyapp.MainCoroutineRule
 import com.dicoding.storyapp.data.model.UserPreference
+import com.dicoding.storyapp.utils.DataDummy.generateDummyUserModel
+import com.dicoding.storyapp.utils.MainCoroutineRule
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert

@@ -2,12 +2,14 @@ package com.dicoding.storyapp.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
-import com.dicoding.storyapp.DataDummy
 import com.dicoding.storyapp.data.ResultResponse
 import com.dicoding.storyapp.data.remote.response.LoginResult
 import com.dicoding.storyapp.data.repository.StoryRepository
-import com.dicoding.storyapp.getOrAwaitValue
-import org.junit.Assert.*
+import com.dicoding.storyapp.utils.DataDummy
+import com.dicoding.storyapp.utils.TestUtils.getOrAwaitValue
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -18,7 +20,7 @@ import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
-class LoginViewModelTest{
+class LoginViewModelTest {
   @get:Rule
   var instantExecutorRule = InstantTaskExecutorRule()
 

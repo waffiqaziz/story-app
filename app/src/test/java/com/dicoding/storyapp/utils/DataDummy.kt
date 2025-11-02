@@ -1,11 +1,14 @@
-package com.dicoding.storyapp
+package com.dicoding.storyapp.utils
 
 import com.dicoding.storyapp.data.model.UserModel
-import com.dicoding.storyapp.data.remote.response.*
+import com.dicoding.storyapp.data.remote.response.AllStoriesResponse
+import com.dicoding.storyapp.data.remote.response.ApiResponse
+import com.dicoding.storyapp.data.remote.response.ListStoryItem
+import com.dicoding.storyapp.data.remote.response.LoginResponse
+import com.dicoding.storyapp.data.remote.response.LoginResult
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-
 
 object DataDummy {
 

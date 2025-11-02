@@ -3,13 +3,13 @@ package com.dicoding.storyapp.data.repository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.recyclerview.widget.ListUpdateCallback
-import com.dicoding.storyapp.DataDummy
-import com.dicoding.storyapp.MainCoroutineRule
 import com.dicoding.storyapp.data.remote.retrofit.ApiService
 import com.dicoding.storyapp.data.remote.retrofit.FakeApiService
 import com.dicoding.storyapp.data.room.FakeStoryDao
 import com.dicoding.storyapp.data.room.StoryDao
 import com.dicoding.storyapp.ui.adapter.StoryAdapter
+import com.dicoding.storyapp.utils.DataDummy
+import com.dicoding.storyapp.utils.MainCoroutineRule
 import com.dicoding.storyapp.utils.PagedTestDataSource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
