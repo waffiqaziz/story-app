@@ -7,7 +7,7 @@ import com.dicoding.storyapp.data.model.UserPreference
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val pref: UserPreference) : ViewModel()  {
+class MainViewModel(private val pref: UserPreference) : ViewModel() {
 
   fun getUser(): Flow<UserModel> {
     return pref.getUser()

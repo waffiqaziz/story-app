@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.storyapp.data.model.UserPreference
 
-class ViewModelUserFactory(private val pref: UserPreference) : ViewModelProvider.NewInstanceFactory() {
+class ViewModelUserFactory(private val pref: UserPreference) :
+  ViewModelProvider.NewInstanceFactory() {
 
   @Suppress("UNCHECKED_CAST")
   override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -12,6 +13,7 @@ class ViewModelUserFactory(private val pref: UserPreference) : ViewModelProvider
       modelClass.isAssignableFrom(MainViewModel::class.java) -> {
         MainViewModel(pref) as T
       }
+
       else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }
   }

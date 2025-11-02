@@ -11,7 +11,7 @@ data class LoginResponse(
 	val error: Boolean,
 
 	@field:SerializedName("message")
-	val message: String
+	val message: String,
 )
 
 data class LoginResult(
@@ -23,5 +23,5 @@ data class LoginResult(
 	val userId: String,
 
 	@field:SerializedName("token")
-	val token: String
+	val token: String,
 )

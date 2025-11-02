@@ -5,7 +5,14 @@ import com.dicoding.storyapp.data.remote.response.ApiResponse
 import com.dicoding.storyapp.data.remote.response.LoginResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.http.*
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Multipart
+import retrofit2.http.POST
+import retrofit2.http.Part
+import retrofit2.http.Query
 
 interface ApiService {
   @FormUrlEncoded
@@ -13,14 +20,14 @@ interface ApiService {
   suspend fun register(
     @Field("name") name: String,
     @Field("email") email: String,
-    @Field("password") pass: String
+    @Field("password") pass: String,
   ): ApiResponse
 
   @FormUrlEncoded
   @POST("login")
   suspend fun login(
     @Field("email") email: String,
-    @Field("password") pass: String
+    @Field("password") pass: String,
   ): LoginResponse
 
   @Multipart
@@ -30,7 +37,7 @@ interface ApiService {
     @Part("description") description: RequestBody,
     @Part file: MultipartBody.Part,
     @Part("lat") latitude: RequestBody?,
-    @Part("lon") longitude: RequestBody?
+    @Part("lon") longitude: RequestBody?,
   ): ApiResponse
 
   @GET("stories")
@@ -42,6 +49,6 @@ interface ApiService {
 
   @GET("stories?location=1")
   suspend fun getAllStoriesLocation(
-    @Header("Authorization") token: String
+    @Header("Authorization") token: String,
   ): AllStoriesResponse
 }

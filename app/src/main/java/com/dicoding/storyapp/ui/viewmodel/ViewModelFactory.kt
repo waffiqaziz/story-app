@@ -8,7 +8,7 @@ import com.dicoding.storyapp.data.repository.StoryRepository
 import com.dicoding.storyapp.di.Injection
 
 class ViewModelFactory private constructor(
-  private val storyRepository: StoryRepository
+  private val storyRepository: StoryRepository,
 ) :
   ViewModelProvider.NewInstanceFactory() {
 
@@ -18,18 +18,23 @@ class ViewModelFactory private constructor(
       modelClass.isAssignableFrom(ListStoryViewModel::class.java) -> {
         ListStoryViewModel(storyRepository) as T
       }
+
       modelClass.isAssignableFrom(MapsViewModel::class.java) -> {
         MapsViewModel(storyRepository) as T
       }
+
       modelClass.isAssignableFrom(AddStoryViewModel::class.java) -> {
         AddStoryViewModel(storyRepository) as T
       }
+
       modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
         LoginViewModel(storyRepository) as T
       }
+
       modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
         RegisterViewModel(storyRepository) as T
       }
+
       else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }
   }

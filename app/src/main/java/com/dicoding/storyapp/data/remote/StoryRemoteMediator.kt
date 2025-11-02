@@ -14,11 +14,11 @@ import com.dicoding.storyapp.data.room.StoryDatabase
 class StoryRemoteMediator(
   private val database: StoryDatabase,
   private val apiService: ApiService,
-  private val token: String
+  private val token: String,
 ) : RemoteMediator<Int, ListStoryItem>() {
   override suspend fun load(
     loadType: LoadType,
-    state: PagingState<Int, ListStoryItem>
+    state: PagingState<Int, ListStoryItem>,
   ): MediatorResult {
 
     val page = when (loadType) {
@@ -26,12 +26,14 @@ class StoryRemoteMediator(
         val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
         remoteKeys?.nextKey?.minus(1) ?: INITIAL_PAGE_INDEX
       }
+
       LoadType.PREPEND -> {
         val remoteKeys = getRemoteKeyForFirstItem(state)
         val prevKey = remoteKeys?.prevKey
           ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
         prevKey
       }
+
       LoadType.APPEND -> {
         val remoteKeys = getRemoteKeyForLastItem(state)
         val nextKey = remoteKeys?.nextKey

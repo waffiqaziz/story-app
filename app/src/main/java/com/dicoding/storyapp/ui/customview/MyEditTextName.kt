@@ -80,7 +80,7 @@ class MyEditTextName : TextInputEditText, View.OnTouchListener {
     startOfTheText: Drawable? = null,
     topOfTheText: Drawable? = null,
     endOfTheText: Drawable? = null,
-    bottomOfTheText: Drawable? = null
+    bottomOfTheText: Drawable? = null,
   ) {
     setCompoundDrawablesWithIntrinsicBounds(
       startOfTheText,

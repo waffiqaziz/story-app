@@ -55,7 +55,7 @@ internal class StackRemoteViewsFactory(private val mContext: Context) :
     fetchDataDB()
   }
 
-  override fun onDestroy() {  }
+  override fun onDestroy() {}
 
   private fun fetchDataDB() {
     runBlocking {

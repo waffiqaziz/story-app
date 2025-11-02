@@ -18,7 +18,11 @@ class StackWidget : AppWidgetProvider() {
     private const val TOAST_ACTION = "com.dicoding.storyapp.TOAST_ACTION"
     const val EXTRA_ITEM = "com.dicoding.storyapp.EXTRA_ITEM"
 
-    private fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
+    private fun updateAppWidget(
+      context: Context,
+      appWidgetManager: AppWidgetManager,
+      appWidgetId: Int,
+    ) {
       val intent = Intent(context, StackWidgetService::class.java)
       intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
       intent.data = intent.toUri(Intent.URI_INTENT_SCHEME).toUri()
@@ -31,7 +35,8 @@ class StackWidget : AppWidgetProvider() {
       toastIntent.action = TOAST_ACTION
       toastIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
 
-      val toastPendingIntent = PendingIntent.getBroadcast(context, 0, toastIntent,
+      val toastPendingIntent = PendingIntent.getBroadcast(
+        context, 0, toastIntent,
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
           PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
         else 0
@@ -43,7 +48,11 @@ class StackWidget : AppWidgetProvider() {
     }
   }
 
-  override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+  override fun onUpdate(
+    context: Context,
+    appWidgetManager: AppWidgetManager,
+    appWidgetIds: IntArray,
+  ) {
     for (appWidgetId in appWidgetIds) {
       updateAppWidget(context, appWidgetManager, appWidgetId)
     }

@@ -11,7 +11,7 @@ import com.dicoding.storyapp.data.repository.StoryRepository
 
 class ListStoryViewModel(
   private val storyRepository: StoryRepository,
-  ) : ViewModel() {
+) : ViewModel() {
 
   fun getStory(token: String): LiveData<PagingData<ListStoryItem>> {
     return storyRepository.getPagingStories(token).cachedIn(viewModelScope).asLiveData()
