@@ -62,7 +62,7 @@ class AddStoryActivity : AppCompatActivity() {
   override fun onRequestPermissionsResult(
     requestCode: Int,
     permissions: Array<String>,
-    grantResults: IntArray
+    grantResults: IntArray,
   ) {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     if (requestCode == REQUEST_CODE_PERMISSIONS) {
@@ -274,7 +274,8 @@ class AddStoryActivity : AppCompatActivity() {
     private const val TAG = "AddStoryActivity"
     const val EXTRA_USER = "user"
 
-    private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+    private val REQUIRED_PERMISSIONS =
+      arrayOf(Manifest.permission.CAMERA)
     private const val REQUEST_CODE_PERMISSIONS = 10
   }
 
