@@ -41,14 +41,15 @@ class MyEditTextPass : TextInputEditText, View.OnTouchListener {
 
   override fun onDraw(canvas: Canvas) {
     super.onDraw(canvas)
-    showEyeButton()
-    setBackgroundResource(border_corner)
-    textSize = 15f
-    textAlignment = TEXT_ALIGNMENT_VIEW_START
   }
 
   private fun init() {
     eyeIcon = ContextCompat.getDrawable(context, ic_eye_off) as Drawable // x button
+
+    showEyeButton()
+    setBackgroundResource(border_corner)
+    textSize = 15f
+    textAlignment = TEXT_ALIGNMENT_VIEW_START
 
     setOnTouchListener(this)
 

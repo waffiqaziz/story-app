@@ -37,16 +37,17 @@ class MyButtonSignIn : AppCompatButton {
 
   override fun onDraw(canvas: Canvas) {
     super.onDraw(canvas)
-    background = if (isEnabled) enabledBackground else disabledBackground
-
-    textSize = 15f
-    gravity = Gravity.CENTER
-    text = if (isEnabled) context.getString(sign_in) else context.getString(fill_all)
   }
 
   private fun init() {
+    textSize = 15f
+    gravity = Gravity.CENTER
+    text = if (isEnabled) context.getString(sign_in) else context.getString(fill_all)
+
     txtColor = ContextCompat.getColor(context, black)
     enabledBackground = ContextCompat.getDrawable(context, bg_button_regular) as Drawable
     disabledBackground = ContextCompat.getDrawable(context, bg_button_disable) as Drawable
+
+    background = if (isEnabled) enabledBackground else disabledBackground
   }
 }
