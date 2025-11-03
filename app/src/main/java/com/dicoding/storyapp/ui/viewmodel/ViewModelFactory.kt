@@ -4,11 +4,13 @@ import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.dicoding.storyapp.data.model.UserPreference
 import com.dicoding.storyapp.data.repository.StoryRepository
 import com.dicoding.storyapp.di.Injection
 
 class ViewModelFactory private constructor(
   private val storyRepository: StoryRepository,
+  private val userPreference: UserPreference,
 ) :
   ViewModelProvider.NewInstanceFactory() {
 
@@ -28,11 +30,15 @@ class ViewModelFactory private constructor(
       }
 
       modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
-        LoginViewModel(storyRepository) as T
+        LoginViewModel(storyRepository, userPreference) as T
       }
 
       modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
         RegisterViewModel(storyRepository) as T
+      }
+
+      modelClass.isAssignableFrom(MainViewModel::class.java) -> {
+        MainViewModel(userPreference) as T
       }
 
       else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
@@ -44,7 +50,10 @@ class ViewModelFactory private constructor(
     private var instance: ViewModelFactory? = null
     fun getInstance(context: Context): ViewModelFactory =
       instance ?: synchronized(this) {
-        instance ?: ViewModelFactory(Injection.provideStoryRepository(context))
+        instance ?: ViewModelFactory(
+          Injection.provideStoryRepository(context),
+          Injection.provideDatastore(context),
+        )
       }.also { instance = it }
 
     // clear viewmodel factory cache
