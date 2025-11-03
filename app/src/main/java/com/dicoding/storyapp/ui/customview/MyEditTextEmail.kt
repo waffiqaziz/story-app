@@ -39,13 +39,14 @@ class MyEditTextEmail : TextInputEditText, View.OnTouchListener {
 
   override fun onDraw(canvas: Canvas) {
     super.onDraw(canvas)
-    setBackgroundResource(border_corner)
-    textSize = 15f
-    textAlignment = TEXT_ALIGNMENT_VIEW_START
   }
 
   private fun init() {
     clearButton = ContextCompat.getDrawable(context, ic_close) as Drawable // x button
+
+    setBackgroundResource(border_corner)
+    textSize = 15f
+    textAlignment = TEXT_ALIGNMENT_VIEW_START
 
     setOnTouchListener(this)
 
