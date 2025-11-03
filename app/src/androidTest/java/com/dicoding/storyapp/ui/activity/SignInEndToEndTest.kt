@@ -12,7 +12,6 @@ import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
@@ -27,7 +26,6 @@ import com.dicoding.storyapp.R.id.imageView
 import com.dicoding.storyapp.R.id.messageTextView
 import com.dicoding.storyapp.R.id.nameTextView
 import com.dicoding.storyapp.R.string.continue_
-import com.dicoding.storyapp.TestUtils.waitFor
 import com.dicoding.storyapp.utils.EspressoIdlingResource
 import org.junit.After
 import org.junit.Before
@@ -56,12 +54,10 @@ class SignInEndToEndTest {
   fun teardown() {
     Intents.release()
     IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
-    activityScenarioRule.scenario.close()
   }
 
   @Test
   fun loginTest() {
-
     activityScenarioRule.scenario.onActivity { activity ->
       Log.d("TEST", "Activity is ready")
     }
