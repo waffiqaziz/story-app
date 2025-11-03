@@ -24,8 +24,8 @@ class StoryRepository(
   private val apiService: ApiService,
 ) {
 
-  fun register(name: String, email: String, pass: String): LiveData<ResultResponse<ApiResponse>> =
-    liveData {
+  fun register(name: String, email: String, pass: String): LiveData<ResultResponse<ApiResponse>> {
+    return liveData {
       emit(ResultResponse.Loading)
       try {
         val response = apiService.register(name, email, pass)
@@ -40,26 +40,29 @@ class StoryRepository(
         emit(ResultResponse.Error(e.message.toString()))
       }
     }
+  }
 
   fun login(email: String, pass: String): LiveData<ResultResponse<LoginResult>> =
     liveData {
-      emit(ResultResponse.Loading)
-      try {
-        val response = apiService.login(email, pass)
-        if (!response.error) {
-          emit(ResultResponse.Success(response.loginResult))
-        } else {
-          Log.e(TAG, "Register Fail: ${response.message}")
-          emit(ResultResponse.Error(response.message))
+      wrapEspressoIdlingResource {
+        emit(ResultResponse.Loading)
+        try {
+          val response = apiService.login(email, pass)
+          if (!response.error) {
+            emit(ResultResponse.Success(response.loginResult))
+          } else {
+            Log.e(TAG, "Register Fail: ${response.message}")
+            emit(ResultResponse.Error(response.message))
+          }
+        } catch (e: Exception) {
+          Log.e(TAG, "Register Exception: ${e.message.toString()} ")
+          emit(ResultResponse.Error(e.message.toString()))
         }
-      } catch (e: Exception) {
-        Log.e(TAG, "Register Exception: ${e.message.toString()} ")
-        emit(ResultResponse.Error(e.message.toString()))
       }
     }
 
-  fun getStoryMap(token: String): LiveData<ResultResponse<List<ListStoryItem>>> =
-    liveData {
+  fun getStoryMap(token: String): LiveData<ResultResponse<List<ListStoryItem>>> {
+    return liveData {
       emit(ResultResponse.Loading)
       try {
         val response = apiService.getAllStoriesLocation("Bearer $token")
@@ -75,6 +78,7 @@ class StoryRepository(
         emit(ResultResponse.Error(e.message.toString()))
       }
     }
+  }
 
   fun postStory(
     token: String,
