@@ -3,6 +3,7 @@ package com.dicoding.storyapp.ui.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.dicoding.storyapp.data.ResultResponse
+import com.dicoding.storyapp.data.model.UserPreference
 import com.dicoding.storyapp.data.remote.response.LoginResult
 import com.dicoding.storyapp.data.repository.StoryRepository
 import com.dicoding.storyapp.utils.DataDummy
@@ -26,12 +27,16 @@ class LoginViewModelTest {
 
   @Mock
   private lateinit var storyRepository: StoryRepository
+
+  @Mock
+  private lateinit var userPreference: UserPreference
+
   private lateinit var loginViewModel: LoginViewModel
   private val dummyResult = DataDummy.generateDummyLoginResponseSuccess().loginResult
 
   @Before
   fun setUp() {
-    loginViewModel = LoginViewModel(storyRepository)
+    loginViewModel = LoginViewModel(storyRepository, userPreference)
   }
 
   @Test
