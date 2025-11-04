@@ -129,6 +129,7 @@ class MyEditTextPass : TextInputEditText, View.OnTouchListener {
             setSelection(mSelectionStart, mSelectionEnd)
             true
           }
+
           else -> false
         }
       }

@@ -1,7 +1,7 @@
 package com.dicoding.storyapp.ui.viewmodel
 
-import com.dicoding.storyapp.DataDummy
 import com.dicoding.storyapp.data.remote.response.ListStoryItem
+import com.dicoding.storyapp.utils.DataDummy
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith

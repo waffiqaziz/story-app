@@ -3,12 +3,11 @@ package com.dicoding.storyapp.ui.customview
 import android.content.Context
 import android.util.AttributeSet
 import com.google.android.material.imageview.ShapeableImageView
-import kotlin.let
 
 class AspectRatioImageView @JvmOverloads constructor(
   context: Context,
   attrs: AttributeSet? = null,
-  defStyleAttr: Int = 0
+  defStyleAttr: Int = 0,
 ) : ShapeableImageView(context, attrs, defStyleAttr) {
 
   override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

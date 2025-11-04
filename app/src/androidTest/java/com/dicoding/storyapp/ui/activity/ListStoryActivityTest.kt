@@ -57,8 +57,6 @@ class ListStoryActivityTest {
 
     // clear viewmodel factory
     ViewModelFactory.clearInstance()
-
-    ApiConfig.BASE_URL = "http://127.0.0.1:8077/"
     IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
   }
 

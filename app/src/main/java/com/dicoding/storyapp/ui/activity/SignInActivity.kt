@@ -1,6 +1,5 @@
 package com.dicoding.storyapp.ui.activity
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
@@ -11,12 +10,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.dicoding.storyapp.MainActivity
 import com.dicoding.storyapp.R.string.continue_
 import com.dicoding.storyapp.R.string.information
@@ -24,26 +17,22 @@ import com.dicoding.storyapp.R.string.sign_in_failed
 import com.dicoding.storyapp.R.string.sign_in_success
 import com.dicoding.storyapp.data.ResultResponse
 import com.dicoding.storyapp.data.model.UserModel
-import com.dicoding.storyapp.data.model.UserPreference
 import com.dicoding.storyapp.databinding.ActivitySigninBinding
 import com.dicoding.storyapp.ui.viewmodel.LoginViewModel
 import com.dicoding.storyapp.ui.viewmodel.ViewModelFactory
-import kotlinx.coroutines.launch
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
 
 class SignInActivity : AppCompatActivity() {
 
   private lateinit var binding: ActivitySigninBinding
 
-  private val loginViewModel: LoginViewModel by viewModels {
+  private val viewModel: LoginViewModel by viewModels {
     ViewModelFactory.getInstance(this)
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     enableEdgeToEdge()
-    binding = ActivitySigninBinding.inflate(layoutInflater)
     super.onCreate(savedInstanceState)
+    binding = ActivitySigninBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
     setMyButtonEnable()
@@ -123,7 +112,7 @@ class SignInActivity : AppCompatActivity() {
       val email = binding.edLoginEmail.text.toString()
       val pass = binding.edLoginPassword.text.toString()
 
-      loginViewModel.login(email, pass).observe(this) {
+      viewModel.login(email, pass).observe(this) {
         when (it) {
           is ResultResponse.Loading -> {
             binding.progressBar.isVisible = true
@@ -137,13 +126,7 @@ class SignInActivity : AppCompatActivity() {
               it.data.name, email, pass, it.data.userId, it.data.token, true
             )
             showAlertDialog(true, getString(sign_in_success))
-
-            val userPref = UserPreference.getInstance(dataStore)
-            lifecycleScope.launch {
-              lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                userPref.saveUser(user)
-              }
-            }
+            viewModel.saveUser(user)
           }
 
           is ResultResponse.Error -> {

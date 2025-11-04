@@ -10,5 +10,5 @@ data class UserModel(
   val password: String,
   val userId: String,
   val token: String,
-  val isLogin: Boolean
-): Parcelable
+  val isLogin: Boolean,
+) : Parcelable

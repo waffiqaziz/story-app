@@ -5,21 +5,23 @@ import androidx.lifecycle.MutableLiveData
 import com.dicoding.storyapp.data.ResultResponse
 import com.dicoding.storyapp.data.remote.response.ApiResponse
 import com.dicoding.storyapp.data.repository.StoryRepository
-import com.dicoding.storyapp.getOrAwaitValue
+import com.dicoding.storyapp.utils.TestUtils.getOrAwaitValue
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 import java.io.File
 

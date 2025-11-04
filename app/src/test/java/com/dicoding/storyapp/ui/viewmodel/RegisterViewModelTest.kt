@@ -2,11 +2,11 @@ package com.dicoding.storyapp.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
-import com.dicoding.storyapp.DataDummy
 import com.dicoding.storyapp.data.ResultResponse
 import com.dicoding.storyapp.data.remote.response.ApiResponse
 import com.dicoding.storyapp.data.repository.StoryRepository
-import com.dicoding.storyapp.getOrAwaitValue
+import com.dicoding.storyapp.utils.DataDummy
+import com.dicoding.storyapp.utils.TestUtils.getOrAwaitValue
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -35,9 +35,11 @@ class RegisterViewModelTest {
   fun `when register() is Called Should Not Null and Return Success`() {
     val expectedResponse = MutableLiveData<ResultResponse<ApiResponse>>()
     expectedResponse.value = ResultResponse.Success(dummyResponse)
-    Mockito.`when`(registerViewModel.register("Name", "Email", "PasswordUser")).thenReturn(expectedResponse)
+    Mockito.`when`(registerViewModel.register("Name", "Email", "PasswordUser"))
+      .thenReturn(expectedResponse)
 
-    val actualResponse = registerViewModel.register("Name", "Email", "PasswordUser").getOrAwaitValue()
+    val actualResponse =
+      registerViewModel.register("Name", "Email", "PasswordUser").getOrAwaitValue()
 
     Mockito.verify(storyRepository).register("Name", "Email", "PasswordUser")
     Assert.assertNotNull(actualResponse)
@@ -49,9 +51,11 @@ class RegisterViewModelTest {
   fun `when Network Error Should Return Error`() {
     val expectedResponse = MutableLiveData<ResultResponse<ApiResponse>>()
     expectedResponse.value = ResultResponse.Error("Error")
-    Mockito.`when`(registerViewModel.register("Name", "Email", "PasswordUser")).thenReturn(expectedResponse)
+    Mockito.`when`(registerViewModel.register("Name", "Email", "PasswordUser"))
+      .thenReturn(expectedResponse)
 
-    val actualResponse = registerViewModel.register("Name", "Email", "PasswordUser").getOrAwaitValue()
+    val actualResponse =
+      registerViewModel.register("Name", "Email", "PasswordUser").getOrAwaitValue()
 
     Mockito.verify(storyRepository).register("Name", "Email", "PasswordUser")
     Assert.assertNotNull(actualResponse)

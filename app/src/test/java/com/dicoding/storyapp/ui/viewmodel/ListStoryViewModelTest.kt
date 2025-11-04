@@ -4,13 +4,13 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
-import androidx.recyclerview.widget.ListUpdateCallback
-import com.dicoding.storyapp.DataDummy
-import com.dicoding.storyapp.MainCoroutineRule
 import com.dicoding.storyapp.data.remote.response.ListStoryItem
-import com.dicoding.storyapp.getOrAwaitValue
 import com.dicoding.storyapp.ui.adapter.StoryAdapter
+import com.dicoding.storyapp.utils.DataDummy
+import com.dicoding.storyapp.utils.MainCoroutineRule
 import com.dicoding.storyapp.utils.PagedTestDataSource
+import com.dicoding.storyapp.utils.TestUtils.getOrAwaitValue
+import com.dicoding.storyapp.utils.TestUtils.noopListUpdateCallback
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -59,11 +59,29 @@ class ListStoryViewModelTest {
     Assert.assertEquals(dummyStory.size, differ.snapshot().size)
     Assert.assertEquals(dummyStory[0].name, differ.snapshot()[0]?.name)
   }
-}
 
-val noopListUpdateCallback = object : ListUpdateCallback {
-  override fun onInserted(position: Int, count: Int) {}
-  override fun onRemoved(position: Int, count: Int) {}
-  override fun onMoved(fromPosition: Int, toPosition: Int) {}
-  override fun onChanged(position: Int, count: Int, payload: Any?) {}
+  @Test
+  fun `when Get Story With No Data Should Return Zero Items`() = runTest {
+    val emptyStoryList = emptyList<ListStoryItem>()
+    val data = PagedTestDataSource.snapshot(emptyStoryList)
+    val story = MutableLiveData<PagingData<ListStoryItem>>()
+    story.value = data
+
+    Mockito.`when`(listStoryViewModel.getStory("token")).thenReturn(story)
+    val actualStory = listStoryViewModel.getStory("token").getOrAwaitValue()
+
+    val differ = AsyncPagingDataDiffer(
+      diffCallback = StoryAdapter.DIFF_CALLBACK,
+      updateCallback = noopListUpdateCallback,
+      mainDispatcher = mainCoroutineRules.dispatcher,
+      workerDispatcher = mainCoroutineRules.dispatcher,
+    )
+
+    differ.submitData(actualStory)
+
+    advanceUntilIdle()
+    Mockito.verify(listStoryViewModel).getStory("token")
+    Assert.assertNotNull(differ.snapshot())
+    Assert.assertEquals(0, differ.snapshot().size) // zero item
+  }
 }
