@@ -11,6 +11,6 @@ class AddStoryViewModel(private val storyRepository: StoryRepository) : ViewMode
     description: RequestBody,
     imageMultipart: MultipartBody.Part,
     lat: RequestBody? = null,
-    lon: RequestBody? = null
+    lon: RequestBody? = null,
   ) = storyRepository.postStory(token, description, imageMultipart, lat, lon)
 }

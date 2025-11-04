@@ -2,19 +2,15 @@ package com.dicoding.storyapp
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.dicoding.storyapp.R.string.continue_
@@ -23,21 +19,22 @@ import com.dicoding.storyapp.R.string.no
 import com.dicoding.storyapp.R.string.warning
 import com.dicoding.storyapp.R.string.warning_log_out
 import com.dicoding.storyapp.data.model.UserModel
-import com.dicoding.storyapp.data.model.UserPreference
 import com.dicoding.storyapp.databinding.ActivityMainBinding
 import com.dicoding.storyapp.helper.Helper.showToastShort
 import com.dicoding.storyapp.ui.activity.ListStoryActivity
 import com.dicoding.storyapp.ui.activity.SignInActivity
 import com.dicoding.storyapp.ui.viewmodel.MainViewModel
-import com.dicoding.storyapp.ui.viewmodel.ViewModelUserFactory
+import com.dicoding.storyapp.ui.viewmodel.ViewModelFactory
 import kotlinx.coroutines.launch
 
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
-
 class MainActivity : AppCompatActivity() {
+
   private lateinit var user: UserModel
-  private lateinit var mainViewModel: MainViewModel
   private lateinit var binding: ActivityMainBinding
+
+  private val viewModel: MainViewModel by viewModels {
+    ViewModelFactory.getInstance(this)
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     enableEdgeToEdge()
@@ -51,14 +48,9 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun setupViewModel() {
-    mainViewModel = ViewModelProvider(
-      this,
-      ViewModelUserFactory(UserPreference.getInstance(dataStore))
-    )[MainViewModel::class.java]
-
     lifecycleScope.launch {
       lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        mainViewModel.getUser().collect {
+        viewModel.getUser().collect {
           user = UserModel(
             it.name,
             it.email,
@@ -100,7 +92,7 @@ class MainActivity : AppCompatActivity() {
       startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
     }
     binding.btnLogOut?.setOnClickListener {
-      mainViewModel.logout()
+      viewModel.logout()
       AlertDialog.Builder(this).apply {
         setTitle(getString(warning))
         setMessage(getString(warning_log_out))

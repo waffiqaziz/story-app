@@ -1,13 +1,11 @@
 package com.dicoding.storyapp.data.remote.retrofit
 
-
-import com.dicoding.storyapp.DataDummy
 import com.dicoding.storyapp.data.remote.response.AllStoriesResponse
 import com.dicoding.storyapp.data.remote.response.ApiResponse
 import com.dicoding.storyapp.data.remote.response.LoginResponse
+import com.dicoding.storyapp.utils.DataDummy
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-
 
 class FakeApiService : ApiService {
   private val dummyStoryResponse = DataDummy.generateDummyStoriesResponse()
