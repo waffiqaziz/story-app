@@ -22,7 +22,7 @@ class DetailStoryActivity : AppCompatActivity() {
   private lateinit var story: ListStoryItem
   private lateinit var binding: ActivityDetailStoryBinding
 
-  private val vm: DetailStoryViewModel by viewModels()
+  private val viewModel: DetailStoryViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     enableEdgeToEdge()
@@ -34,7 +34,7 @@ class DetailStoryActivity : AppCompatActivity() {
     justifyTextView(binding.tvDescription)
 
     getParcelable()
-    vm.setDetailStory(story)
+    viewModel.setDetailStory(story)
     displayResult()
     setupToolbar()
   }
@@ -60,17 +60,17 @@ class DetailStoryActivity : AppCompatActivity() {
 
   private fun displayResult() {
     binding.apply {
-      tvName.text = vm.storyItem.name
+      tvName.text = viewModel.storyItem.name
       tvCreatedTime.text = getString(
         created_add, Helper.formatDate(
-          vm.storyItem.createdAt,
+          viewModel.storyItem.createdAt,
           TimeZone.getDefault().id
         )
       )
-      tvDescription.text = vm.storyItem.description
+      tvDescription.text = viewModel.storyItem.description
 
       Glide.with(ivStory)
-        .load(vm.storyItem.photoUrl) // URL Avatar
+        .load(viewModel.storyItem.photoUrl) // URL Avatar
         .placeholder(ic_place_holder)
         .transition(withCrossFade())
         .error(ic_broken_image)
