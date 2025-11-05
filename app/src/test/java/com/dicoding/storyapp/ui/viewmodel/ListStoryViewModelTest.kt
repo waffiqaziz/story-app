@@ -1,30 +1,36 @@
 package com.dicoding.storyapp.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
 import com.dicoding.storyapp.data.remote.response.ListStoryItem
+import com.dicoding.storyapp.data.repository.StoryRepository
 import com.dicoding.storyapp.ui.adapter.StoryAdapter
 import com.dicoding.storyapp.utils.DataDummy
 import com.dicoding.storyapp.utils.MainCoroutineRule
-import com.dicoding.storyapp.utils.PagedTestDataSource
 import com.dicoding.storyapp.utils.TestUtils.getOrAwaitValue
 import com.dicoding.storyapp.utils.TestUtils.noopListUpdateCallback
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class ListStoryViewModelTest {
+
+  private val token = "token"
+
   @get:Rule
   var instantExecutorRule = InstantTaskExecutorRule()
 
@@ -32,18 +38,25 @@ class ListStoryViewModelTest {
   var mainCoroutineRules = MainCoroutineRule()
 
   @Mock
+  private lateinit var storyRepository: StoryRepository
+
   private lateinit var listStoryViewModel: ListStoryViewModel
+
+  @Before
+  fun setup() {
+    // set default data to avoid null pointer exception
+    val story = flowOf(PagingData.from(emptyList<ListStoryItem>()))
+    `when`(storyRepository.getPagingStories(token)).thenReturn(story)
+    listStoryViewModel = ListStoryViewModel(storyRepository)
+  }
 
   @Test
   fun `when Get Story Should Not Null`() = runTest {
     val dummyStory = DataDummy.generateDummyListStory()
-    val data = PagedTestDataSource.snapshot(dummyStory)
-    val story = MutableLiveData<PagingData<ListStoryItem>>()
-    story.value = data
+    val dataFlow = flowOf(PagingData.from(dummyStory))
+    `when`(storyRepository.getPagingStories(token)).thenReturn(dataFlow)
 
-    Mockito.`when`(listStoryViewModel.getStory("token")).thenReturn(story)
-    val actualStory = listStoryViewModel.getStory("token").getOrAwaitValue()
-
+    val actualStory = listStoryViewModel.getStory(token).getOrAwaitValue()
     val differ = AsyncPagingDataDiffer(
       diffCallback = StoryAdapter.DIFF_CALLBACK,
       updateCallback = noopListUpdateCallback,
@@ -54,22 +67,20 @@ class ListStoryViewModelTest {
     differ.submitData(actualStory)
 
     advanceUntilIdle()
-    Mockito.verify(listStoryViewModel).getStory("token")
-    Assert.assertNotNull(differ.snapshot())
-    Assert.assertEquals(dummyStory.size, differ.snapshot().size)
-    Assert.assertEquals(dummyStory[0].name, differ.snapshot()[0]?.name)
+    verify(storyRepository).getPagingStories(token)
+    assertNotNull(differ.snapshot())
+    assertEquals(dummyStory.size, differ.snapshot().size)
+    assertEquals(dummyStory[0], differ.snapshot()[0])
   }
+
 
   @Test
   fun `when Get Story With No Data Should Return Zero Items`() = runTest {
     val emptyStoryList = emptyList<ListStoryItem>()
-    val data = PagedTestDataSource.snapshot(emptyStoryList)
-    val story = MutableLiveData<PagingData<ListStoryItem>>()
-    story.value = data
+    val dataFlow = flowOf(PagingData.from(emptyStoryList))
+    `when`(storyRepository.getPagingStories(token)).thenReturn(dataFlow)
 
-    Mockito.`when`(listStoryViewModel.getStory("token")).thenReturn(story)
-    val actualStory = listStoryViewModel.getStory("token").getOrAwaitValue()
-
+    val actualStory = listStoryViewModel.getStory(token).getOrAwaitValue()
     val differ = AsyncPagingDataDiffer(
       diffCallback = StoryAdapter.DIFF_CALLBACK,
       updateCallback = noopListUpdateCallback,
@@ -80,8 +91,8 @@ class ListStoryViewModelTest {
     differ.submitData(actualStory)
 
     advanceUntilIdle()
-    Mockito.verify(listStoryViewModel).getStory("token")
-    Assert.assertNotNull(differ.snapshot())
-    Assert.assertEquals(0, differ.snapshot().size) // zero item
+    verify(storyRepository).getPagingStories(token)
+    assertNotNull(differ.snapshot())
+    assertEquals(0, differ.snapshot().size) // zero item
   }
 }

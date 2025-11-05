@@ -89,7 +89,6 @@ class ListStoryActivity : AppCompatActivity() {
   // update data when swipe
   private fun initSwipeToRefresh() {
     binding?.swipeRefresh?.setOnRefreshListener {
-      adapter.retry()
       adapter.refresh()
     }
   }
@@ -108,8 +107,6 @@ class ListStoryActivity : AppCompatActivity() {
 
   override fun onResume() {
     super.onResume()
-    adapter.retry()
-    adapter.refresh()
     WidgetUpdateHelper.updateStackWidget(this)
   }
 
