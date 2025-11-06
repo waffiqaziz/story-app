@@ -1,8 +1,10 @@
 package com.dicoding.storyapp.ui.viewmodel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -13,7 +15,15 @@ class ListStoryViewModel(
   private val storyRepository: StoryRepository,
 ) : ViewModel() {
 
+  private val refreshTrigger = MutableLiveData(Unit)
+
   fun getStory(token: String): LiveData<PagingData<ListStoryItem>> {
-    return storyRepository.getPagingStories(token).cachedIn(viewModelScope).asLiveData()
+    return refreshTrigger.switchMap {
+      storyRepository.getPagingStories(token).cachedIn(viewModelScope).asLiveData()
+    }
+  }
+
+  fun refreshStories() {
+    refreshTrigger.value = Unit
   }
 }

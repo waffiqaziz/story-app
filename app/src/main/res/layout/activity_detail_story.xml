@@ -24,8 +24,9 @@
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/padding_bottom"
+      android:clipToPadding="false"
       android:orientation="vertical">
-
 
       <com.dicoding.storyapp.ui.customview.AspectRatioImageView
         android:id="@+id/iv_story"
@@ -80,6 +81,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_edge"
+        android:paddingBottom="@dimen/margin_edge"
         android:scrollbars="vertical"
         android:transitionName="description"
         tools:text="Lorem ipsum odor amet, consectetuer adipiscing elit. Pellentesque mauris nullam cras ullamcorper mollis facilisis. Nullam congue inceptos imperdiet hendrerit felis faucibus fusce tincidunt ornare. Scelerisque nisi luctus praesent potenti; curae finibus lacus. Fames aliquet consequat hac arcu, lacus sollicitudin imperdiet curae. Congue urna suscipit arcu curabitur luctus vitae per metus. Tincidunt ultricies fames et pellentesque potenti aliquam porta potenti. Facilisis accumsan lacus leo urna morbi parturient vitae. \n\nPharetra elementum litora purus aliquet duis quam ornare. Suspendisse nostra placerat magnis penatibus, arcu gravida cras luctus phasellus. Neque primis elementum posuere dignissim penatibus nulla. Eu facilisis per taciti phasellus tristique elit magnis. Potenti nisl sapien habitant amet aenean vehicula feugiat eleifend malesuada. Libero ut gravida interdum gravida justo nisi morbi dictumst cubilia." />
