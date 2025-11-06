@@ -21,6 +21,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.Mockito.atLeastOnce
+import org.mockito.Mockito.clearInvocations
+import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
@@ -56,6 +59,8 @@ class ListStoryViewModelTest {
     val dataFlow = flowOf(PagingData.from(dummyStory))
     `when`(storyRepository.getPagingStories(token)).thenReturn(dataFlow)
 
+    clearInvocations(storyRepository)
+
     val actualStory = listStoryViewModel.getStory(token).getOrAwaitValue()
     val differ = AsyncPagingDataDiffer(
       diffCallback = StoryAdapter.DIFF_CALLBACK,
@@ -67,7 +72,9 @@ class ListStoryViewModelTest {
     differ.submitData(actualStory)
 
     advanceUntilIdle()
-    verify(storyRepository).getPagingStories(token)
+    // safe warning
+    // https://youtrack.jetbrains.com/projects/KTIJ/issues/KTIJ-34798/K2-False-positive-inspection-Flow-is-constructed-but-not-used-with-Mockito
+    verify(storyRepository, atLeastOnce()).getPagingStories(token)
     assertNotNull(differ.snapshot())
     assertEquals(dummyStory.size, differ.snapshot().size)
     assertEquals(dummyStory[0], differ.snapshot()[0])
@@ -80,6 +87,8 @@ class ListStoryViewModelTest {
     val dataFlow = flowOf(PagingData.from(emptyStoryList))
     `when`(storyRepository.getPagingStories(token)).thenReturn(dataFlow)
 
+    clearInvocations(storyRepository)
+
     val actualStory = listStoryViewModel.getStory(token).getOrAwaitValue()
     val differ = AsyncPagingDataDiffer(
       diffCallback = StoryAdapter.DIFF_CALLBACK,
@@ -91,8 +100,24 @@ class ListStoryViewModelTest {
     differ.submitData(actualStory)
 
     advanceUntilIdle()
-    verify(storyRepository).getPagingStories(token)
+    verify(storyRepository, atLeastOnce()).getPagingStories(token)
     assertNotNull(differ.snapshot())
     assertEquals(0, differ.snapshot().size) // zero item
+  }
+
+  @Test
+  fun `when Refresh Stories Should Trigger New Paging Data`() = runTest {
+    clearInvocations(storyRepository)
+
+    val dummyStory = DataDummy.generateDummyListStory()
+    val dataFlow = flowOf(PagingData.from(dummyStory))
+    `when`(storyRepository.getPagingStories(token)).thenReturn(dataFlow)
+
+    listStoryViewModel.getStory(token).getOrAwaitValue()
+    listStoryViewModel.refreshStories()
+    advanceUntilIdle()
+
+    // should trigger twice
+    verify(storyRepository, times(2)).getPagingStories(token)
   }
 }

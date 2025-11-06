@@ -15,15 +15,18 @@ class ListStoryViewModel(
   private val storyRepository: StoryRepository,
 ) : ViewModel() {
 
-  private val refreshTrigger = MutableLiveData(Unit)
+  // trigger to refresh the PagingData
+  private val refreshTrigger = MutableLiveData<Boolean>().apply { value = true }
 
+  // return new Pager instance whenever refreshTrigger changes.
   fun getStory(token: String): LiveData<PagingData<ListStoryItem>> {
     return refreshTrigger.switchMap {
       storyRepository.getPagingStories(token).cachedIn(viewModelScope).asLiveData()
     }
   }
 
+  // force refresh then creating new Pager instance
   fun refreshStories() {
-    refreshTrigger.value = Unit
+    refreshTrigger.value = !(refreshTrigger.value ?: false)
   }
 }
