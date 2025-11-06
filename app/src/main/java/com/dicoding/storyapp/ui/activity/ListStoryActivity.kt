@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -117,14 +118,23 @@ class ListStoryActivity : AppCompatActivity() {
 
   private fun buttonListener() {
     binding?.ivAddStory?.setOnClickListener {
-      val moveToAddStoryActivity = Intent(this, AddStoryActivity::class.java)
-      moveToAddStoryActivity.putExtra(AddStoryActivity.EXTRA_USER, user)
-      startActivity(moveToAddStoryActivity)
+      val intent = Intent(this, AddStoryActivity::class.java)
+      intent.putExtra(AddStoryActivity.EXTRA_USER, user)
+      launcherAddStory.launch(intent)
     }
     binding?.ivShowMap?.setOnClickListener {
       val moveToMapStory = Intent(this, MapsActivity::class.java)
       moveToMapStory.putExtra(AddStoryActivity.EXTRA_USER, user)
       startActivity(moveToMapStory)
+    }
+  }
+
+  private val launcherAddStory = registerForActivityResult(
+    ActivityResultContracts.StartActivityForResult()
+  ) { result ->
+    if (result.resultCode == RESULT_OK) {
+      viewModel.refreshStories()
+      binding?.rvStory?.smoothScrollToPosition(0)
     }
   }
 

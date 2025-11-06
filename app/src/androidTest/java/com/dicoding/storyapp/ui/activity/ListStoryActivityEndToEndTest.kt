@@ -84,7 +84,7 @@ class ListStoryActivityEndToEndTest {
   }
 
   // disable on CI, due to unstable test
-  // @Test
+  @Test
   fun loadListStory() {
     val intent = Intent(context, ListStoryActivity::class.java)
     intent.putExtra(ListStoryActivity.EXTRA_USER, user)
@@ -113,7 +113,7 @@ class ListStoryActivityEndToEndTest {
   }
 
   // disable on CI, due to unstable test
-  // @Test
+  @Test
   fun loadDetailStory() {
     val intent = Intent(context, ListStoryActivity::class.java)
     intent.putExtra(ListStoryActivity.EXTRA_USER, user)

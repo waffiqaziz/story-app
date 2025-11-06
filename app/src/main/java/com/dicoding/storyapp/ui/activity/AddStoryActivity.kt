@@ -213,6 +213,7 @@ class AddStoryActivity : AppCompatActivity() {
               is ResultResponse.Success -> {
                 binding.progressBar.visibility = View.GONE
                 Helper.showToastLong(this, getString(upload_success))
+                setResult(RESULT_OK)
                 finish()
               }
 
