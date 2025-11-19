@@ -1,12 +1,28 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'config:recommended'
   ],
-  "assignees": [
-    "waffiqaziz"
+  assignees: [
+    'waffiqaziz'
   ],
-  "addLabels": [
-    "renovate"
+  addLabels: [
+    'renovate'
+  ],
+  packageRules: [
+    {
+      // Default prefix for all dependencies
+      matchPackageNames: [
+        '*',
+      ],
+      commitMessagePrefix: 'chore(deps):',
+    },
+    {
+      // Specific prefix for GitHub Actions
+      matchDepTypes: [
+        'action',
+      ],
+      commitMessagePrefix: 'chore(ci):',
+    },
   ]
 }
