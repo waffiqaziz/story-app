@@ -32,7 +32,7 @@ playServicesLocation = "21.3.0"
 playServicesMaps = "19.2.0"
 
 # room, paging, datastore
-room = "2.8.3"
+room = "2.8.4"
 pagingRuntimeKtx = "3.3.6"
 datastorePreferences = "1.1.7"
 
