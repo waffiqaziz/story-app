@@ -37,6 +37,9 @@ jobs:
       - name: Inject MAPS_API_KEY into secrets.properties
         run: echo "MAPS_API_KEY=${{ secrets.MAPS_API_KEY }}" >> secrets.properties
 
+      - name: Inject TEST_TOKEN into local.properties
+        run: echo "TEST_TOKEN=${{ secrets.TEST_TOKEN }}" >> local.properties
+
       - name: Set up JDK 21
         uses: actions/setup-java@v5
         with:
