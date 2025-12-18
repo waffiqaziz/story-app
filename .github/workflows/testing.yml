@@ -47,6 +47,9 @@ jobs:
       - name: Inject MAPS_API_KEY into secrets.properties
         run: echo "MAPS_API_KEY=${{ secrets.MAPS_API_KEY }}" >> secrets.properties
 
+      - name: Inject TEST_TOKEN into local.properties
+        run: echo "TEST_TOKEN=${{ secrets.TEST_TOKEN }}" >> local.properties
+
       - name: Run unit tests
         run: ./gradlew test
 
@@ -81,6 +84,9 @@ jobs:
       - name: Inject MAPS_API_KEY into secrets.properties
         run: echo "MAPS_API_KEY=${{ secrets.MAPS_API_KEY }}" >> secrets.properties
 
+      - name: Inject TEST_TOKEN into local.properties
+        run: echo "TEST_TOKEN=${{ secrets.TEST_TOKEN }}" >> local.properties
+
       - name: Set up JDK 21
         uses: actions/setup-java@v5
         with:
@@ -105,7 +111,7 @@ jobs:
           arch: ${{ env.ANDROID_ARCH }}
           force-avd-creation: false
           profile: ${{ env.ANDROID_PROFILE }}
-          disable-animations: false
+          disable-animations: true
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: ./gradlew connectedDebugAndroidTest --stacktrace
 

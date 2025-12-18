@@ -1,4 +1,6 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
+import kotlin.apply
 
 plugins {
   alias(libs.plugins.android.application)
@@ -21,6 +23,9 @@ android {
 
     // base url
     buildConfigField("String", "API_URL", "\"https://story-api.dicoding.dev/v1/\"")
+
+    // test token
+    buildConfigField("String", "TEST_TOKEN", "\"${getToken("TEST_TOKEN")}\"")
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
@@ -122,13 +127,12 @@ dependencies {
   implementation(libs.androidx.espresso.idling.resource)
 
   //testing
+  androidTestImplementation(libs.androidx.espresso.core)
   androidTestImplementation(libs.androidx.test.ext.junit)
   androidTestImplementation(libs.androidx.test.runner)
   androidTestImplementation(libs.androidx.rules)
   androidTestImplementation(libs.androidx.test.core.ktx)
 
-  androidTestImplementation(libs.espresso.core)
-  androidTestImplementation(libs.espresso.contrib)
   androidTestImplementation(libs.androidx.espresso.core)
   androidTestImplementation(libs.androidx.espresso.contrib)
   androidTestImplementation(libs.androidx.espresso.intents)
@@ -144,4 +148,11 @@ dependencies {
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.mockito)
   testImplementation(libs.mockito.inline)
+}
+
+fun Project.getToken(key: String): String {
+  val props = Properties().apply {
+    File(project.rootDir, "local.properties").inputStream().use { load(it) }
+  }
+  return props.getProperty(key)
 }
