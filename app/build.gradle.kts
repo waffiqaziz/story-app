@@ -133,8 +133,6 @@ dependencies {
   androidTestImplementation(libs.androidx.rules)
   androidTestImplementation(libs.androidx.test.core.ktx)
 
-  androidTestImplementation(libs.espresso.core)
-  androidTestImplementation(libs.espresso.contrib)
   androidTestImplementation(libs.androidx.espresso.core)
   androidTestImplementation(libs.androidx.espresso.contrib)
   androidTestImplementation(libs.androidx.espresso.intents)
