@@ -39,8 +39,6 @@ datastorePreferences = "1.2.0"
 # testing
 coreTesting = "2.2.0"
 espresso = "3.7.0"
-espressoCore = "3.0.2"
-espressoContrib = "3.0.2"
 junit = "4.13.2"
 kotlinxCoroutinesTest = "1.10.2"
 mockito = "5.20.0"
@@ -96,8 +94,6 @@ androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", vers
 androidx-espresso-contrib = { module = "androidx.test.espresso:espresso-contrib", version.ref = "espresso" }
 androidx-espresso-idling-resource = { module = "androidx.test.espresso:espresso-idling-resource", version.ref = "espresso" }
 androidx-espresso-intents = { module = "androidx.test.espresso:espresso-intents", version.ref = "espresso" }
-espresso-core = { module = "com.android.support.test.espresso:espresso-core", version.ref = "espressoCore" }
-espresso-contrib = { module = "com.android.support.test.espresso:espresso-contrib", version.ref = "espressoContrib" }
 
 androidx-rules = { module = "androidx.test:rules", version.ref = "testCore" }
 androidx-test-core-ktx = { module = "androidx.test:core-ktx", version.ref = "testCore" }

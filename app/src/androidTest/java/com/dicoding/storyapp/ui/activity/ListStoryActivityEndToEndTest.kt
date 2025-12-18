@@ -23,6 +23,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
+import com.dicoding.storyapp.BuildConfig.TEST_TOKEN
 import com.dicoding.storyapp.MainActivity
 import com.dicoding.storyapp.R.id.btn_camera_x
 import com.dicoding.storyapp.R.id.btn_gallery
@@ -56,7 +57,7 @@ class ListStoryActivityEndToEndTest {
     email = "string",
     password = "string",
     userId = "string",
-    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLWFqc3ZFbzQzRHEybVBab3QiLCJpYXQiOjE3NDM2ODg3NzJ9.QXmMc94G4dtE2icUr1T9_XP9HzBh3de9w_aWfhEt1YY",
+    token = TEST_TOKEN,
     true
   )
   private lateinit var scenario: ActivityScenario<MainActivity>
@@ -64,6 +65,7 @@ class ListStoryActivityEndToEndTest {
 
   @Before
   fun setUp() {
+    Intents.init()
     IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
   }
 
@@ -83,44 +85,35 @@ class ListStoryActivityEndToEndTest {
     IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
   }
 
-  // disable on CI, due to unstable test
   @Test
   fun loadListStory() {
     val intent = Intent(context, ListStoryActivity::class.java)
     intent.putExtra(ListStoryActivity.EXTRA_USER, user)
     scenario = launchActivity(intent)
-    Intents.init()
     Espresso.onIdle()
-    onView(isRoot()).perform(waitFor(3000))
+    onView(isRoot()).perform(waitFor(15000))
 
-    onView(withId(rv_story))
-      .check(matches(isDisplayed()))
-
+    onView(withId(rv_story)).check(matches(isDisplayed()))
+    Thread.sleep(3000)
     onView(withId(rv_story)).perform(
-      RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-        10
-      )
+      RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(10)
     )
     onView(withId(swipe_refresh)).check(matches(isDisplayed()))
     onView(withId(iv_add_story)).check(matches(isDisplayed()))
     onView(withId(iv_show_map)).check(matches(isDisplayed()))
     onView(withId(rv_story)).perform(
-      RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-        0, click()
-      )
+      RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click())
     )
     Intents.release()
   }
 
-  // disable on CI, due to unstable test
   @Test
   fun loadDetailStory() {
     val intent = Intent(context, ListStoryActivity::class.java)
     intent.putExtra(ListStoryActivity.EXTRA_USER, user)
     scenario = launchActivity(intent)
-    Intents.init()
     Espresso.onIdle()
-    onView(isRoot()).perform(waitFor(3000))
+    onView(isRoot()).perform(waitFor(5000))
 
     onView(withId(rv_story))
       .check(matches(isDisplayed()))
@@ -145,7 +138,6 @@ class ListStoryActivityEndToEndTest {
     val intent = Intent(context, ListStoryActivity::class.java)
     intent.putExtra(ListStoryActivity.EXTRA_USER, user)
     scenario = launchActivity(intent)
-    Intents.init()
     onView(isRoot()).perform(waitFor(500))
 
     onView(withId(iv_show_map)).perform(click())
