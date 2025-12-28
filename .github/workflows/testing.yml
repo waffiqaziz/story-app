@@ -95,7 +95,7 @@ jobs:
           cache: ${{ env.GRADLE_CACHE }}
 
       - name: AVD cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: avd-cache
         with:
           path: |
