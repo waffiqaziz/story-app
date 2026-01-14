@@ -29,7 +29,7 @@ legacySupportV4 = "1.0.0"
 # google service
 mapsplatform = "2.0.1"
 playServicesLocation = "21.3.0"
-playServicesMaps = "19.2.0"
+playServicesMaps = "20.0.0"
 
 # room, paging, datastore
 room = "2.8.4"
