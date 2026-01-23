@@ -4,10 +4,9 @@ import kotlin.apply
 
 plugins {
   alias(libs.plugins.android.application)
-  alias(libs.plugins.kotlin.android)
   alias(libs.plugins.mapsplatform.secrets)
   alias(libs.plugins.ksp)
-  id("kotlin-parcelize")
+  alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
