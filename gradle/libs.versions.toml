@@ -113,5 +113,5 @@ androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomato
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 mapsplatform-secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "mapsplatform" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
