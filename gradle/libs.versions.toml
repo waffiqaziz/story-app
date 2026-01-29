@@ -5,7 +5,7 @@ kotlin = "2.3.0"
 coreKtx = "1.17.0"
 ksp = "2.3.5"
 appcompat = "1.7.1"
-activityKtx = "1.12.2"
+activityKtx = "1.12.3"
 annotation = "1.9.1"
 
 # camera
