@@ -20,6 +20,8 @@ android {
     versionCode = 1
     versionName = "1.0"
 
+    manifestPlaceholders["MAPS_API_KEY"] = System.getenv("MAPS_API_KEY") ?: ""
+
     // base url
     buildConfigField("String", "API_URL", "\"https://story-api.dicoding.dev/v1/\"")
 
@@ -27,15 +29,6 @@ android {
     buildConfigField("String", "TEST_TOKEN", "\"${getToken("TEST_TOKEN")}\"")
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-  }
-
-  secrets {
-    propertiesFileName = "secrets.properties"
-
-    defaultPropertiesFileName = "local.defaults.properties"
-
-    ignoreList.add("keyToIgnore") // Ignore the key "keyToIgnore"
-    ignoreList.add("sdk.*")       // Ignore all keys matching the regexp "sdk.*"
   }
 
   buildTypes {
@@ -49,11 +42,7 @@ android {
     targetCompatibility = JavaVersion.VERSION_21
     isCoreLibraryDesugaringEnabled = true
   }
-  kotlin {
-    compilerOptions {
-      jvmTarget = JvmTarget.JVM_21
-    }
-  }
+
   packaging.resources.excludes += "/META-INF/{AL2.0,LGPL2.1}"
   buildFeatures {
     viewBinding = true
@@ -76,6 +65,21 @@ android {
       }
     }
   }
+}
+
+kotlin {
+  compilerOptions {
+    jvmTarget = JvmTarget.JVM_21
+  }
+}
+
+secrets {
+  propertiesFileName = "secrets.properties"
+
+  defaultPropertiesFileName = "local.defaults.properties"
+
+  ignoreList.add("keyToIgnore") // Ignore the key "keyToIgnore"
+  ignoreList.add("sdk.*")       // Ignore all keys matching the regexp "sdk.*"
 }
 
 ksp {

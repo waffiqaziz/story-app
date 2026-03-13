@@ -49,3 +49,5 @@ jobs:
 
       - name: Build with Gradle Wrapper
         run: ./gradlew build --stacktrace
+        env:
+          MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
