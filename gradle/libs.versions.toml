@@ -9,7 +9,7 @@ activityKtx = "1.13.0"
 annotation = "1.9.1"
 
 # camera
-camera = "1.5.3"
+camera = "1.6.0"
 
 # ui related
 lifecycleViewmodelKtx = "2.10.0"
