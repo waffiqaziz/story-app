@@ -15,7 +15,7 @@ camera = "1.6.0"
 lifecycleViewmodelKtx = "2.10.0"
 constraintlayout = "2.2.1"
 coreSplashscreen = "1.2.0"
-glide = "5.0.5"
+glide = "5.0.7"
 material = "1.13.0"
 
 desugar_jdk_libs = "2.1.5"
