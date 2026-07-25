@@ -10,13 +10,13 @@ plugins {
 }
 
 android {
-  compileSdk = 36
+  compileSdk = 37
   namespace = "com.dicoding.storyapp"
 
   defaultConfig {
     applicationId = "com.dicoding.storyapp"
     minSdk = 24
-    targetSdk = 36
+    targetSdk = 37
     versionCode = 1
     versionName = "1.0"
 
