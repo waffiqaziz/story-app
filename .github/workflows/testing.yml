@@ -81,6 +81,28 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v6
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.android/build-cache
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+            
+      - name: Restore build cache
+        uses: actions/cache@v6
+        with:
+          path: |
+            **/build/
+            !**/build/outputs/
+            !**/build/reports/
+          key: build-cache-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/src/**/*.kt', '**/src/**/*.java') }}
+          restore-keys: |
+            build-cache-${{ runner.os }}-
+
       - name: Inject MAPS_API_KEY into secrets.properties
         run: echo "MAPS_API_KEY=${{ secrets.MAPS_API_KEY }}" >> secrets.properties
 
@@ -101,28 +123,43 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-34
+          key: avd-${{ runner.os }}-${{ env.ANDROID_API_LEVEL }}-${{ env.ANDROID_ARCH }}-${{ env.ANDROID_TARGET }}-${{ env.ANDROID_PROFILE }}
 
-      - name: create AVD and generate snapshot for caching
+      - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ env.ANDROID_API_LEVEL }}
+          target: ${{ env.ANDROID_TARGET }}
           arch: ${{ env.ANDROID_ARCH }}
-          force-avd-creation: false
           profile: ${{ env.ANDROID_PROFILE }}
-          disable-animations: true
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: ./gradlew connectedDebugAndroidTest --stacktrace
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          disable-animations: false
+          script: echo "Generated AVD snapshot for caching."
 
       - name: Run instrumentation test
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ env.ANDROID_API_LEVEL }}
-          force-avd-creation: false
+          target: ${{ env.ANDROID_TARGET }}
           arch: ${{ env.ANDROID_ARCH }}
           profile: ${{ env.ANDROID_PROFILE }}
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-snapshot-load -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           disable-animations: true
           script: |
             adb wait-for-device
-            ./gradlew connectedDebugAndroidTest --no-parallel --stacktrace && killall -INT crashpad_handler || true
+            adb logcat -c
+            ./gradlew connectedDebugAndroidTest --no-parallel --stacktrace
+            GRADLE_EXIT=$?
+            adb logcat -d > $GITHUB_WORKSPACE/logcat_output.txt
+            killall -INT crashpad_handler || true
+            exit $GRADLE_EXIT
+
+      - name: Upload logcat artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: logcat
+          path: logcat_output.txt

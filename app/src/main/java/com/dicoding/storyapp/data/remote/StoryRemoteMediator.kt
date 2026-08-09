@@ -9,6 +9,7 @@ import com.dicoding.storyapp.data.remote.response.ListStoryItem
 import com.dicoding.storyapp.data.remote.retrofit.ApiService
 import com.dicoding.storyapp.data.room.RemoteKeys
 import com.dicoding.storyapp.data.room.StoryDatabase
+import com.dicoding.storyapp.utils.EspressoIdlingResource
 
 @OptIn(ExperimentalPagingApi::class)
 class StoryRemoteMediator(
@@ -16,33 +17,34 @@ class StoryRemoteMediator(
   private val apiService: ApiService,
   private val token: String,
 ) : RemoteMediator<Int, ListStoryItem>() {
+
   override suspend fun load(
     loadType: LoadType,
     state: PagingState<Int, ListStoryItem>,
   ): MediatorResult {
-
-    val page = when (loadType) {
-      LoadType.REFRESH -> {
-        val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
-        remoteKeys?.nextKey?.minus(1) ?: INITIAL_PAGE_INDEX
-      }
-
-      LoadType.PREPEND -> {
-        val remoteKeys = getRemoteKeyForFirstItem(state)
-        val prevKey = remoteKeys?.prevKey
-          ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
-        prevKey
-      }
-
-      LoadType.APPEND -> {
-        val remoteKeys = getRemoteKeyForLastItem(state)
-        val nextKey = remoteKeys?.nextKey
-          ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
-        nextKey
-      }
-    }
-
+    EspressoIdlingResource.increment()
     return try {
+      val page = when (loadType) {
+        LoadType.REFRESH -> {
+          val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
+          remoteKeys?.nextKey?.minus(1) ?: INITIAL_PAGE_INDEX
+        }
+
+        LoadType.PREPEND -> {
+          val remoteKeys = getRemoteKeyForFirstItem(state)
+          val prevKey = remoteKeys?.prevKey
+            ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
+          prevKey
+        }
+
+        LoadType.APPEND -> {
+          val remoteKeys = getRemoteKeyForLastItem(state)
+          val nextKey = remoteKeys?.nextKey
+            ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
+          nextKey
+        }
+      }
+
       val responseData =
         apiService.getAllStories("Bearer $token", page, state.config.pageSize).listStory
       val endOfPaginationReached = responseData.isEmpty()
@@ -67,6 +69,8 @@ class StoryRemoteMediator(
       MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
     } catch (exception: Exception) {
       MediatorResult.Error(exception)
+    } finally {
+      EspressoIdlingResource.decrement()
     }
   }
 

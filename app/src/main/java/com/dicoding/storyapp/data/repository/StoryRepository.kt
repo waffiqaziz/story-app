@@ -103,18 +103,16 @@ class StoryRepository(
   }
 
   fun getPagingStories(token: String): Flow<PagingData<ListStoryItem>> {
-    wrapEspressoIdlingResource {
-      @OptIn(ExperimentalPagingApi::class)
-      return Pager(
-        config = PagingConfig(
-          pageSize = 5
-        ),
-        remoteMediator = StoryRemoteMediator(storyDatabase, apiService, token),
-        pagingSourceFactory = {
-          storyDatabase.storyDao().getStory()
-        }
-      ).flow
-    }
+    @OptIn(ExperimentalPagingApi::class)
+    return Pager(
+      config = PagingConfig(
+        pageSize = 5
+      ),
+      remoteMediator = StoryRemoteMediator(storyDatabase, apiService, token),
+      pagingSourceFactory = {
+        storyDatabase.storyDao().getStory()
+      }
+    ).flow
   }
 
   companion object {
