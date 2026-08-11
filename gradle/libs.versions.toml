@@ -13,7 +13,7 @@ camera = "1.6.1"
 
 # ui related
 lifecycleViewmodelKtx = "2.11.0"
-constraintlayout = "2.2.1"
+constraintlayout = "2.2.2"
 coreSplashscreen = "1.2.0"
 glide = "5.0.7"
 material = "1.14.0"
