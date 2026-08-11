@@ -2,7 +2,7 @@
 # plugin versions
 agp = "9.3.0"
 kotlin = "2.4.10"
-coreKtx = "1.18.0"
+coreKtx = "1.19.0"
 ksp = "2.3.10"
 appcompat = "1.7.1"
 activityKtx = "1.13.0"
