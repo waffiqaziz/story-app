@@ -4,7 +4,7 @@ agp = "9.3.0"
 kotlin = "2.4.10"
 coreKtx = "1.18.0"
 ksp = "2.3.10"
-appcompat = "1.7.1"
+appcompat = "1.8.0"
 activityKtx = "1.13.0"
 annotation = "1.10.0"
 
