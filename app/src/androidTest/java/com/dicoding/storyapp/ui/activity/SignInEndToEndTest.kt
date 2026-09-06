@@ -91,7 +91,7 @@ class SignInEndToEndTest {
     onView(withId(ed_login_password)).perform(typeText("aaaa3@gmail.com"))
     Espresso.closeSoftKeyboard()
     onView(withId(btn_signIn)).perform(click())
-    onView(isRoot()).perform(waitFor(500))
+    onView(isRoot()).perform(waitFor(2500))
     println("LOG: BUTTON LOGIN CLICKED")
 
     onView(withText(getString(context, continue_))).check(matches(isDisplayed())).perform(click())
