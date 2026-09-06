@@ -2,6 +2,7 @@ package com.dicoding.storyapp.ui.activity
 
 import android.content.Context
 import android.content.Intent
+import android.widget.TextView
 import androidx.core.content.ContextCompat.getString
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
@@ -28,6 +29,7 @@ import com.dicoding.storyapp.R.id.ed_login_password
 import com.dicoding.storyapp.R.id.imageView
 import com.dicoding.storyapp.R.id.messageTextView
 import com.dicoding.storyapp.R.string.continue_
+import com.dicoding.storyapp.R.string.sign_in_success
 import com.dicoding.storyapp.TestUtils.waitFor
 import com.dicoding.storyapp.data.remote.retrofit.ApiConfig
 import com.dicoding.storyapp.ui.viewmodel.ViewModelFactory
@@ -72,18 +74,15 @@ class SignInEndToEndTest {
 
   @Test
   fun user_loginThenLogout_shouldSuccessful() {
-    println("LOG: TEST STARTED")
     val intent = Intent(context, SignInActivity::class.java)
     scenario = launchActivity(intent)
     scenario.onActivity {}
-    println("LOG: LAUNCH ACTIVITY")
 
     onView(withId(imageView)).check(matches(isDisplayed()))
     onView(withId(ed_login_email)).check(matches(isDisplayed()))
     onView(withId(ed_login_password)).check(matches(isDisplayed()))
     onView(withId(btn_signIn)).check(matches(isDisplayed()))
     onView(withId(btn_open_register)).check(matches(isDisplayed()))
-    println("LOG: ASSERT SIGN IN VIEWS")
 
     // login
     onView(withId(ed_login_email)).perform(typeText("aaaa3@gmail.com"))
@@ -91,35 +90,36 @@ class SignInEndToEndTest {
     onView(withId(ed_login_password)).perform(typeText("aaaa3@gmail.com"))
     Espresso.closeSoftKeyboard()
     onView(withId(btn_signIn)).perform(click())
-    onView(isRoot()).perform(waitFor(500))
-    println("LOG: BUTTON LOGIN CLICKED")
+    onView(isRoot()).perform(waitFor(2500))
 
+    onView(withId(android.R.id.message)).check { view, noViewFoundException ->
+      if (noViewFoundException != null) throw noViewFoundException
+      val actual = (view as TextView).text.toString()
+      val expected = getString(context, sign_in_success)
+      if (!actual.contains(expected)) {
+        throw AssertionError("Dialog text was: \"$actual\" (expected to contain \"$expected\")")
+      }
+    }
     onView(withText(getString(context, continue_))).check(matches(isDisplayed())).perform(click())
     onView(isRoot()).perform(waitFor(500))
-    println("LOG: BUTTON CONTINUE CLICKED")
 
-    onView(isRoot()).perform(waitFor(5000))
-    Thread.sleep(3000)
+    onView(isRoot()).perform(waitFor(3000))
     onView(withId(imageView)).check(matches(isDisplayed()))
 
     // disable for UI testing on Github Action due to flaky testing (enable it on for local testing)
-    // onView(withId(nameTextView)).perform(scrollTo()).check(matches(isDisplayed()))
     onView(withId(messageTextView)).check(matches(isDisplayed()))
     onView(withId(btn_lis_story)).check(matches(isDisplayed()))
     onView(withId(btn_logOut)).check(matches(isDisplayed()))
-    println("LOG: ASSERT MAIN VIEWS")
 
     // logout
     onView(isRoot()).perform(waitFor(500))
     onView(withId(btn_logOut)).check(matches(isDisplayed())).perform(click())
     onView(withText(getString(context, continue_))).check(matches(isDisplayed())).perform(click())
     onView(isRoot()).perform(waitFor(500))
-    println("LOG: BUTTON LOG OUT CLICKED")
 
     onView(withId(ed_login_email)).check(matches(isDisplayed()))
     onView(withId(ed_login_password)).check(matches(isDisplayed()))
     onView(withId(btn_signIn)).check(matches(isDisplayed()))
     onView(withId(btn_open_register)).check(matches(isDisplayed()))
-    println("LOG: ASSERT SIGN IN VIEWS 2")
   }
 }
