@@ -21,7 +21,7 @@ env:
 
   ANDROID_PROFILE: Nexus 6
   ANDROID_TARGET: google_apis
-  ANDROID_API_LEVEL: 34
+  ANDROID_API_LEVEL: 31
   ANDROID_ARCH: x86_64
 
 jobs:
@@ -112,8 +112,31 @@ jobs:
           force-avd-creation: false
           profile: ${{ env.ANDROID_PROFILE }}
           disable-animations: true
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: ./gradlew connectedDebugAndroidTest --stacktrace
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -no-audio -no-boot-anim -dns-server 8.8.8.8 -netfast -no-metrics -camera-back none
+          script: |
+            adb wait-for-device
+            # Wait for full boot and a working outbound TCP. `sys.boot_completed=1` fires
+            # before the Wi-Fi stack comes up, and `ip route get 8.8.8.8` reports
+            # success while the kernel's per-network fwmark route is still missing. Probe
+            # an actual TCP connect to 8.8.8.8:53 instead - it exercises the same path
+            # the test sockets will use.
+            adb shell 'i=0; while [ -z "$(getprop sys.boot_completed | tr -d "\r")" ]; do i=$((i+1)); if [ $i -gt 300 ]; then exit 1; fi; sleep 2; done'
+            adb shell 'i=0; while ! nc -w 2 8.8.8.8 53 </dev/null >/dev/null 2>&1; do i=$((i+1)); if [ $i -gt 30 ]; then exit 1; fi; sleep 2; done'
+            # Disable IPv6: the emulator has site-local + link-local v6 but no global v6
+            # route, so connect() to a global v6 address hangs instead of returning ENETUNREACH.
+            adb root && adb wait-for-device
+            adb shell sysctl -w net.ipv6.conf.all.disable_ipv6=1 || true
+            adb shell sysctl -w net.ipv6.conf.default.disable_ipv6=1 || true
+            adb shell sysctl -w net.ipv6.conf.lo.disable_ipv6=1 || true
+            adb shell ip addr
+
+            echo "--- TCP connect test to resolved IP ---"
+            adb shell "nc -z -v -w 5 75.2.21.170 443 && echo TCP_OK || echo TCP_FAILED"
+            echo "--- TCP connect test via hostname ---"
+            adb shell "nc -z -v -w 5 story-api.dicoding.dev 443 && echo TCP_OK_HOSTNAME || echo TCP_FAILED_HOSTNAME"
+            ./gradlew connectedCheck
+            
+            ./gradlew connectedDebugAndroidTest --stacktrace
 
       - name: Run instrumentation test
         uses: reactivecircus/android-emulator-runner@v2
