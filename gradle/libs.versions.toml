@@ -6,7 +6,7 @@ coreKtx = "1.19.1"
 ksp = "2.3.12"
 appcompat = "1.8.0"
 activityKtx = "1.13.0"
-annotation = "1.10.0"
+annotation = "1.11.0"
 
 # camera
 camera = "1.6.2"
