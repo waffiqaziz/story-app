@@ -18,6 +18,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.dicoding.storyapp.R.string.continue_
 import com.dicoding.storyapp.R.string.enable_gps_permission
 import com.dicoding.storyapp.R.string.information
@@ -38,6 +39,9 @@ import com.dicoding.storyapp.utils.Helpers.parcelable
 import com.dicoding.storyapp.utils.Helpers.serializable
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -179,64 +183,63 @@ class AddStoryActivity : AppCompatActivity() {
   }
 
   private fun uploadStory() {
-    when {
-      binding.etDescription.text.toString().isEmpty() -> {
-        binding.etDescription.error = getString(invalid_description)
+    val descriptionText = binding.etDescription.text.toString()
+
+    if (descriptionText.isEmpty()) {
+      binding.etDescription.error = getString(invalid_description)
+      return
+    }
+
+    val originalFile = getFile
+    if (originalFile == null) {
+      showToastShort(this, getString(no_attach_file))
+      return
+    }
+
+    lifecycleScope.launch {
+      binding.progressBar.visibility = View.VISIBLE
+
+      // heavy work off the main thread
+      val file = withContext(Dispatchers.IO) {
+        reduceFileImage(originalFile)
       }
 
-      getFile != null -> {
-        val file = reduceFileImage(getFile as File)
-        val description = binding.etDescription.text.toString()
-          .toRequestBody("application/json;charset=utf-8".toMediaType())
-        val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-        val imageMultipart = MultipartBody.Part.createFormData(
-          "photo",
-          file.name,
-          requestImageFile
-        )
+      val description =
+        descriptionText.toRequestBody("application/json;charset=utf-8".toMediaType())
+      val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+      val imageMultipart = MultipartBody.Part.createFormData(
+        "photo",
+        file.name,
+        requestImageFile
+      )
 
-        var lat: RequestBody? = null
-        var lon: RequestBody? = null
-        if (location != null) {
-          lat = location?.latitude.toString().toRequestBody("text/plain".toMediaType())
-          lon = location?.longitude.toString().toRequestBody("text/plain".toMediaType())
-        }
+      val lat = location?.latitude?.toString()?.toRequestBody("text/plain".toMediaType())
+      val lon = location?.longitude?.toString()?.toRequestBody("text/plain".toMediaType())
 
-        // upload story
-        viewModel.postStory(user.token, description, imageMultipart, lat, lon).observe(this) {
-          if (it != null) {
-            when (it) {
-              is ResultResponse.Loading -> {
-                binding.progressBar.visibility = View.VISIBLE
-              }
+      viewModel.postStory(user.token, description, imageMultipart, lat, lon)
+        .observe(this@AddStoryActivity) { result ->
+          when (result) {
+            is ResultResponse.Loading -> {
+              binding.progressBar.visibility = View.VISIBLE
+            }
 
-              is ResultResponse.Success -> {
-                binding.progressBar.visibility = View.GONE
-                Helper.showToastLong(this, getString(upload_success))
-                setResult(RESULT_OK)
-                finish()
-              }
+            is ResultResponse.Success -> {
+              binding.progressBar.visibility = View.GONE
+              Helper.showToastLong(this@AddStoryActivity, getString(upload_success))
+              setResult(RESULT_OK)
+              finish()
+            }
 
-              is ResultResponse.Error -> {
-                binding.progressBar.visibility = View.GONE
-                AlertDialog.Builder(this).apply {
-                  setTitle(getString(information))
-                  setMessage(getString(upload_failed) + ", ${it.error}")
-                  setPositiveButton(getString(continue_)) { _, _ ->
-                    binding.progressBar.visibility = View.GONE
-                  }
-                  create()
-                  show()
-                }
-              }
+            is ResultResponse.Error -> {
+              binding.progressBar.visibility = View.GONE
+              AlertDialog.Builder(this@AddStoryActivity)
+                .setTitle(getString(information))
+                .setMessage(getString(upload_failed) + ", ${result.error}")
+                .setPositiveButton(getString(continue_), null)
+                .show()
             }
           }
         }
-      }
-
-      else -> {
-        showToastShort(this@AddStoryActivity, getString(no_attach_file))
-      }
     }
   }
 
