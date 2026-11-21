@@ -12,7 +12,7 @@ annotation = "1.11.0"
 camera = "1.7.0"
 
 # ui related
-lifecycleViewmodelKtx = "2.11.0"
+lifecycleViewmodelKtx = "2.11.1"
 constraintlayout = "2.2.2"
 coreSplashscreen = "1.2.0"
 glide = "5.0.9"
